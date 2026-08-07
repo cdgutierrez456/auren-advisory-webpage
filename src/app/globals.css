@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   AUREN ADVISORY — tokens de marca
+   Fuente de verdad. Nada de hex sueltos en componentes: usar estas variables.
+   Regla del lima: máx. ~10% de cualquier composición, nunca como texto sobre
+   marfil. Solo forma, regla, trazo o acento sobre fondo oscuro.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Paleta */
+  --color-deep: #12343b;
+  --color-deep-700: #0b2126;
+  --color-deep-900: #071518;
+  --color-lime: #c8f169;
+  --color-ink: #111414;
+  --color-ivory: #f2f1ea;
+  --color-paper: #ffffff;
+
+  /* Superficies derivadas (evitan opacidades ad-hoc por componente) */
+  --color-rule: color-mix(in srgb, var(--color-ink) 12%, transparent);
+  --color-rule-strong: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  --color-rule-invert: color-mix(in srgb, var(--color-ivory) 14%, transparent);
+  --color-muted: color-mix(in srgb, var(--color-deep) 62%, transparent);
+  --color-muted-invert: color-mix(in srgb, var(--color-ivory) 62%, transparent);
+
+  /* Tipografía */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Escala editorial: display fluido, sin breakpoints por tamaño */
+  --text-display: clamp(2.75rem, 7vw, 6.5rem);
+  --text-display--line-height: 0.94;
+  --text-display--letter-spacing: -0.03em;
+  --text-headline: clamp(1.9rem, 3.6vw, 3.25rem);
+  --text-headline--line-height: 1.06;
+  --text-headline--letter-spacing: -0.02em;
+  --text-lede: clamp(1.05rem, 1.5vw, 1.375rem);
+  --text-lede--line-height: 1.55;
+
+  /* Ritmo vertical de sección */
+  --spacing-section: clamp(6rem, 12vw, 11rem);
+  --spacing-gutter: clamp(1.5rem, 5vw, 5rem);
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Etiquetas de sistema: 11px, tracking amplio, mayúsculas. Usar `.label`. */
+@utility label {
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+@utility wordmark {
+  letter-spacing: 0.22em;
+  font-weight: 400;
+}
+
+/* Contenedor editorial con gutter fluido */
+@utility shell {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+/* Capa gráfica sutil: retícula de análisis. Decorativa, nunca informativa. */
+@utility grid-layer {
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size: 5rem 5rem;
+  opacity: 0.05;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  scroll-behavior: smooth;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (prefers-reduced-motion: reduce) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+}
+
+/* Revelado al hacer scroll con timelines nativos: cero JS, cero dependencias.
+   El @supports garantiza que sin soporte el contenido nace visible. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 22%;
+    }
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
