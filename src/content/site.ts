@@ -10,7 +10,7 @@ export const site = {
   name: "Auren Advisory",
   tagline: "Ver. Entender. Transformar.",
   domain: "aurenadvisory.com",
-  email: "hola@aurenadvisory.com",
+  email: "juanmacalvo64@gmail.com",
   /** Solo dígitos, con indicativo de país. Formato que exige wa.me. */
   whatsapp: "573206548168",
   whatsappDisplay: "+57 320 654 8168",
