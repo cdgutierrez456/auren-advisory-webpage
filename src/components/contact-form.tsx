@@ -13,7 +13,8 @@ export function ContactForm() {
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const result = validateLead(new FormData(event.currentTarget));
+    const form = event.currentTarget;
+    const result = validateLead(new FormData(form));
 
     if (!result.ok) {
       setErrors(result.fields);
@@ -23,13 +24,27 @@ export function ContactForm() {
 
     setErrors({});
     const url = whatsappUrl(result.lead);
-    // Si el navegador bloquea la pestaña nueva, navegamos en la misma.
-    if (!window.open(url, "_blank", "noopener,noreferrer")) window.location.href = url;
+
+    // Si el navegador bloquea la ventana nueva, navegamos en la actual: ahí no
+    // hay formulario que limpiar porque la página se va.
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened) {
+      window.location.href = url;
+      return;
+    }
+
+    form.reset();
     setSent(true);
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-9">
+    <form
+      onSubmit={onSubmit}
+      // El aviso de envío deja de ser cierto en cuanto empieza un mensaje nuevo.
+      onInput={() => setSent(false)}
+      noValidate
+      className="flex flex-col gap-9"
+    >
       <div className="grid gap-9 sm:grid-cols-2">
         <Field name="name" label="Nombre" autoComplete="name" error={errors.name} />
         <Field
@@ -62,9 +77,7 @@ export function ContactForm() {
           Enviar por WhatsApp <Arrow />
         </button>
         <p role="status" className="max-w-xs text-pretty text-sm text-ivory/55">
-          {sent
-            ? "Abrimos WhatsApp con su mensaje listo. Solo falta enviarlo."
-            : "Se abre WhatsApp con el mensaje ya redactado."}
+          {sent ? "Abrimos WhatsApp con su mensaje listo. Solo falta enviarlo." : null}
         </p>
       </div>
     </form>
