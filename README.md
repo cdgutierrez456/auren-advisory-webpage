@@ -4,7 +4,6 @@ Plataforma de presentación de la firma. **Ver. Entender. Transformar.**
 
 ```bash
 npm install
-cp .env.example .env.local   # opcional: destino de los formularios
 npm run dev
 ```
 
@@ -13,7 +12,7 @@ npm run dev
 
 ```bash
 npm run build   # producción
-npm test        # validación del formulario (runner de Node, sin frameworks)
+npm test        # formulario y consistencia de servicios (runner de Node, sin frameworks)
 ```
 
 Convenciones, reglas de marca y cómo integrar servicios nuevos: **`CLAUDE.md`**.

@@ -1,90 +1,82 @@
 "use client";
 
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
-import { submitContact, type ContactState } from "@/lib/actions";
+import { useState } from "react";
 import { Arrow } from "@/components/ui";
-
-const initial: ContactState = { status: "idle", message: "" };
+import { validateLead, whatsappUrl } from "@/lib/lead";
 
 const field =
   "w-full border-b bg-transparent py-4 text-ivory outline-none transition-colors placeholder:text-ivory/30 focus:border-lime";
 
-function Submit() {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="label inline-flex items-center gap-3 bg-lime px-8 py-4.5 text-ink transition-colors duration-300 hover:bg-ivory disabled:opacity-50"
-    >
-      {pending ? "Enviando…" : "Enviar solicitud"} <Arrow />
-    </button>
-  );
-}
-
 export function ContactForm() {
-  const [state, action] = useActionState(submitContact, initial);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [sent, setSent] = useState(false);
+
+  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const result = validateLead(new FormData(event.currentTarget));
+
+    if (!result.ok) {
+      setErrors(result.fields);
+      setSent(false);
+      return;
+    }
+
+    setErrors({});
+    const url = whatsappUrl(result.lead);
+    // Si el navegador bloquea la pestaña nueva, navegamos en la misma.
+    if (!window.open(url, "_blank", "noopener,noreferrer")) window.location.href = url;
+    setSent(true);
+  }
 
   return (
-    <form action={action} className="flex flex-col gap-9">
+    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-9">
       <div className="grid gap-9 sm:grid-cols-2">
-        <Field name="name" label="Nombre" autoComplete="name" error={state.fields?.name} />
+        <Field name="name" label="Nombre" autoComplete="name" error={errors.name} />
         <Field
           name="email"
-          label="Correo corporativo"
+          label="Email"
           type="email"
           autoComplete="email"
-          error={state.fields?.email}
+          error={errors.email}
         />
       </div>
       <Field name="company" label="Empresa" autoComplete="organization" optional />
 
       <label className="flex flex-col gap-3">
-        <span className="label text-ivory/45">
-          Qué quiere resolver
-          {state.fields?.message ? (
-            <span className="ml-3 normal-case tracking-normal text-lime">
-              {state.fields.message}
-            </span>
-          ) : null}
-        </span>
+        <Legend text="Qué quiere resolver" error={errors.message} />
         <textarea
           name="message"
           rows={4}
-          required
           maxLength={4000}
           placeholder="El proceso, el área o la fricción concreta que tiene hoy."
-          className={`${field} resize-none ${
-            state.fields?.message ? "border-lime" : "border-rule-invert"
-          }`}
+          aria-invalid={Boolean(errors.message)}
+          className={`${field} resize-none ${errors.message ? "border-lime" : "border-rule-invert"}`}
         />
       </label>
 
-      {/* Honeypot — oculto para personas, visible para bots */}
-      <input
-        type="text"
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
-      />
-
       <div className="flex flex-wrap items-center gap-6">
-        <Submit />
-        {state.message ? (
-          <p
-            role="status"
-            className={`max-w-sm text-sm text-pretty ${
-              state.status === "ok" ? "text-lime" : "text-ivory/70"
-            }`}
-          >
-            {state.message}
-          </p>
-        ) : null}
+        <button
+          type="submit"
+          className="label inline-flex items-center gap-3 bg-lime px-8 py-4.5 text-ink transition-colors duration-300 hover:bg-ivory"
+        >
+          Enviar por WhatsApp <Arrow />
+        </button>
+        <p role="status" className="max-w-xs text-pretty text-sm text-ivory/55">
+          {sent
+            ? "Abrimos WhatsApp con su mensaje listo. Solo falta enviarlo."
+            : "Se abre WhatsApp con el mensaje ya redactado."}
+        </p>
       </div>
     </form>
+  );
+}
+
+function Legend({ text, error }: { text: string; error?: string }) {
+  return (
+    <span className="label text-ivory/45">
+      {text}
+      {error ? <span className="ml-3 normal-case tracking-normal text-lime">{error}</span> : null}
+    </span>
   );
 }
 
@@ -102,18 +94,14 @@ function Field({
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <label className="flex flex-col gap-3">
-      <span className="label text-ivory/45">
-        {label}
-        {error ? (
-          <span className="ml-3 normal-case tracking-normal text-lime">{error}</span>
-        ) : null}
-      </span>
+      <Legend text={label} error={error} />
       <input
         name={name}
-        required={!optional}
+        aria-invalid={Boolean(error)}
         className={`${field} ${error ? "border-lime" : "border-rule-invert"}`}
         {...props}
       />
+      {optional ? <span className="sr-only">Opcional</span> : null}
     </label>
   );
 }

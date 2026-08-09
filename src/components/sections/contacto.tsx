@@ -16,12 +16,22 @@ export function Contacto() {
           <SectionHead index="05" label="Contacto" invert />
           <h2 className="text-headline font-normal text-balance">{contact.title}</h2>
           <p className="text-pretty leading-relaxed text-muted-invert">{contact.lede}</p>
-          <a
-            href={`mailto:${site.email}`}
-            className="mt-2 w-fit border-b border-lime pb-1 text-lg text-ivory transition-opacity hover:opacity-70"
-          >
-            {site.email}
-          </a>
+          <div className="mt-2 flex flex-col items-start gap-4">
+            <a
+              href={`https://wa.me/${site.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-fit border-b border-lime pb-1 text-lg text-ivory transition-opacity hover:opacity-70"
+            >
+              {site.whatsappDisplay}
+            </a>
+            <a
+              href={`mailto:${site.email}`}
+              className="w-fit border-b border-rule-invert pb-1 text-ivory/70 transition-colors hover:border-lime hover:text-ivory"
+            >
+              {site.email}
+            </a>
+          </div>
         </div>
         <div className="md:pt-4">
           <ContactForm />

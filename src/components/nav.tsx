@@ -1,14 +1,21 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Logo } from "@/components/logo";
 import { Arrow } from "@/components/ui";
 import { nav, site } from "@/content/site";
 
 /**
- * Navegación. Sin estado ni JS: el menú móvil es un <details> nativo.
- * ponytail: si algún día hace falta transición o scroll-spy, se convierte en
- * cliente aquí y solo aquí.
+ * Navegación. Cliente solo por el estado activo; el menú móvil sigue siendo un
+ * <details> nativo, sin estado de React.
  */
 export function Nav() {
+  const pathname = usePathname();
+  // Los enlaces a anclas de la home solo se marcan estando en la home.
+  const isActive = (href: string) =>
+    href.startsWith("/#") ? false : pathname === href || pathname.startsWith(`${href}/`);
+
   return (
     <header className="sticky top-0 z-50 border-b border-rule bg-ivory/85 backdrop-blur-md">
       <div className="shell flex h-20 items-center justify-between gap-8">
@@ -21,9 +28,18 @@ export function Nav() {
             <Link
               key={item.href}
               href={item.href}
-              className="label text-deep/60 transition-colors hover:text-deep"
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={`label relative transition-colors hover:text-deep ${
+                isActive(item.href) ? "text-deep" : "text-deep/60"
+              }`}
             >
               {item.label}
+              {isActive(item.href) ? (
+                <span
+                  aria-hidden
+                  className="absolute -bottom-2 left-0 h-0.5 w-full bg-lime"
+                />
+              ) : null}
             </Link>
           ))}
           <Link
@@ -43,7 +59,10 @@ export function Nav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="label px-4 py-3.5 text-deep/70 transition-colors hover:bg-ivory hover:text-deep"
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className={`label px-4 py-3.5 transition-colors hover:bg-ivory hover:text-deep ${
+                  isActive(item.href) ? "bg-ivory text-deep" : "text-deep/70"
+                }`}
               >
                 {item.label}
               </Link>

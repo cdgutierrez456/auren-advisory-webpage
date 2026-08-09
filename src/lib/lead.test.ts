@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { validateLead } from "./validate-lead.ts";
+import { composeMessage, validateLead, whatsappUrl } from "./lead.ts";
 
 const form = (fields: Record<string, string>) => {
   const d = new FormData();
@@ -15,10 +15,14 @@ const valid = {
   message: "Queremos revisar el proceso de facturación.",
 };
 
-test("acepta un lead completo y recorta espacios", () => {
-  const r = validateLead(form({ ...valid, name: "  Ana Pérez  " }));
+const leadOf = (fields: Record<string, string> = valid) => {
+  const r = validateLead(form(fields));
   assert.ok(r.ok);
-  assert.equal(r.lead.name, "Ana Pérez");
+  return r.lead;
+};
+
+test("acepta un lead completo y recorta espacios", () => {
+  assert.equal(leadOf({ ...valid, name: "  Ana Pérez  " }).name, "Ana Pérez");
 });
 
 test("empresa es opcional", () => {
@@ -40,13 +44,29 @@ test("rechaza nombre y mensaje demasiado cortos", () => {
 });
 
 test("trunca en el máximo en lugar de reventar", () => {
-  const r = validateLead(form({ ...valid, message: "x".repeat(9000) }));
-  assert.ok(r.ok);
-  assert.equal(r.lead.message.length, 4000);
+  assert.equal(leadOf({ ...valid, message: "x".repeat(9000) }).message.length, 4000);
 });
 
 test("campos ausentes no lanzan", () => {
   const r = validateLead(new FormData());
   assert.ok(!r.ok);
   assert.equal(Object.keys(r.fields).length, 3);
+});
+
+test("el mensaje incluye todos los datos entregados", () => {
+  const text = composeMessage(leadOf());
+  for (const v of Object.values(valid)) assert.ok(text.includes(v), `falta: ${v}`);
+});
+
+test("omite la línea de empresa cuando no se indicó", () => {
+  const { company: _, ...rest } = valid;
+  assert.ok(!composeMessage(leadOf({ ...rest })).includes("Empresa:"));
+});
+
+test("el enlace apunta al número de la firma y codifica el texto", () => {
+  const url = whatsappUrl(leadOf());
+  assert.ok(url.startsWith("https://wa.me/573206548168?text="));
+  // Saltos de línea y acentos deben viajar codificados, no crudos.
+  assert.ok(!/[\n\s]/.test(url));
+  assert.equal(decodeURIComponent(new URL(url).searchParams.get("text") ?? ""), composeMessage(leadOf()));
 });
