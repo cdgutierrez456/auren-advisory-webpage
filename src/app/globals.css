@@ -30,6 +30,9 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Escala editorial: display fluido, sin breakpoints por tamaño */
+  --text-mega: clamp(3.25rem, 11vw, 9rem);
+  --text-mega--line-height: 0.9;
+  --text-mega--letter-spacing: -0.045em;
   --text-display: clamp(2.75rem, 7vw, 6.5rem);
   --text-display--line-height: 0.94;
   --text-display--letter-spacing: -0.03em;
@@ -92,13 +95,41 @@ body {
   background: var(--color-ivory);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  caret-color: var(--color-lime);
 }
 
 ::selection {
   background: var(--color-lime);
   color: var(--color-ink);
+}
+
+/* Cifras alineadas en cualquier dato tabular (metas, hechos, índices). */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Scrollbar tematizada: la superficie del navegador también lleva la marca. */
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-deep) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-deep) 70%, transparent);
+    border: 2px solid var(--color-ivory);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-deep);
+  }
 }
 
 :focus-visible {

@@ -31,30 +31,31 @@ export function Section({
   );
 }
 
-/** Encabezado de sección: índice, título y regla, como en el manual de marca. */
+/**
+ * Encabezado de sección: etiqueta con trazo lima y titular. El titular manda;
+ * ya no hay numerito de sección (era ruido, no información).
+ * `index` se mantiene en el tipo por compatibilidad de llamadas, sin renderizarse.
+ */
 export function SectionHead({
-  index,
   label,
   invert = false,
   /** Para encabezados dentro de una columna, donde el aire de sección sobra. */
   tight = false,
   children,
 }: {
-  index: string;
+  index?: string;
   label: string;
   invert?: boolean;
   tight?: boolean;
   children?: ReactNode;
 }) {
   return (
-    <header className={`reveal ${tight ? "mb-8" : "mb-16 md:mb-24"}`}>
-      <div className="flex items-baseline gap-5">
-        <span className={`label ${invert ? "text-lime" : "text-deep/50"}`}>
-          {index} — {label}
-        </span>
-        <span className={`h-px flex-1 ${invert ? "bg-rule-invert" : "bg-rule"}`} />
+    <header className={`reveal ${tight ? "mb-8" : "mb-14 md:mb-20"}`}>
+      <div className="flex items-center gap-4">
+        <span className={`h-px w-10 shrink-0 ${invert ? "bg-lime" : "bg-deep"}`} />
+        <span className={`label ${invert ? "text-lime" : "text-deep/55"}`}>{label}</span>
       </div>
-      {children ? <div className="mt-8 max-w-3xl">{children}</div> : null}
+      {children ? <div className="mt-7 max-w-3xl">{children}</div> : null}
     </header>
   );
 }
