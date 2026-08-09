@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Mark } from "@/components/logo";
 import { Arrow, Button, Headline, Section, SectionHead } from "@/components/ui";
@@ -18,11 +19,12 @@ export function Productos() {
         </p>
       </SectionHead>
 
-      <div className="grid gap-px border-y border-rule bg-rule">
+      <div className="reveal-stagger grid gap-px border-y border-rule bg-rule">
         {services.map((s, i) => (
           <Link
             key={s.slug}
             href={`/servicios/${s.slug}`}
+            style={{ "--i": i } as CSSProperties}
             className="group grid gap-x-8 gap-y-4 bg-paper py-8 transition-colors duration-500 hover:bg-ivory md:grid-cols-[3.5rem_15rem_1fr_11rem] md:items-baseline md:px-6"
           >
             <div className="flex items-center gap-3 md:flex-col md:items-start md:gap-4">

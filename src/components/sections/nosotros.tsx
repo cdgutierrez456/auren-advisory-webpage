@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Arrow, Button, Section, SectionHead } from "@/components/ui";
 import { about } from "@/content/site";
 
@@ -16,9 +17,13 @@ export function Nosotros() {
           </Button>
         </div>
 
-        <dl className="reveal grid content-start gap-px self-center bg-rule-invert">
-          {about.facts.map((f) => (
-            <div key={f.k} className="flex flex-col gap-2 bg-deep py-6">
+        <dl className="reveal-stagger grid content-start gap-px self-center bg-rule-invert">
+          {about.facts.map((f, i) => (
+            <div
+              key={f.k}
+              style={{ "--i": i } as CSSProperties}
+              className="flex flex-col gap-2 bg-deep py-6"
+            >
               <dt className="label text-lime">{f.k}</dt>
               <dd className="text-pretty text-ivory/85">{f.v}</dd>
             </div>

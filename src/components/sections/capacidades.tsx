@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Headline, Section, SectionHead } from "@/components/ui";
 import { capabilities } from "@/content/site";
 
@@ -10,11 +11,12 @@ export function Capacidades() {
         </Headline>
       </SectionHead>
 
-      <ul className="grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="reveal-stagger grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
         {capabilities.map((c, i) => (
           <li
             key={c.id}
-            className="reveal group relative flex flex-col gap-4 bg-ivory p-8 transition-colors duration-500 hover:bg-paper md:p-10"
+            style={{ "--i": i } as CSSProperties}
+            className="group relative flex flex-col gap-4 bg-ivory p-8 transition-colors duration-500 hover:bg-paper md:p-10"
           >
             <span className="font-mono text-xs text-deep/35">
               {String(i + 1).padStart(2, "0")}

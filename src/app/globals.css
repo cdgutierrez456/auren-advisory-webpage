@@ -137,25 +137,88 @@ body {
   outline-offset: 3px;
 }
 
-/* Revelado al hacer scroll con timelines nativos: cero JS, cero dependencias.
-   El @supports garantiza que sin soporte el contenido nace visible. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal {
-      animation: reveal-in linear both;
-      animation-timeline: view();
-      animation-range: entry 5% cover 22%;
-    }
-  }
-}
+/* ---------------------------------------------------------------------------
+   MOVIMIENTO — CSS nativo, cero JS, cero dependencias.
+   Todo cuelga de animation-timeline: view() y degrada a contenido visible
+   donde no haya soporte. Nada se mueve si el sistema pide menos movimiento.
+--------------------------------------------------------------------------- */
 
 @keyframes reveal-in {
   from {
     opacity: 0;
-    transform: translateY(1.25rem);
+    transform: translateY(1.75rem);
+    filter: blur(8px);
   }
   to {
     opacity: 1;
     transform: none;
+    filter: blur(0);
+  }
+}
+
+/* Deriva lenta del símbolo: solo traslación (el símbolo no se rota ni inclina,
+   regla de marca). Ida y vuelta, imperceptible, para que el fondo respire. */
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-1.4rem, 1rem, 0);
+  }
+}
+
+/* Parallax de scroll: el telón se mueve más lento que el contenido. */
+@keyframes parallax-rise {
+  from {
+    transform: translateY(6%);
+  }
+  to {
+    transform: translateY(-6%);
+  }
+}
+
+/* Trazo lima que se dibuja al entrar en vista. */
+@keyframes draw-rule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-in cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 20%;
+    }
+
+    /* Hijos que entran escalonados. El retardo lo pone --i en el marcado. */
+    .reveal-stagger > * {
+      animation: reveal-in cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 16%;
+      animation-delay: calc(var(--i, 0) * 55ms);
+    }
+
+    .parallax {
+      animation: parallax-rise linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+
+    .draw-rule {
+      transform-origin: left center;
+      animation: draw-rule cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 24%;
+    }
+  }
+
+  /* La deriva no depende del scroll: es un latido continuo del fondo. */
+  .drift {
+    animation: drift 16s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
   }
 }

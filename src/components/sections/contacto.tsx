@@ -1,16 +1,19 @@
 import { ContactForm } from "@/components/contact-form";
-import { Mark } from "@/components/logo";
 import { SectionHead } from "@/components/ui";
+import { ContourField } from "@/components/vertex-art";
 import { contact, site } from "@/content/site";
 
 export function Contacto() {
   return (
     <section id="contacto" className="relative isolate overflow-hidden bg-ink py-section text-ivory">
-      <Mark
-        size={620}
-        tone="invert"
-        className="pointer-events-none absolute -bottom-40 -left-40 opacity-[0.04]"
-      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-[30%] -left-[20%] h-[150%] w-[70%] text-lime/25 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]"
+      >
+        <div className="drift h-full w-full">
+          <ContourField className="h-full w-full" />
+        </div>
+      </div>
       <div className="shell relative grid gap-16 md:grid-cols-[1fr_1.15fr] md:gap-24">
         <div className="flex flex-col gap-8">
           <SectionHead index="05" label="Contacto" invert />
