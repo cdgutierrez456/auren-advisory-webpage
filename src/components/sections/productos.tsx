@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Mark } from "@/components/logo";
-import { Arrow, Button, Headline, Section, SectionHead } from "@/components/ui";
+import { Arrow, Button, Em, Headline, Section, SectionHead } from "@/components/ui";
 import { phases, services } from "@/content/site";
 
 /** Fase a la que pertenece cada servicio (la primera que lo referencia). */
@@ -12,7 +12,9 @@ export function Productos() {
   return (
     <Section id="servicios" tone="paper">
       <SectionHead label="Servicios">
-        <Headline className="text-deep">Un solo sistema. Ocho puertas de entrada.</Headline>
+        <Headline className="text-deep">
+          Un solo sistema. <Em>Ocho</Em> puertas de entrada.
+        </Headline>
         <p className="mt-6 max-w-xl text-pretty leading-relaxed text-deep/65">
           Cada servicio resuelve una etapa distinta, pero todos pertenecen a la misma firma y
           comparten método, lenguaje y forma de medir. Entra por donde su empresa lo necesita.

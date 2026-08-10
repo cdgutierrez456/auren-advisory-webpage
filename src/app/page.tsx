@@ -1,4 +1,5 @@
 import { Capacidades } from "@/components/sections/capacidades";
+import { Cifras } from "@/components/sections/cifras";
 import { Contacto } from "@/components/sections/contacto";
 import { Hero } from "@/components/sections/hero";
 import { Manifiesto } from "@/components/sections/manifiesto";
@@ -13,6 +14,7 @@ export default function Home() {
       <Manifiesto />
       <Metodo />
       <Capacidades />
+      <Cifras />
       <Productos />
       <Nosotros />
       <Contacto />

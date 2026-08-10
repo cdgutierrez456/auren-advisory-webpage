@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { Headline, Section, SectionHead } from "@/components/ui";
+import { Em, Headline, Section, SectionHead } from "@/components/ui";
 import { capabilities } from "@/content/site";
 
 export function Capacidades() {
@@ -7,7 +7,7 @@ export function Capacidades() {
     <Section id="capacidades" tone="ivory">
       <SectionHead index="02" label="Capacidades">
         <Headline className="text-deep">
-          La tecnología es el medio. Elegimos la que el problema pide.
+          La tecnología es el medio. Elegimos la que el <Em>problema</Em> pide.
         </Headline>
       </SectionHead>
 

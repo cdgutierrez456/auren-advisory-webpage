@@ -72,6 +72,23 @@ export function Headline({
   );
 }
 
+/**
+ * Énfasis editorial: una o dos palabras del titular en serif itálica. Es el
+ * único lugar, junto al manifiesto, donde aparece la serif. Se usa DENTRO de un
+ * titular en grotesca para crear contraste —la firma tipográfica de la home.
+ */
+export function Em({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <em className={`font-serif font-normal italic tracking-normal ${className}`}>{children}</em>
+  );
+}
+
 type ButtonProps = ComponentProps<typeof Link> & {
   variant?: "solid" | "outline" | "lime";
 };
