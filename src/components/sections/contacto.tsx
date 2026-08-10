@@ -1,14 +1,15 @@
 import { ContactForm } from "@/components/contact-form";
-import { SectionHead } from "@/components/ui";
-import { ContourField } from "@/components/vertex-art";
+import { Card, SectionHead } from "@/components/ui";
+import { Ambient, ContourField } from "@/components/vertex-art";
 import { contact, site } from "@/content/site";
 
 export function Contacto() {
   return (
     <section id="contacto" className="relative isolate overflow-hidden bg-ink py-section text-ivory">
+      <Ambient />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-[30%] -left-[20%] h-[150%] w-[70%] text-lime/25 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]"
+        className="pointer-events-none absolute -bottom-[30%] -left-[20%] h-[150%] w-[70%] text-lime/20 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]"
       >
         <div className="drift h-full w-full">
           <ContourField className="h-full w-full" />
@@ -36,9 +37,9 @@ export function Contacto() {
             </a>
           </div>
         </div>
-        <div className="md:pt-4">
+        <Card className="reveal p-8 md:p-10">
           <ContactForm />
-        </div>
+        </Card>
       </div>
     </section>
   );

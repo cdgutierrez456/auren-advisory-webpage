@@ -89,3 +89,64 @@ export function HairlineField({
     </svg>
   );
 }
+
+/** Ondas de luz: senoidales apiladas, en el espíritu de las 'light waves'. */
+export function WaveField({
+  className = "",
+  lines = 8,
+}: {
+  className?: string;
+  lines?: number;
+}) {
+  const paths = Array.from({ length: lines }, (_, i) => {
+    const baseY = 8 + (i / (lines - 1)) * 84;
+    const amp = 2.5 + i * 0.7;
+    const phase = i * 0.6;
+    let d = `M 0 ${(baseY + Math.sin(phase) * amp).toFixed(2)}`;
+    for (let x = 4; x <= 100; x += 4) {
+      const y = baseY + Math.sin((x / 100) * Math.PI * 3 + phase) * amp;
+      d += ` L ${x} ${y.toFixed(2)}`;
+    }
+    return { d, opacity: Number((0.5 * (1 - i / lines) + 0.06).toFixed(3)) };
+  });
+
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      fill="none"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      className={className}
+    >
+      {paths.map((p, i) => (
+        <path
+          key={i}
+          d={p.d}
+          stroke="currentColor"
+          strokeWidth={0.3}
+          strokeLinecap="round"
+          opacity={p.opacity}
+        />
+      ))}
+    </svg>
+  );
+}
+
+/** Luz ambiental: dos blobs que respiran a distinto ritmo tras el contenido. */
+export function Ambient({ className = "" }: { className?: string }) {
+  return (
+    <div
+      aria-hidden
+      className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
+    >
+      <div
+        className="glow breathe absolute -top-1/4 left-[8%] h-96 w-96 bg-lime"
+        style={{ animationDelay: "-3s" }}
+      />
+      <div
+        className="glow breathe absolute -bottom-1/4 right-[6%] h-[30rem] w-[30rem] bg-deep"
+        style={{ animationDelay: "-9s", opacity: 0.42 }}
+      />
+    </div>
+  );
+}

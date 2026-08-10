@@ -20,12 +20,12 @@ export function Metodo() {
           <Headline>{method.title}</Headline>
         </SectionHead>
 
-        <ol className="reveal-stagger grid gap-px bg-rule-invert md:grid-cols-3">
+        <ol className="reveal-stagger grid gap-4 md:grid-cols-3">
           {phases.map((phase, i) => (
             <li key={phase.index} style={{ "--i": i } as CSSProperties}>
               <Link
                 href={`/enfoque#${phase.title.toLowerCase()}`}
-                className="group flex h-full flex-col gap-8 bg-ink p-8 transition-colors duration-500 hover:bg-deep-900 md:p-10 md:pb-14"
+                className="glass group flex h-full flex-col gap-8 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-10 md:pb-14"
               >
               <div className="flex items-baseline justify-between">
                 <span className="font-mono text-xs tracking-widest text-lime">{phase.index}</span>
@@ -42,7 +42,7 @@ export function Metodo() {
                 </p>
               </div>
 
-              <span className="mt-auto flex items-center gap-3 border-t border-rule-invert pt-7 text-sm text-ivory/60 transition-colors group-hover:text-lime">
+              <span className="mt-auto flex items-center gap-3 border-t border-hairline pt-7 text-sm text-ivory/60 transition-colors group-hover:text-lime">
                 {phase.question}
                 <Arrow className="shrink-0" />
               </span>

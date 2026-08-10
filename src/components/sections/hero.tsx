@@ -1,6 +1,5 @@
-import type { CSSProperties } from "react";
 import { Arrow, Button, Em } from "@/components/ui";
-import { ContourField } from "@/components/vertex-art";
+import { Ambient, ContourField } from "@/components/vertex-art";
 import { hero, site } from "@/content/site";
 
 /** Chips de prueba: las tres fases del método, no cifras inventadas. */
@@ -18,35 +17,35 @@ const trust = [
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-ivory">
+    <section className="relative isolate overflow-hidden bg-deep-900">
+      <Ambient />
       <div
         aria-hidden
-        className="grid-layer pointer-events-none absolute inset-0 text-deep [mask-image:linear-gradient(to_bottom,black,transparent_70%)]"
-      />
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
         <div className="parallax absolute inset-0">
-          <div className="drift absolute -top-[22%] right-[-16%] h-[135%] w-[78%] text-deep/70 [mask-image:radial-gradient(ellipse_at_center,black,transparent_72%)]">
+          <div className="drift absolute -top-[20%] right-[-14%] h-[135%] w-[72%] text-lime/20 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]">
             <ContourField className="h-full w-full" />
           </div>
         </div>
       </div>
 
-      {/* Chips de prueba flotando sobre el telón. Solo en pantallas amplias. */}
+      {/* Chips de prueba glass flotando sobre el telón. Solo en pantallas amplias. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[4vw] top-[38%] z-10 hidden w-72 flex-col gap-4 lg:flex"
+        className="pointer-events-none absolute right-[4vw] top-[36%] z-10 hidden w-72 flex-col gap-4 lg:flex"
       >
         {proof.map((p, i) => (
           <div
             key={p.phase}
             style={{ animationDelay: `${i * -4}s`, marginLeft: `${i * 2.2}rem` }}
-            className="drift flex flex-col gap-1.5 border border-rule bg-paper/90 px-5 py-4 shadow-xl shadow-ink/5 backdrop-blur-sm"
+            className="glass drift flex flex-col gap-1.5 rounded-card px-5 py-4 shadow-2xl shadow-black/30"
           >
             <span className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 shrink-0 bg-lime" />
-              <span className="label text-deep/45">{p.phase}</span>
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-lime shadow-[0_0_12px_var(--color-lime)]" />
+              <span className="label text-ivory/50">{p.phase}</span>
             </span>
-            <span className="text-sm text-deep/85">{p.claim}</span>
+            <span className="text-sm text-ivory/90">{p.claim}</span>
           </div>
         ))}
       </div>
@@ -55,23 +54,23 @@ export function Hero() {
         <div className="flex flex-col gap-10">
           <div className="reveal flex items-start justify-between gap-6">
             <div className="flex items-center gap-4">
-              <span className="draw-rule h-px w-10 bg-deep" />
-              <span className="label text-deep/60">{hero.eyebrow}</span>
+              <span className="draw-rule h-px w-10 bg-lime" />
+              <span className="label text-ivory/60">{hero.eyebrow}</span>
             </div>
-            <span className="label hidden text-deep/40 sm:block">Manizales · Colombia</span>
+            <span className="label hidden text-ivory/40 sm:block">Manizales · Colombia</span>
           </div>
 
           <div className="flex flex-col gap-9">
-            <h1 className="reveal text-mega font-normal text-deep">
+            <h1 className="reveal text-mega font-normal text-ivory">
               <span className="block">Ver.</span>
               <span className="block">Entender.</span>
               <span className="block">
-                <Em>Transformar.</Em>
+                <Em className="text-lime">Transformar.</Em>
               </span>
             </h1>
 
             <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
-              <p className="reveal text-lede max-w-2xl text-pretty text-deep/75">{hero.lede}</p>
+              <p className="reveal text-lede max-w-2xl text-pretty text-ivory/75">{hero.lede}</p>
               <div className="reveal flex flex-wrap gap-3">
                 <Button href={hero.primary.href}>
                   {hero.primary.label} <Arrow />
@@ -86,24 +85,21 @@ export function Hero() {
               {trust.map((t) => (
                 <span key={t} className="flex items-center gap-2.5">
                   <span className="h-1 w-1 shrink-0 rounded-full bg-lime" />
-                  <span className="text-xs text-deep/55">{t}</span>
+                  <span className="text-xs text-ivory/55">{t}</span>
                 </span>
               ))}
             </div>
           </div>
         </div>
 
-        <dl className="reveal-stagger grid border-t border-rule sm:grid-cols-3">
-          {hero.meta.map((m, i) => (
+        <dl className="reveal grid gap-3 sm:grid-cols-3">
+          {hero.meta.map((m) => (
             <div
               key={m.k}
-              style={{ "--i": i } as CSSProperties}
-              className={`flex flex-col gap-2.5 py-7 pr-8 ${
-                i > 0 ? "border-rule sm:border-l sm:pl-8" : ""
-              }`}
+              className="glass flex flex-col gap-2.5 rounded-card px-6 py-6"
             >
-              <dt className="label text-deep/45">{m.k}</dt>
-              <dd className="text-sm text-deep/80">{m.v}</dd>
+              <dt className="label text-lime/80">{m.k}</dt>
+              <dd className="text-sm text-ivory/80">{m.v}</dd>
             </div>
           ))}
         </dl>

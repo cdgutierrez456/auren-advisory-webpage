@@ -17,12 +17,12 @@ export function Nosotros() {
           </Button>
         </div>
 
-        <dl className="reveal-stagger grid content-start gap-px self-center bg-rule-invert">
+        <dl className="reveal-stagger grid content-start gap-3 self-center sm:grid-cols-2">
           {about.facts.map((f, i) => (
             <div
               key={f.k}
               style={{ "--i": i } as CSSProperties}
-              className="flex flex-col gap-2 bg-deep py-6"
+              className="glass flex flex-col gap-2 rounded-card px-6 py-6"
             >
               <dt className="label text-lime">{f.k}</dt>
               <dd className="text-pretty text-ivory/85">{f.v}</dd>
