@@ -30,6 +30,9 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Escala editorial: display fluido, sin breakpoints por tamaño */
+  --text-mega: clamp(3.25rem, 11vw, 9rem);
+  --text-mega--line-height: 0.9;
+  --text-mega--letter-spacing: -0.045em;
   --text-display: clamp(2.75rem, 7vw, 6.5rem);
   --text-display--line-height: 0.94;
   --text-display--letter-spacing: -0.03em;
@@ -44,6 +47,18 @@
   --spacing-gutter: clamp(1.5rem, 5vw, 5rem);
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Superficies glass sobre la base oscura */
+  --color-glass: color-mix(in srgb, var(--color-deep) 42%, transparent);
+  --color-glass-strong: color-mix(in srgb, var(--color-deep-700) 70%, transparent);
+  --color-hairline: color-mix(in srgb, var(--color-ivory) 11%, transparent);
+  --color-hairline-strong: color-mix(in srgb, var(--color-ivory) 20%, transparent);
+
+  /* Radios redondeados — se acabaron las esquinas rectas */
+  --radius-card: 1.5rem;
+  --radius-lg: 1rem;
+  --radius-pill: 999px;
 }
 
 /* Etiquetas de sistema: 11px, tracking amplio, mayúsculas. Usar `.label`. */
@@ -78,7 +93,7 @@
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   scroll-behavior: smooth;
 }
 
@@ -89,11 +104,28 @@
 }
 
 body {
-  background: var(--color-ivory);
-  color: var(--color-ink);
+  background: var(--color-deep-900);
+  color: var(--color-ivory);
   font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  caret-color: var(--color-lime);
+}
+
+/* Tarjeta glass: superficie translúcida con desenfoque y borde de luz. */
+@utility glass {
+  background: var(--color-glass);
+  backdrop-filter: blur(18px) saturate(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  border: 1px solid var(--color-hairline);
+}
+
+/* Blob de luz ambiental: el resplandor que respira detrás del contenido. */
+@utility glow {
+  border-radius: 999px;
+  filter: blur(70px);
+  opacity: 0.5;
 }
 
 ::selection {
@@ -101,30 +133,136 @@ body {
   color: var(--color-ink);
 }
 
+/* Cifras alineadas en cualquier dato tabular (metas, hechos, índices). */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Scrollbar tematizada: la superficie del navegador también lleva la marca. */
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-deep) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-ivory) 22%, transparent);
+    border: 2px solid var(--color-deep-900);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--color-lime) 60%, transparent);
+  }
+}
+
 :focus-visible {
   outline: 2px solid var(--color-lime);
   outline-offset: 3px;
 }
 
-/* Revelado al hacer scroll con timelines nativos: cero JS, cero dependencias.
-   El @supports garantiza que sin soporte el contenido nace visible. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal {
-      animation: reveal-in linear both;
-      animation-timeline: view();
-      animation-range: entry 5% cover 22%;
-    }
-  }
-}
+/* ---------------------------------------------------------------------------
+   MOVIMIENTO — CSS nativo, cero JS, cero dependencias.
+   Todo cuelga de animation-timeline: view() y degrada a contenido visible
+   donde no haya soporte. Nada se mueve si el sistema pide menos movimiento.
+--------------------------------------------------------------------------- */
 
 @keyframes reveal-in {
   from {
     opacity: 0;
-    transform: translateY(1.25rem);
+    transform: translateY(1.75rem) scale(0.965);
+    filter: blur(10px);
   }
   to {
     opacity: 1;
     transform: none;
+    filter: blur(0);
+  }
+}
+
+/* La luz ambiental respira: escala y opacidad, muy lento. */
+@keyframes breathe {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.4;
+  }
+  to {
+    transform: translate3d(1.5rem, -1rem, 0) scale(1.15);
+    opacity: 0.62;
+  }
+}
+
+/* Deriva lenta del símbolo: solo traslación (el símbolo no se rota ni inclina,
+   regla de marca). Ida y vuelta, imperceptible, para que el fondo respire. */
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-1.4rem, 1rem, 0);
+  }
+}
+
+/* Parallax de scroll: el telón se mueve más lento que el contenido. */
+@keyframes parallax-rise {
+  from {
+    transform: translateY(6%);
+  }
+  to {
+    transform: translateY(-6%);
+  }
+}
+
+/* Trazo lima que se dibuja al entrar en vista. */
+@keyframes draw-rule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-in var(--ease-expo) both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 22%;
+    }
+
+    /* Hijos que entran escalonados. El retardo lo pone --i en el marcado. */
+    .reveal-stagger > * {
+      animation: reveal-in var(--ease-expo) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 18%;
+      animation-delay: calc(var(--i, 0) * 60ms);
+    }
+
+    .parallax {
+      animation: parallax-rise linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+
+    .draw-rule {
+      transform-origin: left center;
+      animation: draw-rule var(--ease-expo) both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 24%;
+    }
+  }
+
+  /* La deriva no depende del scroll: es un latido continuo del fondo. */
+  .drift {
+    animation: drift 16s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  }
+
+  /* Los blobs de luz respiran, cada uno a su ritmo (delay inline). */
+  .breathe {
+    animation: breathe 14s ease-in-out infinite alternate;
   }
 }
