@@ -224,7 +224,7 @@ export default function Marca() {
               <span className="label text-deep/60">Director</span>
             </div>
             <div className="flex flex-col gap-1 text-[10px] text-deep/75">
-              <span>{site.email}</span>
+              <span>{site.emails[0]}</span>
               <span>{site.domain}</span>
             </div>
             <div className="flex items-center gap-2.5">

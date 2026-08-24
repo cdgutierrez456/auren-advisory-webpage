@@ -25,12 +25,15 @@ export function Contacto() {
             >
               {site.whatsappDisplay}
             </a>
-            <a
-              href={`mailto:${site.email}`}
-              className="w-fit border-b border-rule-invert pb-1 text-ivory/70 transition-colors hover:border-lime hover:text-ivory"
-            >
-              {site.email}
-            </a>
+            {site.emails.map((email) => (
+              <a
+                key={email}
+                href={`mailto:${email}`}
+                className="w-fit border-b border-rule-invert pb-1 text-ivory/70 transition-colors hover:border-lime hover:text-ivory"
+              >
+                {email}
+              </a>
+            ))}
           </div>
         </div>
         <div className="md:pt-4">

@@ -67,12 +67,15 @@ export function Footer() {
             >
               {site.whatsappDisplay}
             </a>
-            <a
-              href={`mailto:${site.email}`}
-              className="text-sm text-muted-invert transition-colors hover:text-ivory"
-            >
-              {site.email}
-            </a>
+            {site.emails.map((email) => (
+              <a
+                key={email}
+                href={`mailto:${email}`}
+                className="text-sm text-muted-invert transition-colors hover:text-ivory"
+              >
+                {email}
+              </a>
+            ))}
           </div>
         </div>
       </div>
