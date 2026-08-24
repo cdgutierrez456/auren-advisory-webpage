@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Arrow, CtaBand, Headline, PageHero, Section, SectionHead } from "@/components/ui";
 import { method, phases, serviceBySlug } from "@/content/site";
 
-export const metadata: Metadata = {
-  title: "Enfoque",
-  description:
-    "Ver, entender y transformar. El orden mínimo para no equivocarse: mirar antes de opinar, entender antes de proponer, medir antes de celebrar.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Enfoque",
+  "Ver, entender y transformar. El orden mínimo para no equivocarse: mirar antes de opinar, entender antes de proponer, medir antes de celebrar.",
+  "/enfoque",
+);
 
 export default function Enfoque() {
   return (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Mark } from "@/components/logo";
@@ -14,16 +15,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const service = serviceBySlug((await params).slug);
   if (!service) return {};
-  return {
-    title: `${service.name} — ${service.kind}`,
-    description: service.summary,
-    openGraph: {
-      title: `${service.name} — ${site.name}`,
-      description: service.summary,
-      url: `/servicios/${service.slug}`,
-      type: "article",
-    },
-  };
+  return pageMetadata(
+    `${service.name} — ${service.kind}`,
+    service.summary,
+    `/servicios/${service.slug}`,
+  );
 }
 
 export default async function ServicioDetalle({ params }: Params) {

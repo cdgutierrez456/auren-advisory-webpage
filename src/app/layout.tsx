@@ -26,6 +26,7 @@ export const metadata: Metadata = {
     template: `%s — ${site.name}`,
   },
   description: site.description,
+  alternates: { canonical: "/" },
   openGraph: {
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
@@ -43,6 +44,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
       <body>
+        {/* Organization: le dice al buscador qué entidad hay detrás del dominio. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: site.name,
+              url: `https://${site.domain}`,
+              logo: `https://${site.domain}/icon.svg`,
+              description: site.description,
+              slogan: site.tagline,
+              foundingDate: "2026",
+              email: site.emails,
+              telephone: `+${site.whatsapp}`,
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Manizales",
+                addressCountry: "CO",
+              },
+            }),
+          }}
+        />
         <a
           href="#contenido"
           className="label sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-6 focus:z-100 focus:bg-deep focus:px-5 focus:py-3 focus:text-ivory"

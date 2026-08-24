@@ -25,6 +25,8 @@ npm start
 | Historia de la firma | `about` en `site.ts` → `src/app/nosotros/page.tsx` |
 | El manual de marca público | `src/app/marca/page.tsx` |
 | Validación y mensaje de contacto | `src/lib/lead.ts` |
+| Título, descripción y canónica de una página | `pageMetadata()` en `src/lib/seo.ts` |
+| La imagen que se ve al compartir | `src/app/opengraph-image.tsx` |
 | Número de WhatsApp, correo, dominio | `site` en `src/content/site.ts` |
 
 ### Rutas
@@ -41,6 +43,12 @@ se duplica — home y página interior leen del mismo array en `site.ts`.
 - **Anclajes de `/enfoque`**: se derivan de `phase.title` en minúscula
   (`#ver`, `#entender`, `#transformar`). Las secciones llevan `scroll-mt-20`
   para caer bajo la barra fija de 5rem — si cambia la altura del nav, cambia ahí.
+
+**SEO**: `sitemap.ts` y `robots.ts` se derivan de `services` y `site.domain` —
+un servicio nuevo entra solo. Toda página usa `pageMetadata(título, descripción,
+ruta)`: sin él Next hereda el `openGraph` del layout y la página se anuncia con
+el título de la home, sin canónica y sin imagen. La entidad de la firma
+(`Organization` en JSON-LD) vive en `layout.tsx` y lee de `site`.
 
 `npm test` cubre esas invariantes: slugs únicos y seguros, `next` válido, toda
 fase referencia servicios existentes y todo servicio vive en alguna fase.

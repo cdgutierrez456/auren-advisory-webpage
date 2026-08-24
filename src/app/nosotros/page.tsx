@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Mark } from "@/components/logo";
 import { Arrow, CtaBand, PageHero, Section, SectionHead } from "@/components/ui";
 import { about, principles, site } from "@/content/site";
 
-export const metadata: Metadata = {
-  title: "Nosotros",
-  description:
-    "Auren Advisory nació en Manizales en 2026, de la sociedad entre dos emprendedores que veían empresas capaces atrapadas en procesos manuales.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Nosotros",
+  "Auren Advisory nació en Manizales en 2026, de la sociedad entre dos emprendedores que veían empresas capaces atrapadas en procesos manuales.",
+  "/nosotros",
+);
 
 export default function NosotrosPage() {
   return (

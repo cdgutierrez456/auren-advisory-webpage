@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Logo, Mark } from "@/components/logo";
 import { Section, SectionHead } from "@/components/ui";
 import { site } from "@/content/site";
 
-export const metadata: Metadata = {
-  title: "Sistema de identidad",
-  description:
-    "Manual vivo de la marca Auren Advisory: símbolo El Vértice, versiones, paleta y tipografía.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Sistema de identidad",
+  "Manual vivo de la marca Auren Advisory: símbolo El Vértice, versiones, paleta y tipografía.",
+  "/marca",
+);
 
 const palette = [
   { name: "Auren Deep", hex: "#12343B", role: "Base institucional" },

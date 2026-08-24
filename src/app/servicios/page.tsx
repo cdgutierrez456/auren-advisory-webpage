@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Mark } from "@/components/logo";
 import { Arrow, CtaBand, PageHero, Section } from "@/components/ui";
 import { phases, services } from "@/content/site";
 
-export const metadata: Metadata = {
-  title: "Servicios",
-  description:
-    "Ocho servicios que comparten un solo método: diagnóstico, diseño, implementación, datos, automatización, visión artificial, software a medida y continuidad.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Servicios",
+  "Ocho servicios que comparten un solo método: diagnóstico, diseño, implementación, datos, automatización, visión artificial, software a medida y continuidad.",
+  "/servicios",
+);
 
 export default function Servicios() {
   return (
