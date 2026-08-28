@@ -23,6 +23,7 @@ export const nav = [
   { label: "Servicios", href: "/servicios" },
   { label: "Nosotros", href: "/nosotros" },
   { label: "Radiografía", href: "/radiografia" },
+  { label: "Demos", href: "/demos" },
 ] as const;
 
 export const hero = {

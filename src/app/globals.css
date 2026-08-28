@@ -43,6 +43,16 @@
   --spacing-section: clamp(6rem, 12vw, 11rem);
   --spacing-gutter: clamp(1.5rem, 5vw, 5rem);
 
+  /* Semáforo operativo (solo demos). El lima es marca, no estado: un tablero
+     de riesgo necesita rojo/ámbar/verde reales o no se lee. Cada estado lleva
+     además su palabra en pantalla, para daltonismo y videobeam malo. */
+  --color-alerta: #a4231c;
+  --color-alerta-suave: #fbe7e5;
+  --color-aviso: #7d5100;
+  --color-aviso-suave: #fbeed2;
+  --color-ok: #1c6142;
+  --color-ok-suave: #e4f0e9;
+
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
