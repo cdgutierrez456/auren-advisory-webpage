@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // ponytail: sin lastModified — no hay fechas de contenido que reflejar.
   return [
     { url: base, priority: 1 },
-    ...["/enfoque", "/servicios", "/nosotros", "/marca"].map((p) => ({
+    ...["/enfoque", "/servicios", "/radiografia", "/nosotros", "/marca"].map((p) => ({
       url: base + p,
       priority: 0.8,
     })),

@@ -25,6 +25,8 @@ npm start
 | Historia de la firma | `about` en `site.ts` → `src/app/nosotros/page.tsx` |
 | El manual de marca público | `src/app/marca/page.tsx` |
 | Validación y mensaje de contacto | `src/lib/lead.ts` |
+| Preguntas, ejes, bandas y textos de la Radiografía | `src/content/radiografia.ts` |
+| Cómo se puntúa la Radiografía | `src/lib/radiografia.ts` |
 | Título, descripción y canónica de una página | `pageMetadata()` en `src/lib/seo.ts` |
 | La imagen que se ve al compartir | `src/app/opengraph-image.tsx` |
 | Número de WhatsApp, correo, dominio | `site` en `src/content/site.ts` |
@@ -32,7 +34,7 @@ npm start
 ### Rutas
 
 `/` · `/enfoque` · `/servicios` · `/servicios/[slug]` (8, prerenderizadas) ·
-`/nosotros` · `/marca`
+`/radiografia` · `/nosotros` · `/marca`
 
 La home es un resumen: cada bloque enlaza a su página completa. El contenido no
 se duplica — home y página interior leen del mismo array en `site.ts`.
@@ -74,6 +76,28 @@ fase referencia servicios existentes y todo servicio vive en alguna fase.
   degradando a contenido visible donde no haya soporte. No añadir una librería
   de animación para esto.
 - Comentarios `ponytail:` marcan simplificaciones deliberadas y su techo.
+
+## Radiografía Auren
+
+Auto-diagnóstico de 12 preguntas en `/radiografia`. Es el lead magnet: regala
+criterio y termina invitando a la llamada de 20 minutos que abre el Auren
+Insight. **Nunca menciona precio.**
+
+- **Sin persistencia, a propósito.** El resultado vive en el estado de React y
+  muere al cerrar la pestaña. No hay red, ni backend, ni dato guardado sin que
+  la persona lo entregue — la página lo promete («sin registro»), así que
+  añadir analítica o guardado rompe esa promesa, no solo el código.
+- **Añadir o cambiar una pregunta**: una entrada en `questions`. El índice de
+  la opción ES su puntaje (0–3), por eso siempre son cuatro y van de menor a
+  mayor fuga. `axis` debe existir en `axes`.
+- **Los focos se ordenan por proporción** (`score / max`), no por puntos
+  crudos: hay ejes de dos preguntas (máx. 6) y de una (máx. 3), y el orden
+  crudo escondería siempre a los de una.
+- El puntaje parcial no se muestra: engañaría (pocas respondidas = puntaje
+  bajo = «base sólida»). Solo la barra de progreso, y el resultado al llegar a 12.
+
+`npm test` cubre el puntaje: bandas sin huecos en 0–36, respuestas corruptas
+descartadas, y que un eje de una pregunta pueda ganarle a uno de dos.
 
 ## Contacto
 
