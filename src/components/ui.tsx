@@ -1,5 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import type { Faq, Figure as FigureType } from "@/content/site";
+import { breadcrumb, JsonLd } from "@/lib/schema";
 
 /**
  * Primitivas compartidas. Todo lo que se repite en más de dos secciones vive
@@ -95,15 +98,18 @@ export function PageHero({
   eyebrow,
   title,
   lede,
+  /** false cuando arriba ya van migas de pan, que traen su propio aire. */
+  pad = true,
   children,
 }: {
   eyebrow: string;
   title: ReactNode;
   lede?: string;
+  pad?: boolean;
   children?: ReactNode;
 }) {
   return (
-    <section className="bg-ivory pt-32 md:pt-40">
+    <section className={`bg-ivory ${pad ? "pt-32 md:pt-40" : "pt-12 md:pt-14"}`}>
       <div className="shell flex flex-col gap-10 border-b border-rule pb-14 md:pb-20">
         <div className="flex items-center gap-4">
           <span className="h-0.5 w-8 bg-lime" />
@@ -157,5 +163,95 @@ export function Arrow({ className = "" }: { className?: string }) {
     >
       <path d="M1 10L10 1M10 1H2.5M10 1V8.5" stroke="currentColor" strokeWidth="1.4" />
     </svg>
+  );
+}
+
+/**
+ * Migas de pan: el enlace visible y el JSON-LD salen del mismo array, para que
+ * no se puedan desincronizar. `trail` no incluye «Inicio»: se pone solo.
+ */
+export function Breadcrumbs({ trail }: { trail: readonly { name: string; path: string }[] }) {
+  const items = [{ name: "Inicio", path: "/" }, ...trail];
+  return (
+    <>
+      <JsonLd data={breadcrumb(trail)} />
+      <nav aria-label="Ruta de navegación" className="shell pt-24 md:pt-28">
+        <ol className="label flex flex-wrap items-center gap-x-3 gap-y-2 text-deep/45">
+          {items.map((item, i) => {
+            const last = i === items.length - 1;
+            return (
+              <li key={item.path} className="flex items-center gap-3">
+                {last ? (
+                  <span aria-current="page" className="text-deep/70">
+                    {item.name}
+                  </span>
+                ) : (
+                  <>
+                    <Link href={item.path} className="transition-colors hover:text-deep">
+                      {item.name}
+                    </Link>
+                    <span aria-hidden className="h-px w-3 bg-deep/20" />
+                  </>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    </>
+  );
+}
+
+/**
+ * Preguntas frecuentes. Abiertas siempre: son la respuesta a una búsqueda, no
+ * un acordeón que esconde el texto por el que la persona llegó. El JSON-LD de
+ * FAQPage lo pone la página, que es quien sabe si es la única de la ruta.
+ */
+export function FaqList({ faqs, invert = false }: { faqs: readonly Faq[]; invert?: boolean }) {
+  return (
+    <dl className={`grid gap-px ${invert ? "bg-rule-invert" : "bg-rule"} md:grid-cols-2`}>
+      {faqs.map((f) => (
+        <div
+          key={f.q}
+          className={`flex flex-col gap-4 ${invert ? "bg-ink" : "bg-ivory"} py-8 pr-8 md:pr-12`}
+        >
+          <dt className={`text-lg leading-snug text-balance ${invert ? "text-ivory" : "text-deep"}`}>
+            {f.q}
+          </dt>
+          <dd
+            className={`text-pretty text-sm leading-relaxed ${
+              invert ? "text-ivory/70" : "text-deep/70"
+            }`}
+          >
+            {f.a}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+/**
+ * Imagen editorial. Se omite mientras el archivo no exista, que es el estado
+ * de casi todo el sitio hoy: ver IMAGENES.md para las especificaciones y el
+ * texto alternativo de cada una.
+ */
+export function Figura({ figure, priority = false }: { figure?: FigureType; priority?: boolean }) {
+  if (!figure) return null;
+  return (
+    <figure className="flex flex-col gap-3">
+      <Image
+        src={figure.src}
+        alt={figure.alt}
+        width={figure.width}
+        height={figure.height}
+        priority={priority}
+        sizes="(max-width: 768px) 100vw, 60vw"
+        className="h-auto w-full border border-rule object-cover"
+      />
+      {figure.caption ? (
+        <figcaption className="text-xs leading-relaxed text-deep/50">{figure.caption}</figcaption>
+      ) : null}
+    </figure>
   );
 }

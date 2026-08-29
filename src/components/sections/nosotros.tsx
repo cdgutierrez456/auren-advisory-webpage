@@ -5,7 +5,7 @@ import { about } from "@/content/site";
 export function Nosotros() {
   return (
     <Section tone="deep">
-      <SectionHead index="04" label={about.eyebrow} invert />
+      <SectionHead index="05" label={about.eyebrow} invert />
 
       <div className="grid gap-14 md:grid-cols-[1.2fr_1fr] md:gap-24">
         <div className="reveal flex flex-col gap-8">

@@ -13,7 +13,7 @@ export function Contacto() {
       />
       <div className="shell relative grid gap-16 md:grid-cols-[1fr_1.15fr] md:gap-24">
         <div className="flex flex-col gap-8">
-          <SectionHead index="05" label="Contacto" invert />
+          <SectionHead index="07" label="Contacto" invert />
           <h2 className="text-headline font-normal text-balance">{contact.title}</h2>
           <p className="text-pretty leading-relaxed text-muted-invert">{contact.lede}</p>
           <div className="mt-2 flex flex-col items-start gap-4">

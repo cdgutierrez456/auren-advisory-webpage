@@ -28,13 +28,18 @@ npm start
 | Preguntas, ejes, bandas y textos de la Radiografía | `src/content/radiografia.ts` |
 | Cómo se puntúa la Radiografía | `src/lib/radiografia.ts` |
 | Título, descripción y canónica de una página | `pageMetadata()` en `src/lib/seo.ts` |
+| Datos estructurados (JSON-LD) de cualquier tipo | `src/lib/schema.tsx` |
+| Publicar un artículo; editar uno | `posts` en `src/content/recursos.ts` |
+| Sectores y preguntas frecuentes de la home | `sectors` y `homeFaqs` en `site.ts` |
+| Pasos, industrias, métricas o preguntas de un servicio | la entrada en `services` |
 | La imagen que se ve al compartir | `src/app/opengraph-image.tsx` |
 | Número de WhatsApp, correo, dominio | `site` en `src/content/site.ts` |
 
 ### Rutas
 
 `/` · `/enfoque` · `/servicios` · `/servicios/[slug]` (8, prerenderizadas) ·
-`/radiografia` · `/nosotros` · `/marca`
+`/recursos` · `/recursos/[slug]` · `/radiografia` · `/nosotros` · `/marca` ·
+`/demos/*` (en `noindex`, fuera del sitemap)
 
 La home es un resumen: cada bloque enlaza a su página completa. El contenido no
 se duplica — home y página interior leen del mismo array en `site.ts`.
@@ -46,14 +51,39 @@ se duplica — home y página interior leen del mismo array en `site.ts`.
   (`#ver`, `#entender`, `#transformar`). Las secciones llevan `scroll-mt-20`
   para caer bajo la barra fija de 5rem — si cambia la altura del nav, cambia ahí.
 
-**SEO**: `sitemap.ts` y `robots.ts` se derivan de `services` y `site.domain` —
-un servicio nuevo entra solo. Toda página usa `pageMetadata(título, descripción,
+- **Publicar un artículo**: una entrada en `posts` (`src/content/recursos.ts`).
+  La ruta, el listado, el sitemap, el JSON-LD de `Article`, las migas y los
+  enlaces desde cada servicio salen solos. `services` y `related` deben existir.
+
+**SEO** (ver `SEO.md` para el porqué de cada decisión): `sitemap.ts` y
+`robots.ts` se derivan de `services`, `posts` y `site.domain` — un servicio o un
+artículo nuevo entra solo. Toda página usa `pageMetadata(título, descripción,
 ruta)`: sin él Next hereda el `openGraph` del layout y la página se anuncia con
-el título de la home, sin canónica y sin imagen. La entidad de la firma
-(`Organization` en JSON-LD) vive en `layout.tsx` y lee de `site`.
+el título de la home, sin canónica y sin imagen.
+
+- Todo el JSON-LD vive en `src/lib/schema.tsx`. La firma se declara **una sola
+  vez** en `layout.tsx` con un `@id`; `Service`, `Article` y `FAQPage` la
+  referencian con ese id en vez de repetir el bloque. Repetirlo le daría al
+  buscador varias entidades parecidas en lugar de una con más señales.
+- Un `<title>` compuesto empieza por la búsqueda y termina por la marca: el
+  buscador corta por la derecha. Máx. 75 caracteres con el sufijo del template.
+- Nada marcado como `FAQPage` puede estar oculto: `FaqList` renderiza las
+  respuestas abiertas a propósito, no en un acordeón.
+- Todo H1 dice a qué se dedica la página, no solo el eslogan. El patrón es
+  nombre o frase de marca + línea descriptiva dentro del mismo `<h1>`.
+- `next.config.ts` redirige `www` al dominio desnudo con 301. Esa regla la
+  ejecuta el servidor de Next: bajo un CDN estático hay que replicarla ahí.
 
 `npm test` cubre esas invariantes: slugs únicos y seguros, `next` válido, toda
-fase referencia servicios existentes y todo servicio vive en alguna fase.
+fase referencia servicios existentes y todo servicio vive en alguna fase; y del
+lado SEO, que todo servicio traiga pasos, sectores, métricas y preguntas, que
+los títulos y descripciones quepan, que las preguntas tengan respuesta de
+verdad y que cada artículo pase de 900 palabras y enlace a servicios que
+existen.
+
+**Imágenes**: el sitio no tiene ninguna todavía. El campo `image` es opcional en
+servicios, artículos y `about`; mientras no exista, `Figura` no renderiza nada.
+Las especificaciones, rutas y textos alternativos están en `IMAGENES.md`.
 
 ## Reglas de marca (no son decorativas — vienen del brand brief)
 

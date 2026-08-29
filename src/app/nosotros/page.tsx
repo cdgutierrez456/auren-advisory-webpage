@@ -2,11 +2,19 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Mark } from "@/components/logo";
-import { Arrow, CtaBand, PageHero, Section, SectionHead } from "@/components/ui";
+import {
+  Arrow,
+  Breadcrumbs,
+  CtaBand,
+  Figura,
+  PageHero,
+  Section,
+  SectionHead,
+} from "@/components/ui";
 import { about, principles, site } from "@/content/site";
 
 export const metadata: Metadata = pageMetadata(
-  "Nosotros",
+  "Consultora de transformación digital en Manizales",
   "Auren Advisory nació en Manizales en 2026, de la sociedad entre dos emprendedores que veían empresas capaces atrapadas en procesos manuales.",
   "/nosotros",
 );
@@ -14,7 +22,21 @@ export const metadata: Metadata = pageMetadata(
 export default function NosotrosPage() {
   return (
     <>
-      <PageHero eyebrow={about.eyebrow} title={about.title} lede={about.lede} />
+      <Breadcrumbs trail={[{ name: "Nosotros", path: "/nosotros" }]} />
+
+      <PageHero
+        eyebrow={about.eyebrow}
+        pad={false}
+        title={
+          <>
+            <span className="block">{about.title}</span>
+            <span className="mt-7 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-deep/70 md:text-2xl">
+              {about.headline}
+            </span>
+          </>
+        }
+        lede={about.lede}
+      />
 
       {/* Origen */}
       <Section tone="paper">
@@ -37,6 +59,7 @@ export default function NosotrosPage() {
                 {p}
               </p>
             ))}
+            <Figura figure={about.photo} />
           </div>
         </div>
       </Section>

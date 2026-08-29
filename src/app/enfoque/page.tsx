@@ -1,19 +1,41 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import { Arrow, CtaBand, Headline, PageHero, Section, SectionHead } from "@/components/ui";
+import {
+  Arrow,
+  Breadcrumbs,
+  CtaBand,
+  Headline,
+  PageHero,
+  Section,
+  SectionHead,
+} from "@/components/ui";
 import { method, phases, serviceBySlug } from "@/content/site";
 
 export const metadata: Metadata = pageMetadata(
-  "Enfoque",
-  "Ver, entender y transformar. El orden mínimo para no equivocarse: mirar antes de opinar, entender antes de proponer, medir antes de celebrar.",
+  "Metodología de transformación empresarial",
+  "Ver, entender y transformar: cómo diagnosticamos una operación, cuantificamos la fricción y decidimos qué tecnología implementar, en ese orden.",
   "/enfoque",
 );
 
 export default function Enfoque() {
   return (
     <>
-      <PageHero eyebrow={method.eyebrow} title={method.title} lede={method.lede}>
+      <Breadcrumbs trail={[{ name: "Enfoque", path: "/enfoque" }]} />
+
+      <PageHero
+        eyebrow={method.eyebrow}
+        pad={false}
+        title={
+          <>
+            <span className="block">{method.title}</span>
+            <span className="mt-7 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-deep/70 md:text-2xl">
+              {method.headline}
+            </span>
+          </>
+        }
+        lede={method.lede}
+      >
         {/* Índice del recorrido: se ve de una la secuencia completa */}
         <ol className="mt-4 grid gap-px border-t border-rule sm:grid-cols-3">
           {phases.map((phase) => (

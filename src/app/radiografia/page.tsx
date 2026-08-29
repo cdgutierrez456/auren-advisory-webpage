@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { RadiografiaForm } from "@/components/radiografia-form";
-import { CtaBand, PageHero, Section } from "@/components/ui";
+import { Breadcrumbs, CtaBand, PageHero, Section } from "@/components/ui";
 import { radiografia } from "@/content/radiografia";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata(
-  "Radiografía Auren",
+  "Autodiagnóstico de procesos empresariales",
   "Auto-diagnóstico gratuito de 12 preguntas: descubra en 3 minutos dónde su empresa pierde tiempo y dinero, y qué conviene transformar primero.",
   "/radiografia",
 );
@@ -13,8 +13,11 @@ export const metadata: Metadata = pageMetadata(
 export default function Radiografia() {
   return (
     <>
+      <Breadcrumbs trail={[{ name: "Radiografía", path: "/radiografia" }]} />
+
       <PageHero
         eyebrow={radiografia.eyebrow}
+        pad={false}
         title={radiografia.title}
         lede={radiografia.lede}
       >

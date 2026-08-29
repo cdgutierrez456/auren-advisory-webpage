@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
 import { site } from "@/content/site";
+import { JsonLd, organization, website } from "@/lib/schema";
 import "./globals.css";
 
 // Grotesk contemporánea (referencia: Söhne / Neue Haas). Serif solo editorial.
@@ -22,13 +23,13 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL(`https://${site.domain}`),
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: `${site.name} — Transformación empresarial y automatización`,
     template: `%s — ${site.name}`,
   },
   description: site.description,
   alternates: { canonical: "/" },
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} — Transformación empresarial en Colombia`,
     description: site.description,
     url: "/",
     siteName: site.name,
@@ -44,29 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
       <body>
-        {/* Organization: le dice al buscador qué entidad hay detrás del dominio. */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: site.name,
-              url: `https://${site.domain}`,
-              logo: `https://${site.domain}/icon.svg`,
-              description: site.description,
-              slogan: site.tagline,
-              foundingDate: "2026",
-              email: site.emails,
-              telephone: `+${site.whatsapp}`,
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Manizales",
-                addressCountry: "CO",
-              },
-            }),
-          }}
-        />
+        {/* La firma y el sitio, declarados una vez. El resto de páginas los
+            referencian por @id desde `lib/schema`. */}
+        <JsonLd data={organization()} />
+        <JsonLd data={website()} />
         <a
           href="#contenido"
           className="label sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-6 focus:z-100 focus:bg-deep focus:px-5 focus:py-3 focus:text-ivory"

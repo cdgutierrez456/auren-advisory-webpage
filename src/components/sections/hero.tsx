@@ -24,12 +24,20 @@ export function Hero() {
             <span className="label text-deep/60">{hero.eyebrow}</span>
           </div>
 
-          <h1 className="text-display font-normal">
-            {hero.title.map((word) => (
-              <span key={word} className="block">
-                {word}
-              </span>
-            ))}
+          {/* El eslogan se queda del tamaño que le corresponde, pero el H1
+              incluye la línea que dice a qué se dedica la firma: sin ella, ni
+              el buscador ni quien llega de un enlace saben qué se vende. */}
+          <h1 className="font-normal">
+            <span className="text-display block text-deep">
+              {hero.title.map((word) => (
+                <span key={word} className="block">
+                  {word}
+                </span>
+              ))}
+            </span>
+            <span className="mt-9 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-deep/70 md:text-2xl">
+              {hero.titleSub}
+            </span>
           </h1>
 
           <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
