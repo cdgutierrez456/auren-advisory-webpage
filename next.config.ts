@@ -1,26 +1,17 @@
 import type { NextConfig } from "next";
-import { site } from "./src/content/site";
 
-const nextConfig: NextConfig = {
-  /**
-   * El sitio responde en www y sin www, pero la canónica y el sitemap apuntan
-   * al dominio desnudo. Sin este 301 el buscador trata las dos versiones como
-   * sitios distintos y reparte la autoridad entre ambos.
-   *
-   * ponytail: esto solo corre si el sitio se sirve con Node o en Vercel. Con
-   * `output: "export"` o detrás de un CDN estático hay que replicar la regla
-   * en el hosting — ver SEO.md.
-   */
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: `www.${site.domain}` }],
-        destination: `https://${site.domain}/:path*`,
-        permanent: true,
-      },
-    ];
-  },
-};
+/**
+ * Sin `redirects()` a propósito.
+ *
+ * La redirección entre www y el dominio desnudo la resuelve Vercel en el
+ * borde, y ponerla también aquí ya causó un bucle: Vercel mandaba el ápice a
+ * www y esta regla mandaba www al ápice (ERR_TOO_MANY_REDIRECTS).
+ *
+ * Si alguna vez el sitio deja de servirse en Vercel, la regla va aquí — pero
+ * primero hay que confirmar hacia dónde redirige el hosting. La dirección
+ * correcta es la del dominio desnudo, que es la que usan `site.domain`, la
+ * canónica de cada página y el sitemap. Ver SEO.md.
+ */
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

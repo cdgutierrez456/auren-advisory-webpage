@@ -71,8 +71,10 @@ el título de la home, sin canónica y sin imagen.
   respuestas abiertas a propósito, no en un acordeón.
 - Todo H1 dice a qué se dedica la página, no solo el eslogan. El patrón es
   nombre o frase de marca + línea descriptiva dentro del mismo `<h1>`.
-- `next.config.ts` redirige `www` al dominio desnudo con 301. Esa regla la
-  ejecuta el servidor de Next: bajo un CDN estático hay que replicarla ahí.
+- La redirección entre `www` y el dominio desnudo la resuelve **Vercel**, no
+  `next.config.ts`. Poner la regla en los dos lados produce un bucle
+  (`ERR_TOO_MANY_REDIRECTS`) — ya pasó una vez. Antes de añadirla aquí hay que
+  confirmar hacia dónde redirige el hosting. Ver SEO.md.
 
 `npm test` cubre esas invariantes: slugs únicos y seguros, `next` válido, toda
 fase referencia servicios existentes y todo servicio vive en alguna fase; y del

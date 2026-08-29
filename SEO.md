@@ -6,30 +6,49 @@ al final está lo que no se hizo, con la razón.
 
 ---
 
-## 1. Canónica www vs no-www — **resuelto en código, falta confirmar en el hosting**
+## 1. Canónica www vs no-www — **la decisión es de Vercel, no del código**
 
-`next.config.ts` redirige con **301 permanente** cualquier ruta de
-`www.aurenadv.com` al dominio desnudo, que es a donde ya apuntaban la canónica
-y el sitemap.
+La auditoría lo reportó como «falta el 301». En realidad el 301 ya existía: es
+Vercel quien redirige `aurenadv.com` → **308** → `www.aurenadv.com`, porque
+`www` está marcado como dominio de producción. Lo que falla es la dirección:
+apunta al revés de lo que dicen `site.domain`, la canónica de cada página y el
+sitemap, que usan el dominio desnudo.
 
-```ts
-has: [{ type: "host", value: "www.aurenadv.com" }] → https://aurenadv.com/:path*
+> **Aviso.** Añadir la regla inversa en `next.config.ts` produce un bucle
+> (`ERR_TOO_MANY_REDIRECTS`): Vercel manda el ápice a www y Next manda www al
+> ápice. Ya pasó. `next.config.ts` quedó sin `redirects()` a propósito y con el
+> comentario que lo explica.
+
+**Arreglo, en Vercel → Settings → Domains** (dos minutos, sin desplegar):
+
+1. En `aurenadv.com` → **Edit** → quitar la redirección a `www.aurenadv.com` y
+   dejarlo servir producción directamente.
+2. En `www.aurenadv.com` → **Edit** → **Redirect to** `aurenadv.com`, con
+   **Permanent (308)**.
+
+Queda así: `www.aurenadv.com` → 308 → `aurenadv.com`, en la misma dirección que
+la canónica y el sitemap. El 308 conserva el método y pasa autoridad igual que
+un 301; Google los trata de la misma forma.
+
+Comprobación:
+
+```bash
+curl -sI https://www.aurenadv.com/servicios | grep -i "^HTTP\|^location"
+# esperado: 308 · location: https://aurenadv.com/servicios
+curl -sI https://aurenadv.com/servicios | grep -i "^HTTP"
+# esperado: 200, sin redirección
 ```
 
-> **Acción pendiente suya.** Esa regla la ejecuta el servidor de Next. Si el
-> sitio se sirve en Vercel o con `npm start`, ya funciona. Si está detrás de un
-> CDN estático (Netlify sin adaptador, S3 + CloudFront, cPanel), hay que
-> replicarla allá: la petición nunca llega a Next.
->
-> Comprobación, una vez desplegado:
-> ```bash
-> curl -sI https://www.aurenadv.com/servicios | head -3
-> # esperado: HTTP/2 301 · location: https://aurenadv.com/servicios
-> ```
->
-> Y en Search Console: mantenga la propiedad de dominio, y si tiene una
-> propiedad de prefijo de URL con `www`, déjela para vigilar que las
-> impresiones migren.
+**La alternativa** es quedarse con `www` como dominio canónico, dejando Vercel
+como está. Es igual de válido técnicamente, pero entonces hay que cambiar
+`site.domain` a `www.aurenadv.com` en `src/content/site.ts` —de ahí salen las
+canónicas, el sitemap, el JSON-LD y `metadataBase`— y volver a enviar el
+sitemap. Se recomienda el dominio desnudo porque es el que ya está en el
+sitemap enviado el 23 de agosto y el que acumula el poco historial que existe
+en Search Console.
+
+En Search Console, mantenga la propiedad de dominio: cubre las dos versiones y
+sobrevive a este cambio.
 
 ## 2. Contenido delgado — **resuelto**
 
