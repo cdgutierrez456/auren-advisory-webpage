@@ -9,8 +9,8 @@ import { homeFaqs } from "@/content/site";
 export function Preguntas() {
   return (
     <Section id="preguntas" tone="ivory">
-      <SectionHead index="06" label="Preguntas frecuentes">
-        <Headline className="text-deep">Lo que nos preguntan antes de la primera reunión.</Headline>
+      <SectionHead index="07" label="Preguntas frecuentes">
+        <Headline className="text-fg">Lo que nos preguntan antes de la primera reunión.</Headline>
       </SectionHead>
       <FaqList faqs={homeFaqs} />
     </Section>

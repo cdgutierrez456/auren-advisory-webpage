@@ -32,24 +32,24 @@ export function RadiografiaForm() {
 
   return (
     <>
-      <p className="mb-2 flex items-center gap-4 border-b border-rule pb-8 text-sm text-deep/55">
+      <p className="mb-2 flex items-center gap-4 border-b border-line pb-8 text-sm text-fg/55">
         <span aria-hidden className="h-0.5 w-6 shrink-0 bg-lime" />
         {radiografia.scale}
       </p>
 
-      <ol className="flex flex-col gap-px bg-rule">
+      <ol className="flex flex-col gap-3">
         {questions.map((q, i) => (
-          <li key={q.id} className="bg-ivory">
-            <fieldset className="flex flex-col gap-6 py-10 md:flex-row md:gap-12 md:py-12">
+          <li key={q.id} className="glass rounded-card px-7 py-8 md:px-9 md:py-9">
+            <fieldset className="flex flex-col gap-6 md:flex-row md:gap-12">
               <legend className="sr-only">{q.prompt}</legend>
               <div className="flex shrink-0 items-baseline gap-4 md:w-64 md:flex-col md:gap-3">
-                <span className="label text-deep/40">{String(i + 1).padStart(2, "0")}</span>
-                <span className="label text-deep/60">{axes[q.axis].name}</span>
+                <span className="label text-fg/40">{String(i + 1).padStart(2, "0")}</span>
+                <span className="label text-fg/55">{axes[q.axis].name}</span>
               </div>
               <div className="flex flex-1 flex-col gap-6">
                 <p
                   aria-hidden
-                  className="max-w-2xl text-balance text-xl leading-snug tracking-tight text-deep md:text-2xl"
+                  className="max-w-2xl text-balance text-xl leading-snug tracking-tight text-fg md:text-2xl"
                 >
                   {q.prompt}
                 </p>
@@ -100,10 +100,10 @@ function Option({
 }) {
   return (
     <label
-      className={`group flex cursor-pointer items-center gap-3 border px-4 py-3.5 transition-colors duration-200 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-deep ${
+      className={`group flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3.5 transition-colors duration-200 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-lime ${
         checked
-          ? "border-deep bg-deep text-ivory"
-          : "border-rule-strong text-deep/75 hover:border-deep hover:text-deep"
+          ? "border-lime/60 bg-lime/10 text-fg"
+          : "border-line-strong text-fg/75 hover:border-lime/40 hover:text-fg"
       }`}
     >
       <input
@@ -116,7 +116,7 @@ function Option({
       <span
         aria-hidden
         className={`w-5 shrink-0 text-center text-base font-medium tabular-nums transition-colors ${
-          checked ? "text-lime" : "text-deep/35 group-hover:text-deep/60"
+          checked ? "text-accent" : "text-fg/40 group-hover:text-fg/55"
         }`}
       >
         {score}
@@ -130,9 +130,9 @@ function Option({
 function Progress({ answered }: { answered: number }) {
   const total = questions.length;
   return (
-    <div className="sticky bottom-0 z-40 -mx-gutter mt-px border-t border-rule-invert bg-deep px-gutter py-4">
+    <div className="sticky bottom-0 z-40 -mx-gutter mt-4 border-t border-line bg-surface/80 px-gutter py-4 backdrop-blur-xl">
       <div className="flex items-center gap-5">
-        <span className="label shrink-0 text-ivory/60">
+        <span className="label shrink-0 text-fg/55">
           {answered} / {total}
         </span>
         <div
@@ -141,7 +141,7 @@ function Progress({ answered }: { answered: number }) {
           aria-valuenow={answered}
           aria-valuemin={0}
           aria-valuemax={total}
-          className="h-0.5 flex-1 bg-rule-invert"
+          className="h-0.5 flex-1 bg-line"
         >
           <div
             className="h-full bg-lime transition-[width] duration-500 ease-out"
@@ -155,13 +155,13 @@ function Progress({ answered }: { answered: number }) {
 
 function Pending({ answered, onReset }: { answered: number; onReset: () => void }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-6 border-t border-rule py-10">
-      <p role="status" className="text-pretty text-deep/60">
+    <div className="flex flex-wrap items-center justify-between gap-6 border-t border-line py-10">
+      <p role="status" className="text-pretty text-fg/55">
         {answered === 0
           ? radiografia.progress.pending
           : `Le faltan ${questions.length - answered} preguntas para ver su radiografía completa.`}
       </p>
-      {answered > 0 ? <ResetButton onReset={onReset} tone="light" /> : null}
+      {answered > 0 ? <ResetButton onReset={onReset} /> : null}
     </div>
   );
 }
@@ -176,46 +176,48 @@ function Result({
   const { result: copy } = radiografia;
 
   return (
-    <section className="-mx-gutter -mb-section mt-px bg-ink px-gutter py-16 text-ivory md:py-20">
+    <section className="-mx-gutter -mb-section mt-4 bg-surface-4 px-gutter py-16 text-fg md:py-20">
       <div className="flex items-baseline gap-5">
-        <span className="label text-lime">{copy.eyebrow}</span>
-        <span className="h-px flex-1 bg-rule-invert" />
+        <span className="label text-accent">{copy.eyebrow}</span>
+        <span className="h-px flex-1 bg-line" />
       </div>
 
       <div className="mt-12 grid gap-12 md:grid-cols-[auto_1fr] md:gap-20">
         <div className="flex items-baseline gap-2">
-          <span className="text-display font-normal leading-none">{result.total}</span>
-          <span className="label text-ivory/50">/ {result.max}</span>
+          <span className="tnum text-display font-normal leading-none text-accent [text-shadow:0_0_44px_rgba(200,241,105,0.45)]">
+            {result.total}
+          </span>
+          <span className="label text-fg/55">/ {result.max}</span>
         </div>
         <div className="flex flex-col gap-5">
           <h2 className="text-headline text-balance font-normal">{result.band.name}</h2>
-          <p className="font-serif text-2xl leading-snug text-balance text-ivory/90 md:text-3xl">
+          <p className="font-serif text-2xl leading-snug text-balance text-fg/90 md:text-3xl">
             {result.band.verdict}
           </p>
-          <p className="max-w-xl text-pretty leading-relaxed text-muted-invert">
+          <p className="max-w-xl text-pretty leading-relaxed text-fg/60">
             {result.band.body}
           </p>
         </div>
       </div>
 
-      <div className="mt-16 border-t border-rule-invert pt-12">
-        <h3 className="label text-ivory/50">{copy.focusTitle}</h3>
+      <div className="mt-16 border-t border-line pt-12">
+        <h3 className="label text-fg/55">{copy.focusTitle}</h3>
         {result.focuses.length === 0 ? (
-          <p className="mt-6 max-w-xl text-pretty leading-relaxed text-muted-invert">
+          <p className="mt-6 max-w-xl text-pretty leading-relaxed text-fg/60">
             {copy.focusNone}
           </p>
         ) : (
-          <ol className="mt-8 grid gap-px bg-rule-invert md:grid-cols-3">
+          <ol className="mt-8 grid gap-4 md:grid-cols-3">
             {result.focuses.map((focus) => (
-              <li key={focus.id} className="flex flex-col gap-4 bg-ink pt-6 md:px-6 md:pt-0 md:first:pl-0">
+              <li key={focus.id} className="glass flex flex-col gap-4 rounded-card p-7">
                 <div className="flex items-center gap-3">
                   <span className="h-0.5 w-6 bg-lime" />
-                  <span className="label text-ivory/50">
+                  <span className="label text-fg/55">
                     {focus.score} / {focus.max}
                   </span>
                 </div>
                 <p className="text-xl leading-tight tracking-tight">{focus.name}</p>
-                <p className="text-pretty text-sm leading-relaxed text-muted-invert">
+                <p className="text-pretty text-sm leading-relaxed text-fg/60">
                   {focus.gain}
                 </p>
               </li>
@@ -224,8 +226,8 @@ function Result({
         )}
       </div>
 
-      <div className="mt-16 flex flex-col gap-8 border-t border-rule-invert pt-12">
-        <p className="max-w-2xl text-pretty text-lede leading-relaxed text-ivory/85">
+      <div className="mt-16 flex flex-col gap-8 border-t border-line pt-12">
+        <p className="max-w-2xl text-pretty text-lede leading-relaxed text-fg/90">
           {copy.closing}
         </p>
         <div className="flex flex-wrap items-center gap-6">
@@ -233,25 +235,23 @@ function Result({
             href={callUrl(result)}
             target="_blank"
             rel="noopener noreferrer"
-            className="label inline-flex items-center gap-3 bg-lime px-8 py-4.5 text-ink transition-colors duration-300 hover:bg-ivory"
+            className="label inline-flex items-center gap-3 rounded-pill bg-lime px-8 py-4.5 text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-6px_var(--color-lime)] active:translate-y-0 active:scale-[0.97]"
           >
             {copy.cta} <Arrow />
           </a>
-          <ResetButton onReset={onReset} tone="dark" />
+          <ResetButton onReset={onReset} />
         </div>
       </div>
     </section>
   );
 }
 
-function ResetButton({ onReset, tone }: { onReset: () => void; tone: "light" | "dark" }) {
+function ResetButton({ onReset }: { onReset: () => void }) {
   return (
     <button
       type="button"
       onClick={onReset}
-      className={`label underline-offset-8 transition-colors duration-300 hover:underline ${
-        tone === "dark" ? "text-ivory/55 hover:text-ivory" : "text-deep/55 hover:text-deep"
-      }`}
+      className="label text-fg/55 underline-offset-8 transition-colors duration-300 hover:text-fg hover:underline"
     >
       {radiografia.result.reset}
     </button>

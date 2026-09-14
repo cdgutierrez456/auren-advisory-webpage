@@ -5,7 +5,7 @@ import { Arrow } from "@/components/ui";
 import { validateLead, whatsappUrl } from "@/lib/lead";
 
 const field =
-  "w-full border-b bg-transparent py-4 text-ivory outline-none transition-colors placeholder:text-ivory/30 focus:border-lime";
+  "w-full border-b bg-transparent py-4 text-fg outline-none transition-colors placeholder:text-fg/30 focus:border-lime";
 
 export function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -65,18 +65,18 @@ export function ContactForm() {
           maxLength={4000}
           placeholder="El proceso, el área o la fricción concreta que tiene hoy."
           aria-invalid={Boolean(errors.message)}
-          className={`${field} resize-none ${errors.message ? "border-lime" : "border-rule-invert"}`}
+          className={`${field} resize-none ${errors.message ? "border-lime" : "border-line"}`}
         />
       </label>
 
       <div className="flex flex-wrap items-center gap-6">
         <button
           type="submit"
-          className="label inline-flex items-center gap-3 bg-lime px-8 py-4.5 text-ink transition-colors duration-300 hover:bg-ivory"
+          className="label inline-flex items-center gap-3 rounded-pill bg-lime px-8 py-4.5 text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-6px_var(--color-lime)] active:translate-y-0 active:scale-[0.97]"
         >
           Enviar por WhatsApp <Arrow />
         </button>
-        <p role="status" className="max-w-xs text-pretty text-sm text-ivory/55">
+        <p role="status" className="max-w-xs text-pretty text-sm text-fg/55">
           {sent ? "Abrimos WhatsApp con su mensaje listo. Solo falta enviarlo." : null}
         </p>
       </div>
@@ -86,9 +86,9 @@ export function ContactForm() {
 
 function Legend({ text, error }: { text: string; error?: string }) {
   return (
-    <span className="label text-ivory/45">
+    <span className="label text-fg/45">
       {text}
-      {error ? <span className="ml-3 normal-case tracking-normal text-lime">{error}</span> : null}
+      {error ? <span className="ml-3 normal-case tracking-normal text-accent">{error}</span> : null}
     </span>
   );
 }
@@ -111,7 +111,7 @@ function Field({
       <input
         name={name}
         aria-invalid={Boolean(error)}
-        className={`${field} ${error ? "border-lime" : "border-rule-invert"}`}
+        className={`${field} ${error ? "border-lime" : "border-line"}`}
         {...props}
       />
       {optional ? <span className="sr-only">Opcional</span> : null}

@@ -99,7 +99,7 @@ export function VisionDemo({
     <section className="pt-14">
       <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
         <div>
-          <div className="relative overflow-hidden bg-ink">
+          <div className="relative overflow-hidden rounded-card bg-ink">
             <video
               ref={video}
               muted
@@ -122,10 +122,10 @@ export function VisionDemo({
 
             {estado !== "encendida" ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 p-10 text-center">
-                <p className="label text-ivory/50">
+                <p className="label text-fg/55">
                   {estado === "preparando" ? "Preparando…" : "Cámara apagada"}
                 </p>
-                <p className="max-w-md text-pretty text-sm leading-relaxed text-ivory/70">
+                <p className="max-w-md text-pretty text-sm leading-relaxed text-fg/75">
                   {mensaje ||
                     "El video se procesa en este equipo. No hay servidor al que enviar los fotogramas: no existe el endpoint."}
                 </p>
@@ -154,14 +154,14 @@ export function VisionDemo({
 
             {dispositivos.length > 1 ? (
               <label className="flex items-center gap-3">
-                <span className="label text-deep/45">Cámara</span>
+                <span className="label text-fg/40">Cámara</span>
                 <select
                   value={dispositivo}
                   onChange={(e) => {
                     setDispositivo(e.target.value);
                     if (estado === "encendida") apagar();
                   }}
-                  className="border-b border-rule-strong bg-transparent py-2 text-sm text-deep outline-none"
+                  className="border-b border-line-strong bg-transparent py-2 text-sm text-fg outline-none"
                 >
                   <option value="">Predeterminada</option>
                   {dispositivos.map((d) => (
@@ -175,19 +175,19 @@ export function VisionDemo({
           </div>
 
           {estado === "error" ? (
-            <p className="mt-5 border-l-2 border-alerta bg-alerta-suave p-5 text-sm leading-relaxed text-deep/80">
+            <p className="mt-5 rounded-lg border-l-2 border-alerta bg-alerta-suave p-5 text-sm leading-relaxed text-fg/90">
               {mensaje}
             </p>
           ) : null}
         </div>
 
         <div className="flex flex-col gap-10">
-          <div className="border-t-2 border-deep bg-paper p-8">
-            <p className="label text-deep/45">Lectura</p>
-            <p className="mt-5 break-all font-mono text-5xl leading-none text-deep">
+          <div className="glass rounded-card p-8">
+            <p className="label text-fg/40">Lectura</p>
+            <p className="mt-5 break-all font-mono text-5xl leading-none text-fg">
               {ultima?.valor || "—"}
             </p>
-            <p className="mt-5 text-sm text-deep/60">
+            <p className="mt-5 text-sm text-fg/55">
               {estado !== "encendida"
                 ? "Encienda la cámara para empezar."
                 : midiendo
@@ -197,14 +197,14 @@ export function VisionDemo({
           </div>
 
           {controles ? (
-            <div className="flex flex-col gap-7 border border-rule bg-ivory p-8">{controles}</div>
+            <div className="glass flex flex-col gap-7 rounded-card p-8">{controles}</div>
           ) : null}
 
           {children}
 
-          <div className="border-l-2 border-lime bg-paper p-6">
-            <p className="label text-deep/45">Regla de oro del modo cámara</p>
-            <p className="mt-3 text-pretty text-sm leading-relaxed text-deep/75">
+          <div className="glass rounded-card border-l-2 border-l-lime p-6">
+            <p className="label text-fg/40">Regla de oro del modo cámara</p>
+            <p className="mt-3 text-pretty text-sm leading-relaxed text-fg/75">
               Si la confianza está por debajo del umbral, la pantalla dice
               «acercando…» y no muestra ningún número. Un número equivocado
               destruye la credibilidad de toda la línea; un «todavía no puedo

@@ -34,7 +34,7 @@ export function SoloCliente({ children }: { children: ReactNode }) {
 
   if (!montado) {
     return (
-      <p className="label py-20 text-deep/40" role="status">
+      <p className="label py-20 text-fg/40" role="status">
         Cargando datos del demo…
       </p>
     );
@@ -50,31 +50,31 @@ export function DemoHeader({ slug, children }: { slug: string; children?: ReactN
   if (!demo) return null;
 
   return (
-    <header className="border-b border-rule pb-12">
+    <header className="border-b border-line pb-12">
       <div className="flex flex-wrap items-center gap-4">
         <Link
           href={`/servicios/${demo.servicio}`}
-          className="label bg-deep px-3.5 py-2 text-ivory transition-colors hover:bg-deep-700"
+          className="label rounded-pill bg-lime px-4 py-2 text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_-6px_var(--color-lime)]"
         >
           {demo.servicioNombre}
         </Link>
-        <span className="label text-deep/45">{demo.segmento}</span>
+        <span className="label text-fg/40">{demo.segmento}</span>
       </div>
 
-      <h1 className="mt-7 max-w-3xl text-balance text-4xl font-normal tracking-tight text-deep md:text-5xl">
+      <h1 className="mt-7 max-w-3xl text-balance text-4xl font-normal tracking-tight text-fg md:text-5xl">
         {demo.nombre}
       </h1>
-      <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-deep/70">
+      <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-fg/75">
         {demo.resumen}
       </p>
 
-      <div className="mt-10 grid gap-px bg-rule md:grid-cols-[1.15fr_1fr]">
-        <div className="bg-paper p-7">
-          <p className="label text-deep/45">Qué probar</p>
+      <div className="mt-10 grid gap-4 md:grid-cols-[1.15fr_1fr]">
+        <div className="glass rounded-card p-7">
+          <p className="label text-fg/40">Qué probar</p>
           <ol className="mt-5 flex flex-col gap-3">
             {demo.pasos.map((paso, i) => (
-              <li key={paso} className="flex gap-4 text-pretty leading-relaxed text-deep/80">
-                <span className="label mt-1 shrink-0 text-deep/35">
+              <li key={paso} className="flex gap-4 text-pretty leading-relaxed text-fg/90">
+                <span className="label mt-1 shrink-0 text-fg/40">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 {paso}
@@ -82,14 +82,14 @@ export function DemoHeader({ slug, children }: { slug: string; children?: ReactN
             ))}
           </ol>
         </div>
-        <div className="flex flex-col gap-6 bg-ivory p-7">
+        <div className="glass flex flex-col gap-6 rounded-card p-7">
           <div>
-            <p className="label text-deep/45">Por qué importa</p>
-            <p className="mt-4 text-pretty text-sm leading-relaxed text-deep/70">{demo.dolor}</p>
+            <p className="label text-fg/40">Por qué importa</p>
+            <p className="mt-4 text-pretty text-sm leading-relaxed text-fg/75">{demo.dolor}</p>
           </div>
-          <div className="border-t border-rule pt-5">
-            <p className="label text-deep/45">Hasta dónde llega el demo</p>
-            <p className="mt-4 text-pretty text-sm leading-relaxed text-deep/70">{demo.limite}</p>
+          <div className="border-t border-line pt-5">
+            <p className="label text-fg/40">Hasta dónde llega el demo</p>
+            <p className="mt-4 text-pretty text-sm leading-relaxed text-fg/75">{demo.limite}</p>
           </div>
         </div>
       </div>
@@ -107,14 +107,14 @@ const TONOS: Record<Tono, string> = {
   alerta: "bg-alerta-suave text-alerta",
   aviso: "bg-aviso-suave text-aviso",
   ok: "bg-ok-suave text-ok",
-  neutro: "bg-ivory text-deep/70",
+  neutro: "bg-fg/8 text-fg/75",
 };
 
 /** Estado como pastilla. Siempre lleva palabra, nunca solo color. */
 export function Pill({ tono = "neutro", children }: { tono?: Tono; children: ReactNode }) {
   return (
     <span
-      className={`label inline-flex items-center whitespace-nowrap px-2.5 py-1.5 ${TONOS[tono]}`}
+      className={`label inline-flex items-center whitespace-nowrap rounded-pill px-3 py-1.5 ${TONOS[tono]}`}
     >
       {children}
     </span>
@@ -134,12 +134,18 @@ export function Cifra({
   nota?: string;
 }) {
   const color =
-    tono === "alerta" ? "text-alerta" : tono === "aviso" ? "text-aviso" : tono === "ok" ? "text-ok" : "text-deep";
+    tono === "alerta"
+      ? "text-alerta"
+      : tono === "aviso"
+        ? "text-aviso"
+        : tono === "ok"
+          ? "text-ok"
+          : "text-fg";
   return (
-    <div className="flex flex-col gap-2 border-t border-rule pt-5">
+    <div className="flex flex-col gap-2 border-t border-line pt-5">
       <span className={`font-serif text-5xl leading-none ${color}`}>{valor}</span>
-      <span className="label text-deep/50">{etiqueta}</span>
-      {nota ? <span className="text-sm text-deep/55">{nota}</span> : null}
+      <span className="label text-fg/55">{etiqueta}</span>
+      {nota ? <span className="text-sm text-fg/55">{nota}</span> : null}
     </div>
   );
 }
@@ -149,9 +155,9 @@ export function Tabla({ head, children }: { head: readonly string[]; children: R
     <div className="overflow-x-auto">
       <table className="w-full min-w-[44rem] border-collapse text-left text-sm">
         <thead>
-          <tr className="border-b border-rule-strong">
+          <tr className="border-b border-line-strong">
             {head.map((h) => (
-              <th key={h} className="label whitespace-nowrap py-4 pr-6 font-medium text-deep/45">
+              <th key={h} className="label whitespace-nowrap py-4 pr-6 font-medium text-fg/40">
                 {h}
               </th>
             ))}
@@ -167,9 +173,9 @@ export function Fila({ children, onClick, activa = false }: { children: ReactNod
   return (
     <tr
       onClick={onClick}
-      className={`border-b border-rule align-middle ${
-        onClick ? "cursor-pointer transition-colors hover:bg-paper" : ""
-      } ${activa ? "bg-paper" : ""}`}
+      className={`border-b border-line align-middle ${
+        onClick ? "cursor-pointer transition-colors hover:bg-fg/5" : ""
+      } ${activa ? "bg-lime/10" : ""}`}
     >
       {children}
     </tr>
@@ -177,14 +183,14 @@ export function Fila({ children, onClick, activa = false }: { children: ReactNod
 }
 
 export function Celda({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <td className={`py-4 pr-6 text-deep/80 ${className}`}>{children}</td>;
+  return <td className={`py-4 pr-6 text-fg/90 ${className}`}>{children}</td>;
 }
 
 export function Aviso({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
-    <div className="border-l-2 border-lime bg-paper p-6">
-      <p className="label text-deep/45">{titulo}</p>
-      <p className="mt-3 text-pretty text-sm leading-relaxed text-deep/75">{children}</p>
+    <div className="glass rounded-card border-l-2 border-l-lime p-6">
+      <p className="label text-fg/40">{titulo}</p>
+      <p className="mt-3 text-pretty text-sm leading-relaxed text-fg/75">{children}</p>
     </div>
   );
 }
@@ -199,20 +205,22 @@ type BotonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
  *  en los demos casi todo es acción, no navegación. */
 export function Boton({ variante = "solido", className = "", ...props }: BotonProps) {
   const variantes = {
-    solido: "bg-deep text-ivory hover:bg-deep-700 disabled:bg-deep/25",
-    contorno: "border border-rule-strong text-deep hover:border-deep disabled:text-deep/30",
-    lima: "bg-lime text-ink hover:bg-deep hover:text-ivory disabled:bg-lime/40",
+    solido:
+      "bg-fg/10 text-fg hover:bg-fg/15 disabled:bg-fg/5 disabled:text-fg/40",
+    contorno:
+      "border border-line-strong text-fg hover:border-lime hover:text-accent disabled:border-line disabled:text-fg/40",
+    lima: "bg-lime text-ink hover:shadow-[0_0_40px_-6px_var(--color-lime)] disabled:bg-lime/30 disabled:text-ink/50",
   } as const;
   return (
     <button
       {...props}
-      className={`label inline-flex items-center justify-center gap-3 px-6 py-4 transition-colors duration-200 disabled:cursor-not-allowed ${variantes[variante]} ${className}`}
+      className={`label inline-flex items-center justify-center gap-3 rounded-pill px-6 py-4 transition-all duration-200 active:scale-[0.97] disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100 ${variantes[variante]} ${className}`}
     />
   );
 }
 
 const campo =
-  "w-full border-b border-rule-strong bg-transparent py-3.5 text-deep outline-none transition-colors placeholder:text-deep/30 focus:border-deep";
+  "w-full border-b border-line-strong bg-transparent py-3.5 text-fg outline-none transition-colors placeholder:text-fg/40 focus:border-lime";
 
 export function Campo({
   etiqueta,
@@ -221,9 +229,9 @@ export function Campo({
 }: { etiqueta: string; ayuda?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <label className="flex flex-col gap-2.5">
-      <span className="label text-deep/45">{etiqueta}</span>
+      <span className="label text-fg/40">{etiqueta}</span>
       <input aria-label={etiqueta} className={campo} {...props} />
-      {ayuda ? <span className="text-xs text-deep/50">{ayuda}</span> : null}
+      {ayuda ? <span className="text-xs text-fg/55">{ayuda}</span> : null}
     </label>
   );
 }
@@ -238,7 +246,7 @@ export function Seleccion({
 } & React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <label className="flex flex-col gap-2.5">
-      <span className="label text-deep/45">{etiqueta}</span>
+      <span className="label text-fg/40">{etiqueta}</span>
       <select aria-label={etiqueta} className={`${campo} cursor-pointer`} {...props}>
         {opciones.map((o) => (
           <option key={o.valor} value={o.valor}>
@@ -256,7 +264,7 @@ export function AreaTexto({
 }: { etiqueta: string } & React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <label className="flex flex-col gap-2.5">
-      <span className="label text-deep/45">{etiqueta}</span>
+      <span className="label text-fg/40">{etiqueta}</span>
       <textarea aria-label={etiqueta} rows={4} className={`${campo} resize-none`} {...props} />
     </label>
   );
@@ -283,8 +291,8 @@ export function Deslizador({
   return (
     <label className="flex flex-col gap-2">
       <span className="flex items-baseline justify-between gap-4">
-        <span className="label text-deep/45">{etiqueta}</span>
-        <span className="font-mono text-sm text-deep">
+        <span className="label text-fg/40">{etiqueta}</span>
+        <span className="font-mono text-sm text-fg">
           {valor}
           {sufijo}
         </span>
@@ -296,7 +304,7 @@ export function Deslizador({
         step={paso}
         value={valor}
         onChange={(e) => onCambio(Number(e.target.value))}
-        className="w-full accent-deep"
+        className="w-full accent-lime"
       />
     </label>
   );
@@ -307,7 +315,7 @@ export function Paso({ href, children }: { href: string; children: ReactNode }) 
   return (
     <Link
       href={href}
-      className="label inline-flex items-center gap-3 border-b border-rule-strong py-3 text-deep transition-colors hover:border-deep"
+      className="label inline-flex items-center gap-3 border-b border-line-strong py-3 text-fg transition-colors hover:border-lime hover:text-accent"
     >
       {children} <Arrow />
     </Link>
@@ -345,11 +353,11 @@ export function BarraDemos() {
   const activo = (slug: string) => ruta === `/demos/${slug}` || ruta.startsWith(`/demos/${slug}/`);
 
   return (
-    <div className="sticky top-20 z-40 border-b border-rule bg-ivory/95 backdrop-blur-md">
+    <div className="sticky top-20 z-40 border-b border-line bg-surface/80 backdrop-blur-xl">
       <div className="shell flex h-14 items-center gap-6">
         <Link
           href="/demos"
-          className={`label shrink-0 ${ruta === "/demos" ? "text-deep" : "text-deep/45 hover:text-deep"}`}
+          className={`label shrink-0 ${ruta === "/demos" ? "text-fg" : "text-fg/40 hover:text-fg"}`}
         >
           Demos
         </Link>
@@ -361,7 +369,7 @@ export function BarraDemos() {
               href={`/demos/${d.slug}`}
               aria-current={activo(d.slug) ? "page" : undefined}
               className={`label relative shrink-0 py-2 transition-colors ${
-                activo(d.slug) ? "text-deep" : "text-deep/45 hover:text-deep"
+                activo(d.slug) ? "text-fg" : "text-fg/40 hover:text-fg"
               }`}
             >
               {d.corto}
@@ -372,13 +380,13 @@ export function BarraDemos() {
           ))}
         </nav>
 
-        <span className="label inline-flex shrink-0 bg-lime px-3 py-1.5 text-ink">
+        <span className="label inline-flex shrink-0 rounded-pill bg-lime px-3.5 py-1.5 text-ink">
           Demo<span className="hidden sm:inline">&nbsp;· datos sintéticos</span>
         </span>
         <button
           type="button"
           onClick={reiniciarTodo}
-          className="label shrink-0 text-deep/45 underline-offset-4 transition-colors hover:text-deep hover:underline"
+          className="label shrink-0 text-fg/40 underline-offset-4 transition-colors hover:text-fg hover:underline"
         >
           Reiniciar
         </button>

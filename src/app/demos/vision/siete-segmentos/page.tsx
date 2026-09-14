@@ -28,7 +28,7 @@ function Pantalla() {
       modo={sieteSegmentos}
       controles={
         <>
-          <p className="label text-deep/45">Ajuste del display</p>
+          <p className="label text-fg/40">Ajuste del display</p>
           <Deslizador
             etiqueta="Dígitos del display"
             valor={digitos}
@@ -41,7 +41,7 @@ function Pantalla() {
               configSegmentos.digitos = v;
             }}
           />
-          <p className="text-sm leading-relaxed text-deep/60">
+          <p className="text-sm leading-relaxed text-fg/55">
             Encuadre el display de modo que los dígitos llenen el recuadro de
             lado a lado. El recuadro se divide en partes iguales: si el display
             tiene cuatro dígitos, ponga cuatro.

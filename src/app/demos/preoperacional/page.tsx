@@ -156,18 +156,18 @@ const PASOS: { id: PasoFlujo; texto: string }[] = [
 function Progreso({ paso, vehiculo }: { paso: PasoFlujo; vehiculo: Vehiculo | null }) {
   const actual = PASOS.findIndex((p) => p.id === paso);
   return (
-    <div className="mb-12 flex flex-wrap items-center gap-x-8 gap-y-3 border-b border-rule pb-5">
+    <div className="mb-12 flex flex-wrap items-center gap-x-8 gap-y-3 border-b border-line pb-5">
       {PASOS.map((p, i) => (
         <span
           key={p.id}
-          className={`label flex items-center gap-3 ${i <= actual ? "text-deep" : "text-deep/30"}`}
+          className={`label flex items-center gap-3 ${i <= actual ? "text-fg" : "text-fg/40"}`}
         >
-          <span className={`h-0.5 w-6 ${i <= actual ? "bg-lime" : "bg-rule-strong"}`} />
+          <span className={`h-0.5 w-6 ${i <= actual ? "bg-lime" : "bg-line-strong"}`} />
           {p.texto}
         </span>
       ))}
       {vehiculo ? (
-        <span className="ml-auto font-mono text-sm text-deep/60">
+        <span className="ml-auto font-mono text-sm text-fg/55">
           {vehiculo.placa} · {vehiculo.conductor}
         </span>
       ) : null}
@@ -190,15 +190,15 @@ function SeleccionVehiculo({
 
   return (
     <>
-      <h2 className="text-2xl font-normal tracking-tight text-deep">
+      <h2 className="text-2xl font-normal tracking-tight text-fg">
         ¿Qué vehículo va a salir?
       </h2>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-deep/60">
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-fg/55">
         Toque cualquiera. Los que ya tienen inspección de hoy la muestran al
         lado — así el jefe de patio ve de una vez quién falta.
       </p>
 
-      <div className="mt-9 grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {vehiculos.map((v) => {
           const u = ultima(v.placa);
           return (
@@ -206,10 +206,10 @@ function SeleccionVehiculo({
               key={v.placa}
               type="button"
               onClick={() => onElegir(v)}
-              className="flex flex-col items-start gap-3 bg-ivory p-6 text-left transition-colors hover:bg-paper"
+              className="glass flex flex-col items-start gap-3 rounded-card p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:border-lime/40"
             >
               <span className="flex w-full items-center justify-between gap-4">
-                <span className="font-mono text-lg text-deep">{v.placa}</span>
+                <span className="font-mono text-lg text-fg">{v.placa}</span>
                 {u ? (
                   <Pill tono={u.resultado === "bloqueado" ? "alerta" : "ok"}>
                     {u.resultado === "bloqueado" ? "Bloqueado" : "Aprobado"}
@@ -218,8 +218,8 @@ function SeleccionVehiculo({
                   <Pill tono="aviso">Sin inspección</Pill>
                 )}
               </span>
-              <span className="text-sm text-deep/70">{v.conductor}</span>
-              <span className="text-xs capitalize text-deep/45">
+              <span className="text-sm text-fg/75">{v.conductor}</span>
+              <span className="text-xs capitalize text-fg/40">
                 {v.tipo} · {numero(v.kmActual)} km
                 {u ? ` · ${horaCorta(u.fecha)}` : ""}
               </span>
@@ -257,16 +257,16 @@ function Checklist({
     <>
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
-          <h2 className="text-2xl font-normal tracking-tight text-deep">
+          <h2 className="text-2xl font-normal tracking-tight text-fg">
             Revise los 22 ítems
           </h2>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-deep/60">
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-fg/55">
             Los marcados con <b className="text-alerta">●</b> son críticos: uno
             solo en «Malo» bloquea la salida del vehículo. Los que exigen foto
             la piden en el momento.
           </p>
         </div>
-        <p className="label text-deep/45">
+        <p className="label text-fg/40">
           {respondidos} de {checklist.length} respondidos
         </p>
       </div>
@@ -275,10 +275,10 @@ function Checklist({
         {grupos.map((grupo) => (
           <div key={grupo}>
             <div className="flex items-baseline gap-5">
-              <span className="label text-deep/50">{grupo}</span>
-              <span className="h-px flex-1 bg-rule" />
+              <span className="label text-fg/55">{grupo}</span>
+              <span className="h-px flex-1 bg-line" />
             </div>
-            <ul className="mt-4 flex flex-col gap-px bg-rule">
+            <ul className="mt-4 flex flex-col gap-3">
               {checklist
                 .filter((i) => i.grupo === grupo)
                 .map((item) => (
@@ -295,14 +295,14 @@ function Checklist({
         ))}
       </div>
 
-      <div className="mt-12 flex flex-wrap items-center gap-5 border-t border-rule pt-8">
+      <div className="mt-12 flex flex-wrap items-center gap-5 border-t border-line pt-8">
         <Boton variante="contorno" onClick={onVolver}>
           Cambiar vehículo
         </Boton>
         <Boton onClick={onSeguir} disabled={veredicto.incompleta}>
           Continuar a la firma
         </Boton>
-        <p className="text-sm text-deep/60" role="status">
+        <p className="text-sm text-fg/55" role="status">
           {veredicto.sinResponder.length > 0
             ? `Faltan ${veredicto.sinResponder.length} ítems por responder.`
             : veredicto.sinFoto.length > 0
@@ -337,17 +337,17 @@ function Item({
   const faltaFoto = malo && item.exigeFoto && !respuesta?.foto;
 
   return (
-    <li className="flex flex-col gap-4 bg-ivory p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+    <li className="glass flex flex-col gap-4 rounded-card p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
       <div className="flex items-start gap-3">
         {item.critico ? (
           <span className="mt-1 text-alerta" title="Ítem crítico: bloquea la salida">
             ●
           </span>
         ) : (
-          <span className="mt-1 text-deep/20">○</span>
+          <span className="mt-1 text-fg/40">○</span>
         )}
         <div>
-          <p className="text-deep">{item.texto}</p>
+          <p className="text-fg">{item.texto}</p>
           {malo ? (
             <p className="mt-1.5 text-sm text-alerta">
               {item.critico ? "Bloquea la salida del vehículo. " : ""}
@@ -364,18 +364,18 @@ function Item({
           <img
             src={respuesta.foto}
             alt="Evidencia del hallazgo"
-            className="h-11 w-11 border border-rule-strong object-cover"
+            className="h-11 w-11 rounded-lg border border-line-strong object-cover"
           />
         ) : null}
-        <div className="flex gap-px bg-rule-strong">
+        <div className="flex gap-1.5">
           {ESTADOS.map((e) => {
             const activo = respuesta?.estado === e.valor;
             const tono =
               e.valor === "malo"
-                ? "bg-alerta text-ivory"
+                ? "bg-alerta text-surface"
                 : e.valor === "bueno"
-                  ? "bg-ok text-ivory"
-                  : "bg-deep text-ivory";
+                  ? "bg-ok text-surface"
+                  : "bg-fg/15 text-fg";
             return (
               <button
                 key={e.valor}
@@ -384,8 +384,8 @@ function Item({
                 onClick={() => onResponder(e.valor)}
                 // 44px de alto mínimo: esto se usa de pie, en el patio, con
                 // una mano y a veces con guante.
-                className={`label min-h-11 min-w-16 px-4 transition-colors ${
-                  activo ? tono : "bg-ivory text-deep/55 hover:bg-paper"
+                className={`label min-h-11 min-w-16 rounded-lg px-4 transition-colors ${
+                  activo ? tono : "border border-line-strong text-fg/55 hover:border-lime/40 hover:text-fg"
                 }`}
               >
                 {e.texto}
@@ -403,7 +403,7 @@ function Item({
  *  foto suelta. */
 function CapturaFoto({ onFoto }: { onFoto: (foto: string) => void }) {
   return (
-    <label className="label min-h-11 cursor-pointer border border-alerta px-4 py-3 text-alerta transition-colors hover:bg-alerta-suave">
+    <label className="label min-h-11 cursor-pointer rounded-lg border border-alerta px-4 py-3 text-alerta transition-colors hover:bg-alerta-suave">
       Adjuntar foto
       <input
         type="file"
@@ -473,15 +473,15 @@ function FirmaYCierre({
       g.lineWidth = 2.4;
       g.lineCap = "round";
       g.lineJoin = "round";
-      g.strokeStyle = "#111414";
+      g.strokeStyle = "#f2f1ea";
     }
     return g;
   };
 
   return (
     <>
-      <h2 className="text-2xl font-normal tracking-tight text-deep">Firma del conductor</h2>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-deep/60">
+      <h2 className="text-2xl font-normal tracking-tight text-fg">Firma del conductor</h2>
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-fg/55">
         Firme con el dedo en el celular o con el mouse en el computador. En el
         demo la firma es una imagen; su valor probatorio es alcance de piloto y
         se dice así de claro.
@@ -495,7 +495,7 @@ function FirmaYCierre({
             height={260}
             // touch-none o el navegador hace scroll en vez de dejar firmar:
             // es el bug clásico de esta pantalla.
-            className="w-full touch-none border border-rule-strong bg-paper"
+            className="glass w-full touch-none rounded-card"
             onPointerDown={(e) => {
               e.currentTarget.setPointerCapture(e.pointerId);
               const g = ctx();
@@ -529,7 +529,7 @@ function FirmaYCierre({
             >
               Limpiar firma
             </Boton>
-            <span className="text-sm text-deep/55">
+            <span className="text-sm text-fg/55">
               {firma ? "Firma capturada." : "Sin firmar."}
             </span>
           </div>
@@ -544,8 +544,8 @@ function FirmaYCierre({
             ayuda={`Registrado en el sistema: ${numero(vehiculo.kmActual)} km`}
           />
 
-          <div className="border-t border-rule pt-6">
-            <p className="label text-deep/45">Resultado que va a quedar</p>
+          <div className="border-t border-line pt-6">
+            <p className="label text-fg/40">Resultado que va a quedar</p>
             <p
               className={`mt-4 font-serif text-4xl ${
                 veredicto.resultado === "bloqueado" ? "text-alerta" : "text-ok"
@@ -554,7 +554,7 @@ function FirmaYCierre({
               {veredicto.resultado === "bloqueado" ? "Bloqueado" : "Aprobado"}
             </p>
             {veredicto.fallas.length ? (
-              <ul className="mt-4 flex flex-col gap-2 text-sm text-deep/70">
+              <ul className="mt-4 flex flex-col gap-2 text-sm text-fg/75">
                 {veredicto.fallas.map((id) => (
                   <li key={id} className="border-l border-alerta pl-3">
                     {checklist.find((i) => i.id === id)?.texto}
@@ -573,7 +573,7 @@ function FirmaYCierre({
             </Boton>
           </div>
           {!firma ? (
-            <p className="text-sm text-deep/55">Falta la firma para cerrar.</p>
+            <p className="text-sm text-fg/55">Falta la firma para cerrar.</p>
           ) : null}
         </div>
       </div>
@@ -589,9 +589,9 @@ function Resultado({ inspeccion, onOtra }: { inspeccion: Inspeccion; onOtra: () 
 
   return (
     <div
-      className={`border-t-2 p-10 ${bloqueado ? "border-alerta bg-alerta-suave" : "border-ok bg-ok-suave"}`}
+      className={`rounded-card border-t-2 p-10 ${bloqueado ? "border-alerta bg-alerta-suave" : "border-ok bg-ok-suave"}`}
     >
-      <p className="label text-deep/50">
+      <p className="label text-fg/55">
         {inspeccion.placa} · {inspeccion.conductor} · {horaCorta(inspeccion.fecha)}
       </p>
       <p
@@ -599,7 +599,7 @@ function Resultado({ inspeccion, onOtra }: { inspeccion: Inspeccion; onOtra: () 
       >
         {bloqueado ? "Vehículo bloqueado" : "Vehículo aprobado"}
       </p>
-      <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-deep/75">
+      <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-fg/75">
         {bloqueado
           ? "Falló un ítem crítico. En una operación real esto le llega al jefe de patio y el vehículo no sale hasta que se subsane."
           : "Ningún ítem crítico falló. La inspección queda registrada con la firma del conductor y el kilometraje del tablero."}
@@ -608,14 +608,14 @@ function Resultado({ inspeccion, onOtra }: { inspeccion: Inspeccion; onOtra: () 
       {fallas.length ? (
         <ul className="mt-8 flex flex-col gap-2">
           {fallas.map((id) => (
-            <li key={id} className="border-l-2 border-alerta pl-4 text-deep/80">
+            <li key={id} className="border-l-2 border-alerta pl-4 text-fg/90">
               {checklist.find((i) => i.id === id)?.texto}
             </li>
           ))}
         </ul>
       ) : null}
 
-      <div className="mt-10 grid gap-8 border-t border-rule pt-8 sm:grid-cols-3">
+      <div className="mt-10 grid gap-8 border-t border-line pt-8 sm:grid-cols-3">
         <Cifra valor={numero(inspeccion.kmTablero)} etiqueta="Km del tablero" />
         <Cifra
           valor={inspeccion.respuestas.filter((r) => r.estado === "malo").length}

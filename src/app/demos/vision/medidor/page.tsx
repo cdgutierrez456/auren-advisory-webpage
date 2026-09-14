@@ -35,7 +35,7 @@ function Pantalla() {
       modo={medidor}
       controles={
         <>
-          <p className="label text-deep/45">Calibración del instrumento</p>
+          <p className="label text-fg/40">Calibración del instrumento</p>
           <Deslizador
             etiqueta="Ángulo del cero"
             valor={c.anguloMin}

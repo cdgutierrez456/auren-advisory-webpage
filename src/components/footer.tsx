@@ -9,23 +9,23 @@ const secondary = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-rule-invert bg-ink text-ivory">
+    <footer className="border-t border-line bg-surface-4 text-fg">
       <div className="shell grid gap-16 py-20 md:grid-cols-[1.4fr_1fr_1.2fr] md:py-28">
         <div className="flex flex-col gap-8">
-          <Logo size={40} tone="invert" />
-          <p className="max-w-xs text-pretty text-sm leading-relaxed text-muted-invert">
+          <Logo size={40} tone="tema" />
+          <p className="max-w-xs text-pretty text-sm leading-relaxed text-fg/60">
             {site.description}
           </p>
-          <p className="text-sm text-muted-invert">Manizales, Colombia</p>
+          <p className="text-sm text-fg/60">Manizales, Colombia</p>
         </div>
 
         <nav className="flex flex-col gap-5">
-          <span className="label text-lime">Navegación</span>
+          <span className="label text-accent">Navegación</span>
           {[...nav, ...secondary].map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-muted-invert transition-colors hover:text-ivory"
+              className="text-sm text-fg/60 transition-colors hover:text-fg"
             >
               {item.label}
             </Link>
@@ -33,13 +33,13 @@ export function Footer() {
         </nav>
 
         <div className="flex flex-col gap-5">
-          <span className="label text-lime">Servicios</span>
+          <span className="label text-accent">Servicios</span>
           <ul className="grid gap-2.5 sm:grid-cols-2">
             {services.map((s) => (
               <li key={s.slug}>
                 <Link
                   href={`/servicios/${s.slug}`}
-                  className="text-sm text-muted-invert transition-colors hover:text-ivory"
+                  className="text-sm text-fg/60 transition-colors hover:text-fg"
                 >
                   {s.name}
                 </Link>
@@ -49,21 +49,21 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-rule-invert">
+      <div className="border-t border-line">
         <div className="shell flex flex-col gap-5 py-8 md:flex-row md:items-center md:justify-between">
-          <span className="label text-ivory/40">
+          <span className="label text-fg/40">
             © {new Date().getFullYear()} {site.name}
           </span>
           <div className="flex items-center gap-4">
             <span className="h-0.5 w-6 bg-lime" />
-            <span className="label text-ivory/55">{site.tagline}</span>
+            <span className="label text-fg/55">{site.tagline}</span>
           </div>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <a
               href={`https://wa.me/${site.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-muted-invert transition-colors hover:text-ivory"
+              className="text-sm text-fg/60 transition-colors hover:text-fg"
             >
               {site.whatsappDisplay}
             </a>
@@ -71,7 +71,7 @@ export function Footer() {
               <a
                 key={email}
                 href={`mailto:${email}`}
-                className="text-sm text-muted-invert transition-colors hover:text-ivory"
+                className="text-sm text-fg/60 transition-colors hover:text-fg"
               >
                 {email}
               </a>

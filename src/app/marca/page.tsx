@@ -58,10 +58,10 @@ export default function Marca() {
   return (
     <>
       <Section tone="ivory" className="!pb-0 pt-32">
-        <div className="flex flex-col gap-10 border-b border-rule pb-14">
-          <span className="label text-deep/50">Sistema de identidad</span>
-          <h1 className="text-display font-normal text-deep">El Vértice</h1>
-          <p className="text-lede max-w-2xl text-pretty text-deep/70">
+        <div className="flex flex-col gap-10 border-b border-line pb-14">
+          <span className="label text-fg/55">Sistema de identidad</span>
+          <h1 className="text-display font-normal text-fg">El Vértice</h1>
+          <p className="text-lede max-w-2xl text-pretty text-fg/75">
             La <strong className="font-medium">A</strong> se construye con dos trazos que no
             se tocan: el ascenso profundo y el trazo lima desplazado. El vacío entre ambos es
             el punto de vista.
@@ -72,10 +72,10 @@ export default function Marca() {
       {/* 01 — LOGO PRINCIPAL */}
       <Section tone="ivory">
         <SectionHead index="01" label="Logo principal" />
-        <div className="flex justify-center border border-rule bg-paper px-8 py-24 md:py-32">
-          <Logo size={132} />
+        <div className="glass flex justify-center rounded-card px-8 py-24 md:py-32">
+          <Logo size={132} tone="tema" />
         </div>
-        <div className="mt-8 grid gap-8 text-sm leading-relaxed text-deep/70 md:grid-cols-3">
+        <div className="mt-8 grid gap-8 text-sm leading-relaxed text-fg/75 md:grid-cols-3">
           <p className="text-pretty">
             El desplazamiento sugiere perspectiva y movimiento —observar, luego transformar—
             sin recurrir a iconografía de IA.
@@ -95,33 +95,33 @@ export default function Marca() {
       <Section tone="paper">
         <SectionHead index="02" label="Versiones" />
         <div className="grid gap-6 lg:grid-cols-3">
-          <Frame label="Horizontal" className="border border-rule bg-ivory">
+          <Frame label="Horizontal — sobre marfil" className="rounded-card bg-ivory text-ink" invert>
             <Logo size={64} />
           </Frame>
-          <Frame label="Vertical" className="border border-rule bg-ivory">
+          <Frame label="Vertical — sobre marfil" className="rounded-card bg-ivory text-ink" invert>
             <Logo size={64} orientation="vertical" />
           </Frame>
-          <Frame label="Fondo oscuro" className="bg-ink text-ivory" invert>
+          <Frame label="Fondo oscuro" className="rounded-card bg-ink text-ivory" invert>
             <Logo size={64} orientation="vertical" tone="invert" />
           </Frame>
         </div>
 
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <Frame label="Símbolo" className="bg-deep text-ivory" invert>
+          <Frame label="Símbolo" className="rounded-card bg-deep text-ivory" invert>
             <Mark size={56} tone="invert" />
           </Frame>
-          <Frame label="Monocromo" className="border border-rule bg-ivory text-ink">
+          <Frame label="Monocromo" className="rounded-card bg-ivory text-ink" invert>
             <Mark size={56} tone="mono" />
           </Frame>
-          <Frame label="Sobre lima" className="bg-lime text-deep" invert>
+          <Frame label="Sobre lima" className="rounded-card bg-lime text-ink" invert>
             <Mark size={56} tone="lime-bg" />
           </Frame>
-          <Frame label="Favicon 48/32/16" className="border border-rule bg-ivory">
+          <Frame label="Favicon 48/32/16" className="glass rounded-card">
             <div className="flex items-end gap-3.5">
               {[48, 32, 16].map((s) => (
                 <span
                   key={s}
-                  className="flex items-center justify-center bg-deep"
+                  className="flex items-center justify-center rounded-[0.35rem] bg-deep"
                   style={{ width: s, height: s }}
                 >
                   <Mark size={s * 0.62} tone="invert" />
@@ -139,14 +139,16 @@ export default function Marca() {
           {explorations.map((e) => (
             <div
               key={e.name}
-              className="flex flex-col items-center gap-9 border border-rule bg-paper px-10 py-14 text-center"
+              className="glass flex flex-col items-center gap-9 rounded-card px-10 py-12 text-center"
             >
-              <svg width="104" height="104" viewBox="0 0 100 100" fill="none" aria-hidden>
-                {e.svg}
-              </svg>
+              <span className="flex items-center justify-center rounded-lg bg-ivory p-6">
+                <svg width="104" height="104" viewBox="0 0 100 100" fill="none" aria-hidden>
+                  {e.svg}
+                </svg>
+              </span>
               <div className="flex flex-col gap-2.5">
-                <span className="label text-deep">{e.name}</span>
-                <p className="max-w-[15rem] text-xs leading-relaxed text-deep/55">{e.note}</p>
+                <span className="label text-fg">{e.name}</span>
+                <p className="max-w-[15rem] text-xs leading-relaxed text-fg/55">{e.note}</p>
               </div>
             </div>
           ))}
@@ -157,50 +159,50 @@ export default function Marca() {
       <Section tone="paper">
         <SectionHead index="04" label="Paleta y tipografía" />
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="flex flex-col gap-9 bg-ink p-10 text-ivory md:p-12">
-            <span className="label text-lime">Paleta</span>
+          <div className="glass flex flex-col gap-9 rounded-card p-10 text-fg md:p-12">
+            <span className="label text-accent">Paleta</span>
             <ul>
               {palette.map((c) => (
                 <li
                   key={c.hex}
-                  className="flex items-center gap-5 border-b border-rule-invert py-4 last:border-0"
+                  className="flex items-center gap-5 border-b border-line py-4 last:border-0"
                 >
                   <span
-                    className="size-11 shrink-0 border border-rule-invert"
+                    className="size-11 shrink-0 rounded-lg border border-line"
                     style={{ background: c.hex }}
                   />
                   <span className="flex-1 text-sm tracking-[0.16em]">{c.name}</span>
-                  <span className="hidden text-xs text-ivory/45 sm:block">{c.role}</span>
-                  <span className="font-mono text-xs text-ivory/55">{c.hex}</span>
+                  <span className="hidden text-xs text-fg/40 sm:block">{c.role}</span>
+                  <span className="font-mono text-xs text-fg/55">{c.hex}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-sm leading-relaxed text-pretty text-ivory/60">
+            <p className="text-sm leading-relaxed text-pretty text-fg/55">
               El lima ocupa como máximo el 10% de cualquier composición. Sobre marfil nunca se
               usa en texto: solo en forma, regla o trazo del símbolo.
             </p>
           </div>
 
-          <div className="flex flex-col gap-10 border border-rule bg-ivory p-10 md:p-12">
-            <span className="label text-deep/50">Tipografía</span>
-            <div className="flex flex-col gap-3 border-b border-rule pb-8">
-              <span className="label text-deep/40">Sans — Geist</span>
-              <p className="text-5xl tracking-tight text-deep">Ver. Entender.</p>
-              <p className="text-sm text-deep/60">
+          <div className="glass flex flex-col gap-10 rounded-card p-10 md:p-12">
+            <span className="label text-fg/55">Tipografía</span>
+            <div className="flex flex-col gap-3 border-b border-line pb-8">
+              <span className="label text-fg/40">Sans — Geist</span>
+              <p className="text-5xl tracking-tight text-fg">Ver. Entender.</p>
+              <p className="text-sm text-fg/55">
                 Titulares, interfaz y texto corrido. Precisión, no futurismo.
               </p>
             </div>
-            <div className="flex flex-col gap-3 border-b border-rule pb-8">
-              <span className="label text-deep/40">Serif — Instrument Serif</span>
-              <p className="font-serif text-5xl text-deep">Transformar.</p>
-              <p className="text-sm text-deep/60">
+            <div className="flex flex-col gap-3 border-b border-line pb-8">
+              <span className="label text-fg/40">Serif — Instrument Serif</span>
+              <p className="font-serif text-5xl text-fg">Transformar.</p>
+              <p className="text-sm text-fg/55">
                 Solo frases estratégicas. Nunca en párrafos ni en interfaz.
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <span className="label text-deep/40">Etiquetas de sistema</span>
-              <p className="label text-deep">Ver. Entender. Transformar.</p>
-              <p className="text-sm text-deep/60">
+              <span className="label text-fg/40">Etiquetas de sistema</span>
+              <p className="label text-fg">Ver. Entender. Transformar.</p>
+              <p className="text-sm text-fg/55">
                 11&nbsp;px, tracking .34em, mayúsculas. Índices, secciones y metadatos.
               </p>
             </div>
@@ -211,26 +213,26 @@ export default function Marca() {
       {/* 05 — TARJETA */}
       <Section tone="ivory">
         <SectionHead index="05" label="Aplicaciones" />
-        <div className="flex flex-wrap gap-6 border border-rule bg-paper p-10 md:p-14">
-          <div className="flex h-[172px] w-[300px] flex-col justify-between bg-deep p-6">
+        <div className="glass flex flex-wrap gap-6 rounded-card p-10 md:p-14">
+          <div className="flex h-[172px] w-full max-w-[300px] flex-col justify-between rounded-lg bg-deep p-6">
             <Mark size={34} tone="invert" />
             <div className="flex flex-col gap-1.5">
               <span className="wordmark text-xl text-ivory">AUREN</span>
-              <span className="text-[8px] tracking-[0.44em] text-lime">ADVISORY</span>
+              <span className="text-[8px] tracking-[0.44em] text-accent">ADVISORY</span>
             </div>
           </div>
-          <div className="flex h-[172px] w-[300px] flex-col justify-between border border-rule bg-ivory p-6">
+          <div className="flex h-[172px] w-full max-w-[300px] flex-col justify-between rounded-lg bg-ivory p-6 text-ink">
             <div className="flex flex-col gap-1">
               <span className="text-sm font-semibold text-ink">Nombre Apellido</span>
-              <span className="label text-deep/60">Director</span>
+              <span className="label text-ink/55">Director</span>
             </div>
-            <div className="flex flex-col gap-1 text-[10px] text-deep/75">
+            <div className="flex flex-col gap-1 text-[10px] text-ink/75">
               <span>{site.emails[0]}</span>
               <span>{site.domain}</span>
             </div>
             <div className="flex items-center gap-2.5">
               <span className="h-[3px] w-5 bg-lime" />
-              <span className="text-[8px] tracking-[0.3em] text-deep/70 uppercase">
+              <span className="text-[8px] tracking-[0.3em] text-ink/75 uppercase">
                 {site.tagline}
               </span>
             </div>
@@ -257,7 +259,7 @@ function Frame({
       className={`flex min-h-[15rem] flex-col items-center justify-between gap-10 p-10 ${className}`}
     >
       <div className="flex flex-1 items-center">{children}</div>
-      <span className={`label ${invert ? "opacity-55" : "text-deep/45"}`}>{label}</span>
+      <span className={`label ${invert ? "opacity-55" : "text-fg/40"}`}>{label}</span>
     </div>
   );
 }

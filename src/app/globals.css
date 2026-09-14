@@ -2,13 +2,21 @@
 
 /* ---------------------------------------------------------------------------
    AUREN ADVISORY — tokens de marca
-   Fuente de verdad. Nada de hex sueltos en componentes: usar estas variables.
-   Regla del lima: máx. ~10% de cualquier composición, nunca como texto sobre
-   marfil. Solo forma, regla, trazo o acento sobre fondo oscuro.
+   Fuente de verdad. Nada de hex sueltos en componentes: usar estos tokens.
+
+   Dos capas, y la distinción importa:
+   · PALETA CRUDA (`--color-deep`, `--color-lime`…) — los colores de la marca.
+     No cambian nunca; son los del brand brief.
+   · SEMÁNTICOS (`--color-surface`, `--color-fg`, `--color-accent`…) — el papel
+     que cumple cada color. El tema decide qué valor crudo toma cada papel.
+
+   Los componentes usan SOLO los semánticos (`bg-surface`, `text-fg/75`,
+   `border-line`). Así el sitio entero cambia de tema sin tocar una clase.
+   El diccionario completo está en DESIGN.md.
 --------------------------------------------------------------------------- */
 
 @theme {
-  /* Paleta */
+  /* --- Paleta cruda ---------------------------------------------------- */
   --color-deep: #12343b;
   --color-deep-700: #0b2126;
   --color-deep-900: #071518;
@@ -17,19 +25,41 @@
   --color-ivory: #f2f1ea;
   --color-paper: #ffffff;
 
-  /* Superficies derivadas (evitan opacidades ad-hoc por componente) */
-  --color-rule: color-mix(in srgb, var(--color-ink) 12%, transparent);
-  --color-rule-strong: color-mix(in srgb, var(--color-ink) 22%, transparent);
-  --color-rule-invert: color-mix(in srgb, var(--color-ivory) 14%, transparent);
-  --color-muted: color-mix(in srgb, var(--color-deep) 62%, transparent);
-  --color-muted-invert: color-mix(in srgb, var(--color-ivory) 62%, transparent);
+  /* --- Semánticos: el valor lo pone el tema, más abajo ------------------ */
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+  --color-fg: var(--fg);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  /* Acento de TEXTO. En claro es Auren Deep, no lima: la regla de marca
+     prohíbe lima como texto sobre marfil. El lima de relleno sigue siendo
+     `bg-lime` en los dos temas, que sí está permitido. */
+  --color-accent: var(--accent);
 
-  /* Tipografía */
+  /* Semáforo operativo (solo demos). El lima es marca, no estado: un tablero
+     de riesgo necesita rojo/ámbar/verde reales o no se lee. Cada estado lleva
+     además su palabra en pantalla, para daltonismo y videobeam malo.
+     Cada tema trae su calibración; el tinte «suave» se deriva solo. */
+  --color-alerta: var(--alerta);
+  --color-aviso: var(--aviso);
+  --color-ok: var(--ok);
+  --color-alerta-suave: color-mix(in srgb, var(--alerta) 16%, transparent);
+  --color-aviso-suave: color-mix(in srgb, var(--aviso) 16%, transparent);
+  --color-ok-suave: color-mix(in srgb, var(--ok) 16%, transparent);
+
+  /* --- Tipografía ------------------------------------------------------ */
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Escala editorial: display fluido, sin breakpoints por tamaño */
+  --text-mega: clamp(3.25rem, 11vw, 9rem);
+  --text-mega--line-height: 0.9;
+  --text-mega--letter-spacing: -0.045em;
   --text-display: clamp(2.75rem, 7vw, 6.5rem);
   --text-display--line-height: 0.94;
   --text-display--letter-spacing: -0.03em;
@@ -43,18 +73,119 @@
   --spacing-section: clamp(6rem, 12vw, 11rem);
   --spacing-gutter: clamp(1.5rem, 5vw, 5rem);
 
-  /* Semáforo operativo (solo demos). El lima es marca, no estado: un tablero
-     de riesgo necesita rojo/ámbar/verde reales o no se lee. Cada estado lleva
-     además su palabra en pantalla, para daltonismo y videobeam malo. */
-  --color-alerta: #a4231c;
-  --color-alerta-suave: #fbe7e5;
-  --color-aviso: #7d5100;
-  --color-aviso-suave: #fbeed2;
-  --color-ok: #1c6142;
-  --color-ok-suave: #e4f0e9;
+  /* Radios: en superficies no hay esquinas rectas. Las únicas rectas del
+     sistema son las reglas de 1px y los divisores hairline. */
+  --radius-card: 1.5rem;
+  --radius-lg: 1rem;
+  --radius-pill: 999px;
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ---------------------------------------------------------------------------
+   TEMAS
+   Oscuro es el tema de la casa. El claro entra por preferencia del sistema o
+   por el interruptor (`data-theme`), que siempre manda sobre el sistema.
+   El bloque claro va dos veces a propósito: una para el sistema y otra para la
+   elección explícita. CSS no tiene mixins y duplicarlo es más barato que
+   sostener una clase extra en <html>.
+--------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+
+  --surface: var(--color-deep-900);
+  --surface-2: var(--color-deep-700);
+  --surface-3: var(--color-deep);
+  --surface-4: var(--color-ink);
+  --fg: var(--color-ivory);
+  --line: color-mix(in srgb, var(--color-ivory) 11%, transparent);
+  --line-strong: color-mix(in srgb, var(--color-ivory) 20%, transparent);
+  --glass: color-mix(in srgb, var(--color-deep) 42%, transparent);
+  --glass-strong: color-mix(in srgb, var(--color-deep-700) 70%, transparent);
+  --accent: var(--color-lime);
+
+  /* Semáforo sobre oscuro: los tres claros, el verde al menta para no
+     confundirse con el lima de marca. */
+  --alerta: #ff8173;
+  --aviso: #f5b83d;
+  --ok: #5fd3a3;
+
+  /* La luz ambiental y las sombras también son del tema. */
+  --glow-opacity: 0.5;
+  --shadow-color: rgb(0 0 0 / 0.45);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    --surface: var(--color-ivory);
+    --surface-2: var(--color-paper);
+    --surface-3: #eceadf;
+    --surface-4: #e3e0d3;
+    --fg: var(--color-ink);
+    --line: color-mix(in srgb, var(--color-ink) 12%, transparent);
+    --line-strong: color-mix(in srgb, var(--color-ink) 22%, transparent);
+    --glass: color-mix(in srgb, var(--color-paper) 62%, transparent);
+    --glass-strong: color-mix(in srgb, var(--color-paper) 82%, transparent);
+    --accent: var(--color-deep);
+
+    /* Sobre marfil el semáforo vuelve a los oscuros de imprenta. */
+    --alerta: #a4231c;
+    --aviso: #7d5100;
+    --ok: #1c6142;
+
+    --glow-opacity: 0.3;
+    --shadow-color: rgb(18 52 59 / 0.14);
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --surface: var(--color-ivory);
+  --surface-2: var(--color-paper);
+  --surface-3: #eceadf;
+  --surface-4: #e3e0d3;
+  --fg: var(--color-ink);
+  --line: color-mix(in srgb, var(--color-ink) 12%, transparent);
+  --line-strong: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  --glass: color-mix(in srgb, var(--color-paper) 62%, transparent);
+  --glass-strong: color-mix(in srgb, var(--color-paper) 82%, transparent);
+  --accent: var(--color-deep);
+
+  --alerta: #a4231c;
+  --aviso: #7d5100;
+  --ok: #1c6142;
+
+  --glow-opacity: 0.3;
+  --shadow-color: rgb(18 52 59 / 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  caret-color: var(--color-lime);
+  /* El cambio de tema es una transición, no un parpadeo. */
+  transition:
+    background-color 0.4s var(--ease-out-quint),
+    color 0.4s var(--ease-out-quint);
+}
+
+/* --- Utilidades del sistema ------------------------------------------- */
 
 /* Etiquetas de sistema: 11px, tracking amplio, mayúsculas. Usar `.label`. */
 @utility label {
@@ -87,23 +218,27 @@
   opacity: 0.05;
 }
 
-:root {
-  color-scheme: light;
-  scroll-behavior: smooth;
+/* Tarjeta glass: superficie translúcida con desenfoque y borde de luz. Es LA
+   tarjeta del sistema; no hay otra. Va siempre con `rounded-card`. */
+@utility glass {
+  background: var(--color-glass);
+  backdrop-filter: blur(18px) saturate(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  border: 1px solid var(--color-line);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    scroll-behavior: auto;
-  }
+/* Blob de luz ambiental: el resplandor que respira detrás del contenido.
+   Máximo uno por sección, y solo en secciones ancla. */
+@utility glow {
+  border-radius: 999px;
+  filter: blur(70px);
+  opacity: var(--glow-opacity);
 }
 
-body {
-  background: var(--color-ivory);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+/* Sombra de pieza elevada (chips flotantes, menú desplegado). Sigue al tema:
+   negra sobre oscuro, azulada y mucho más suave sobre claro. */
+@utility shadow-float {
+  box-shadow: 0 1.5rem 3rem -1.25rem var(--shadow-color);
 }
 
 ::selection {
@@ -111,30 +246,99 @@ body {
   color: var(--color-ink);
 }
 
+/* Cifras alineadas en cualquier dato tabular (metas, hechos, índices). */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Scrollbar tematizada: la superficie del navegador también lleva la marca. */
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border: 2px solid var(--color-surface);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--color-lime) 60%, transparent);
+  }
+}
+
 :focus-visible {
   outline: 2px solid var(--color-lime);
   outline-offset: 3px;
 }
 
-/* Revelado al hacer scroll con timelines nativos: cero JS, cero dependencias.
-   El @supports garantiza que sin soporte el contenido nace visible. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal {
-      animation: reveal-in linear both;
-      animation-timeline: view();
-      animation-range: entry 5% cover 22%;
-    }
-  }
-}
+/* ---------------------------------------------------------------------------
+   MOVIMIENTO — lo que queda aquí es lo que no necesita JavaScript.
+   Las animaciones de scroll viven en `components/motion.tsx` (Motion), porque
+   `animation-timeline: view()` no existe en Firefox ni en Safari < 26 y ahí
+   simplemente no corrían. Aquí se quedan la entrada del hero y el fondo
+   ambiental: funcionan en todos los navegadores y sin bundle.
+   Nada se mueve si el sistema pide menos movimiento.
+--------------------------------------------------------------------------- */
 
-@keyframes reveal-in {
+/* Entrada del hero: no depende del scroll, ocurre al cargar. */
+@keyframes enter-up {
   from {
     opacity: 0;
-    transform: translateY(1.25rem);
+    transform: translateY(2.5rem);
+    filter: blur(12px);
   }
   to {
     opacity: 1;
     transform: none;
+    filter: blur(0);
+  }
+}
+
+/* La luz ambiental respira: escala y opacidad, muy lento. */
+@keyframes breathe {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: calc(var(--glow-opacity) * 0.8);
+  }
+  to {
+    transform: translate3d(1.5rem, -1rem, 0) scale(1.15);
+    opacity: calc(var(--glow-opacity) * 1.24);
+  }
+}
+
+/* Deriva lenta del símbolo: solo traslación (el símbolo no se rota ni inclina,
+   regla de marca). Ida y vuelta, imperceptible, para que el fondo respire. */
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-1.4rem, 1rem, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Entrada del hero al cargar: el retardo lo pone --i en el marcado.
+     Es CSS y no Motion a propósito: el contenido sobre el pliegue no debería
+     depender de que cargue un bundle para hacerse visible. */
+  .enter {
+    animation: enter-up 0.9s var(--ease-expo) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  /* La deriva no depende del scroll: es un latido continuo del fondo. */
+  .drift {
+    animation: drift 16s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  }
+
+  /* Los blobs de luz respiran, cada uno a su ritmo (delay inline). */
+  .breathe {
+    animation: breathe 14s ease-in-out infinite alternate;
   }
 }

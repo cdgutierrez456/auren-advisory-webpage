@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { homeFaqs, phases, sectors, serviceBySlug, services, site } from "./site.ts";
+import { homeFaqs, phases, sectors, serviceBySlug, services, site, testimonials } from "./site.ts";
 
 // El listado, el footer y generateStaticParams se derivan de `services`.
 // Un slug duplicado o un `next` roto rompe rutas en silencio.
@@ -102,4 +102,25 @@ test("los sectores enlazan a servicios existentes", () => {
 
 test("la meta description del sitio cabe en el resultado de búsqueda", () => {
   assert.ok(site.description.length <= 160, `${site.description.length} caracteres`);
+});
+
+// Los testimonios de ejemplo existen para dar forma a la sección, pero un
+// testimonio sin `borrador` es una cita atribuida a una persona real: sin
+// nombre no se publica.
+
+test("todo testimonio publicado tiene nombre; los de ejemplo van marcados", () => {
+  for (const t of testimonials) {
+    if (t.borrador) {
+      assert.ok(!t.name, `el borrador «${t.role}» no debería llevar nombre propio`);
+    } else {
+      assert.ok(t.name, `el testimonio de «${t.role}» se publica sin atribución`);
+    }
+    assert.ok(t.quote.length > 40, "una cita de una línea no dice nada");
+  }
+});
+
+test("el servicio citado en un testimonio existe", () => {
+  for (const t of testimonials) {
+    if (t.service) assert.ok(serviceBySlug(t.service), `testimonio → «${t.service}» no existe`);
+  }
 });

@@ -11,13 +11,19 @@
 const STROKE_ASCENT = "43,8 59,8 33,92 13,92";
 const STROKE_SHIFT = "52.5,37 68.5,37 91,92 71,92";
 
-type Tone = "deep" | "invert" | "mono" | "lime-bg";
+type Tone = "deep" | "invert" | "mono" | "lime-bg" | "tema";
 
+/**
+ * `tema` es el único que no fija color: sigue los tokens semánticos, así el
+ * lockup del sitio funciona en claro y en oscuro sin dos versiones. Los demás
+ * son literales porque el manual de marca los exhibe tal cual.
+ */
 const TONES: Record<Tone, { ascent: string; shift: string; shiftOpacity?: number }> = {
   deep: { ascent: "#12343B", shift: "#C8F169" },
   invert: { ascent: "#F2F1EA", shift: "#C8F169" },
   mono: { ascent: "currentColor", shift: "currentColor" },
   "lime-bg": { ascent: "#12343B", shift: "#12343B", shiftOpacity: 0.42 },
+  tema: { ascent: "var(--color-fg)", shift: "var(--color-lime)" },
 };
 
 export function Mark({
@@ -61,6 +67,7 @@ export function Logo({
   className?: string;
 }) {
   const inverted = tone === "invert";
+  const themed = tone === "tema";
   const vertical = orientation === "vertical";
 
   return (
@@ -73,7 +80,10 @@ export function Logo({
       <span className={`flex flex-col ${vertical ? "items-center gap-1.5" : "gap-1"}`}>
         <span
           className="wordmark leading-none"
-          style={{ fontSize: size * 0.5, color: inverted ? "#F2F1EA" : undefined }}
+          style={{
+            fontSize: size * 0.5,
+            color: themed ? "var(--color-fg)" : inverted ? "#F2F1EA" : undefined,
+          }}
         >
           AUREN
         </span>
@@ -83,7 +93,11 @@ export function Logo({
             fontSize: Math.max(8, size * 0.17),
             letterSpacing: "0.46em",
             marginRight: "-0.46em",
-            color: inverted ? "#C8F169" : "color-mix(in srgb, #12343B 62%, transparent)",
+            color: themed
+              ? "var(--color-accent)"
+              : inverted
+                ? "#C8F169"
+                : "color-mix(in srgb, #12343B 62%, transparent)",
           }}
         >
           ADVISORY

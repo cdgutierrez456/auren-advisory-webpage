@@ -1,7 +1,11 @@
 # Auren Advisory — plataforma de presentación
 
-Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4. Sin dependencias
-fuera de ese núcleo, y así debe seguir salvo razón concreta.
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · Motion. Sin
+dependencias fuera de ese núcleo, y así debe seguir salvo razón concreta.
+
+Motion es la única añadida, y tiene una: las animaciones de scroll estaban en
+`animation-timeline: view()`, que no existe en Firefox ni en Safari < 26 — en
+medio parque de navegadores no se movía nada.
 
 ## Comandos
 
@@ -16,9 +20,11 @@ npm start
 | Necesito… | Toco… |
 |---|---|
 | Cambiar textos; añadir capacidad, servicio o principio | `src/content/site.ts` |
-| Color, tipografía, escala, ritmo vertical | `@theme` en `src/app/globals.css` |
+| Color, tipografía, escala, ritmo, tema claro/oscuro | `src/app/globals.css` |
 | El símbolo o el lockup | `src/components/logo.tsx` |
 | Botón, sección, encabezado, apertura de página, CTA | `src/components/ui.tsx` |
+| El interruptor de tema | `src/components/theme-toggle.tsx` |
+| Testimonios (y su marca de borrador) | `testimonials` en `src/content/site.ts` |
 | Una sección de la home | `src/components/sections/*.tsx` |
 | El método (Ver/Entender/Transformar) | `phases` y `method` en `site.ts` |
 | La página de un servicio | `src/app/servicios/[slug]/page.tsx` (plantilla única) |
@@ -89,6 +95,24 @@ Las especificaciones, rutas y textos alternativos están en `IMAGENES.md`.
 
 ## Reglas de marca (no son decorativas — vienen del brand brief)
 
+- **Nada de colores crudos en los componentes: solo tokens semánticos.**
+  `bg-surface`/`-2`/`-3`/`-4`, `text-fg` (en cinco peldaños: `/90 /75 /55 /40`),
+  `border-line`, `glass`, `text-accent`. El tema decide qué color crudo toma
+  cada papel; por eso un `bg-deep` o un `text-ivory` sueltos en una sección
+  rompen el tema claro. Excepción: `marca/page.tsx`, que exhibe la paleta
+  literal. Superficie elevada = `glass rounded-card`, y no hay otra.
+- **Oscuro y claro.** El sistema manda por defecto; `data-theme` en `<html>`
+  gana, lo escribe `theme-toggle.tsx` y un script en línea en `layout.tsx` lo
+  aplica antes de pintar. **El diccionario completo está en `DESIGN.md`** —
+  leerlo antes de inventar una superficie, un radio o una opacidad.
+- **`text-accent` existe porque lima nunca es texto sobre marfil**: en claro
+  vale Auren Deep. El lima de relleno (`bg-lime`, reglas, trazos) sí es el mismo
+  en los dos temas.
+- **El único color que no es marca vive en `/demos/*`**: el semáforo operativo
+  (`--color-alerta/aviso/ok`), con una calibración por tema y el verde en menta
+  sobre oscuro para no competir con el lima. Estado = color **más** palabra.
+- **Los testimonios con `borrador: true` son texto de ejemplo** y lo dicen en
+  pantalla. Quitar la marca exige nombre y cargo reales: `npm test` lo verifica.
 - **Lima (`#C8F169`) es acento, máx. ~10% de la composición.** Nunca como texto
   sobre marfil: solo forma, regla, trazo o acento sobre fondo oscuro.
 - La base la construyen Auren Deep y Auren Black; el marfil aporta espacio.
@@ -104,9 +128,13 @@ Las especificaciones, rutas y textos alternativos están en `IMAGENES.md`.
   (hoy: `contact-form.tsx`).
 - Nada de hex sueltos en JSX: usar los tokens (`bg-deep`, `text-lime`, …).
   Excepción documentada: `logo.tsx`, que es la fuente de verdad del símbolo.
-- Animación con CSS nativo (`animation-timeline: view()`, clase `.reveal`),
-  degradando a contenido visible donde no haya soporte. No añadir una librería
-  de animación para esto.
+- **Animación: Motion para el scroll, CSS para el resto.** `<Reveal>`,
+  `<RevealList>`/`<RevealItem>`, `<DrawRule>`, `<ParallaxY>` viven en
+  `components/motion.tsx` y son componentes cliente que reciben hijos ya
+  renderizados en el servidor — las secciones siguen siendo Server Components.
+  El hero (`.enter`) y el fondo (`.drift`, `.breathe`) se quedan en CSS: lo que
+  está sobre el pliegue no puede depender de que cargue un bundle para verse, y
+  hay un `<noscript>` en `layout.tsx` que lo garantiza.
 - Comentarios `ponytail:` marcan simplificaciones deliberadas y su techo.
 
 ## Radiografía Auren

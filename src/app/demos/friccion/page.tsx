@@ -56,11 +56,11 @@ function Calculadora() {
     <section className="grid gap-14 pt-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
       <div className="flex flex-col gap-9">
         <label className="flex flex-col gap-2.5">
-          <span className="label text-deep/45">La tarea que se repite</span>
+          <span className="label text-fg/40">La tarea que se repite</span>
           <input
             value={tarea}
             onChange={(e) => setTarea(e.target.value)}
-            className="w-full border-b border-rule-strong bg-transparent py-3.5 text-deep outline-none transition-colors focus:border-deep"
+            className="w-full border-b border-line-strong bg-transparent py-3.5 text-fg outline-none transition-colors focus:border-lime"
           />
         </label>
 
@@ -89,34 +89,34 @@ function Calculadora() {
           onCambio={(v) => setSalarioMensual(Math.round(v * 1_000_000))}
         />
 
-        <div className="border-t border-rule pt-6">
-          <p className="label text-deep/45">Base de cálculo, a la vista</p>
-          <ul className="mt-4 flex flex-col gap-2 text-sm text-deep/65">
+        <div className="border-t border-line pt-6">
+          <p className="label text-fg/40">Base de cálculo, a la vista</p>
+          <ul className="mt-4 flex flex-col gap-2 text-sm text-fg/55">
             <li>{BASE.semanasMes} semanas por mes.</li>
             <li>{BASE.horasMes} horas mensuales para el valor de la hora.</li>
             <li>{numero(BASE.horasAnoPersona)} horas al año por persona a tiempo completo.</li>
-            <li className="text-deep/50">Valor de la hora resultante: {pesos(r.valorHora)}.</li>
+            <li className="text-fg/55">Valor de la hora resultante: {pesos(r.valorHora)}.</li>
           </ul>
         </div>
       </div>
 
       <div className="flex flex-col gap-10">
-        <div className="bg-deep p-10 text-ivory">
-          <p className="label text-lime">Costo anual de {tarea}</p>
-          <p className="mt-6 font-serif text-6xl leading-none">{pesos(r.anual)}</p>
-          <p className="mt-6 text-pretty leading-relaxed text-muted-invert">
+        <div className="glass rounded-card p-10 text-fg">
+          <p className="label text-accent">Costo anual de {tarea}</p>
+          <p className="tnum mt-6 font-serif text-6xl leading-none text-accent [text-shadow:0_0_44px_rgba(200,241,105,0.4)]">{pesos(r.anual)}</p>
+          <p className="mt-6 text-pretty leading-relaxed text-fg/60">
             Son {numero(r.horasAnuales)} horas al año — el equivalente a{" "}
-            <b className="text-ivory">{r.equivalente} personas a tiempo completo</b> dedicadas solo
+            <b className="text-fg">{r.equivalente} personas a tiempo completo</b> dedicadas solo
             a eso.
           </p>
-          <div className="mt-10 grid grid-cols-2 gap-8 border-t border-rule-invert pt-8">
+          <div className="mt-10 grid grid-cols-2 gap-8 border-t border-line pt-8">
             <div>
               <p className="font-serif text-3xl">{pesos(r.mensual)}</p>
-              <p className="label mt-2 text-ivory/50">Al mes</p>
+              <p className="label mt-2 text-fg/55">Al mes</p>
             </div>
             <div>
               <p className="font-serif text-3xl">{numero(r.horasMes)} h</p>
-              <p className="label mt-2 text-ivory/50">Al mes</p>
+              <p className="label mt-2 text-fg/55">Al mes</p>
             </div>
           </div>
         </div>
@@ -134,7 +134,7 @@ function Calculadora() {
           >
             Enviar esta cifra por WhatsApp
           </Boton>
-          <span className="text-sm text-deep/55">Abre el chat con el cálculo dentro.</span>
+          <span className="text-sm text-fg/55">Abre el chat con el cálculo dentro.</span>
         </div>
 
         <Aviso titulo="La cifra que falta es mayor">

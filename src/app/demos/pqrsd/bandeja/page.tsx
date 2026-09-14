@@ -40,12 +40,12 @@ const TONO: Record<Semaforo, Tono> = {
 export default function Bandeja() {
   return (
     <>
-      <header className="border-b border-rule pb-10">
-        <span className="label text-deep/45">Demo · PQRSD</span>
-        <h1 className="mt-6 max-w-3xl text-balance text-4xl font-normal tracking-tight text-deep md:text-5xl">
+      <header className="border-b border-line pb-10">
+        <span className="label text-fg/40">Demo · PQRSD</span>
+        <h1 className="mt-6 max-w-3xl text-balance text-4xl font-normal tracking-tight text-fg md:text-5xl">
           Bandeja con semáforo de términos
         </h1>
-        <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-deep/70">
+        <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-fg/75">
           Ordenada por urgencia, no por fecha de radicación. Los días que se
           muestran son hábiles: descuentan fines de semana y festivos
           colombianos. Toque cualquier fila para asignarla o responderla.
@@ -110,7 +110,7 @@ function Contenido() {
         <Cifra valor={resumen.abiertos} etiqueta="Abiertos en total" />
       </div>
 
-      <div className="mt-12 grid gap-8 border-t border-rule pt-8 sm:grid-cols-2 lg:w-2/3">
+      <div className="mt-12 grid gap-8 border-t border-line pt-8 sm:grid-cols-2 lg:w-2/3">
         <Seleccion
           etiqueta="Dependencia"
           value={dependencia}
@@ -139,25 +139,25 @@ function Contenido() {
                   activa={r.numero === activo}
                   onClick={() => setActivo(r.numero === activo ? null : r.numero)}
                 >
-                  <Celda className="whitespace-nowrap font-mono text-deep">{r.numero}</Celda>
+                  <Celda className="whitespace-nowrap font-mono text-fg">{r.numero}</Celda>
                   <Celda className="max-w-72">
                     <span className="line-clamp-1">{r.asunto}</span>
-                    <span className="text-xs text-deep/45">{TERMINOS[r.tipo].etiqueta}</span>
+                    <span className="text-xs text-fg/40">{TERMINOS[r.tipo].etiqueta}</span>
                   </Celda>
-                  <Celda className="whitespace-nowrap text-deep/60">{r.dependencia}</Celda>
+                  <Celda className="whitespace-nowrap text-fg/55">{r.dependencia}</Celda>
                   <Celda className="whitespace-nowrap">
                     {r.responsable ?? <span className="text-aviso">Sin asignar</span>}
                   </Celda>
-                  <Celda className="whitespace-nowrap text-deep/60">
+                  <Celda className="whitespace-nowrap text-fg/55">
                     {fechaCorta(e.limite.toISOString())}
                   </Celda>
                   <Celda className="whitespace-nowrap">
                     {e.semaforo === "cerrado" ? (
-                      <span className="text-deep/40">—</span>
+                      <span className="text-fg/40">—</span>
                     ) : (
                       <span
                         className={
-                          e.restantes < 0 ? "text-alerta" : e.restantes <= 5 ? "text-aviso" : "text-deep/70"
+                          e.restantes < 0 ? "text-alerta" : e.restantes <= 5 ? "text-aviso" : "text-fg/75"
                         }
                       >
                         {e.restantes < 0
@@ -174,7 +174,7 @@ function Contenido() {
             })}
           </Tabla>
           {lista.length === 0 ? (
-            <p className="py-10 text-sm text-deep/50">Ningún radicado con ese filtro.</p>
+            <p className="py-10 text-sm text-fg/55">Ningún radicado con ese filtro.</p>
           ) : null}
         </div>
 
@@ -194,9 +194,9 @@ function Contenido() {
               }
             />
           ) : (
-            <div className="border border-rule bg-paper p-8">
-              <p className="label text-deep/45">Detalle del radicado</p>
-              <p className="mt-5 text-sm leading-relaxed text-deep/70">
+            <div className="glass rounded-card p-8">
+              <p className="label text-fg/40">Detalle del radicado</p>
+              <p className="mt-5 text-sm leading-relaxed text-fg/75">
                 Toque una fila para ver su trazabilidad, asignarle responsable
                 y registrar la respuesta. Empiece por una fila roja: son las
                 que ya están incumplidas.
@@ -232,9 +232,9 @@ function Detalle({
   const cerrado = e.semaforo === "cerrado";
 
   return (
-    <div className="border-t-2 border-deep bg-paper p-8">
-      <p className="font-mono text-2xl text-deep">{radicado.numero}</p>
-      <p className="mt-3 text-pretty leading-relaxed text-deep/80">{radicado.asunto}</p>
+    <div className="glass rounded-card p-8">
+      <p className="font-mono text-2xl text-fg">{radicado.numero}</p>
+      <p className="mt-3 text-pretty leading-relaxed text-fg/90">{radicado.asunto}</p>
 
       <dl className="mt-8 flex flex-col gap-3 text-sm">
         {[
@@ -255,15 +255,15 @@ function Detalle({
         ]
           .filter((x): x is string[] => x !== null)
           .map(([k, v]) => (
-            <div key={k} className="flex justify-between gap-6 border-b border-rule pb-2.5">
-              <dt className="label text-deep/45">{k}</dt>
-              <dd className="text-right capitalize text-deep/80">{v}</dd>
+            <div key={k} className="flex justify-between gap-6 border-b border-line pb-2.5">
+              <dt className="label text-fg/40">{k}</dt>
+              <dd className="text-right capitalize text-fg/90">{v}</dd>
             </div>
           ))}
       </dl>
 
       {cerrado ? (
-        <p className="mt-8 text-sm text-deep/60">
+        <p className="mt-8 text-sm text-fg/55">
           Cerrado. Sale de la bandeja activa y entra al promedio de tiempo de
           respuesta del tablero.
         </p>
@@ -287,7 +287,7 @@ function Detalle({
               respuesta. Asígnelo arriba.
             </p>
           )}
-          <p className="text-xs leading-relaxed text-deep/50">
+          <p className="text-xs leading-relaxed text-fg/55">
             En el piloto esto adjunta el oficio de respuesta y lo notifica al
             peticionario. Aquí solo cierra el término, que es lo que se está
             demostrando.

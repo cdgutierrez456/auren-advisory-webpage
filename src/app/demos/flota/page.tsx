@@ -59,7 +59,7 @@ function Tablero() {
     <section className="pt-14">
       <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
         <div>
-          <p className="text-balance font-serif text-4xl leading-tight text-deep md:text-5xl">
+          <p className="text-balance font-serif text-4xl leading-tight text-fg md:text-5xl">
             {r.frase}.
           </p>
           <div className="mt-10 grid grid-cols-2 gap-8 sm:grid-cols-4">
@@ -70,8 +70,8 @@ function Tablero() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-7 border-t border-rule pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-          <p className="label text-deep/45">Umbrales del semáforo</p>
+        <div className="flex flex-col gap-7 border-t border-line pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+          <p className="label text-fg/40">Umbrales del semáforo</p>
           <Deslizador
             etiqueta="Crítico desde"
             valor={umbrales.critico}
@@ -94,7 +94,7 @@ function Tablero() {
               setUmbrales((u) => ({ critico: Math.min(u.critico, v - 5), proximo: v }))
             }
           />
-          <p className="text-sm leading-relaxed text-deep/55">
+          <p className="text-sm leading-relaxed text-fg/55">
             Muévalos y mire cambiar la cifra de arriba. En el piloto estos
             umbrales son de la empresa, no del proveedor.
           </p>
@@ -110,8 +110,8 @@ function Tablero() {
             return (
               <Fila key={v.placa}>
                 <Celda className="whitespace-nowrap">
-                  <span className="font-mono text-base text-deep">{v.placa}</span>
-                  <span className="ml-3 text-deep/45 capitalize">{v.tipo}</span>
+                  <span className="font-mono text-base text-fg">{v.placa}</span>
+                  <span className="ml-3 text-fg/40 capitalize">{v.tipo}</span>
                 </Celda>
                 <Celda className="whitespace-nowrap">{v.conductor}</Celda>
                 {DOCUMENTOS.map((d) => (
@@ -123,7 +123,7 @@ function Tablero() {
                       {numero(Math.abs(kmRestantes))} km pasado
                     </span>
                   ) : (
-                    <span className="text-deep/70">faltan {numero(kmRestantes)} km</span>
+                    <span className="text-fg/75">faltan {numero(kmRestantes)} km</span>
                   )}
                 </Celda>
                 <Celda>
@@ -162,14 +162,14 @@ function Doc({
 }) {
   const { estado, dias } = estadoDe(fecha, hoy, umbrales);
   const color =
-    estado === "vencido" ? "text-alerta" : estado === "critico" ? "text-aviso" : "text-deep/70";
+    estado === "vencido" ? "text-alerta" : estado === "critico" ? "text-aviso" : "text-fg/75";
 
   return (
     <Celda className="whitespace-nowrap">
       <span className={color}>
         {dias < 0 ? `venció hace ${Math.abs(dias)} d` : dias === 0 ? "vence hoy" : `en ${dias} d`}
       </span>
-      <span className="ml-3 text-deep/40">{fechaCorta(fecha)}</span>
+      <span className="ml-3 text-fg/40">{fechaCorta(fecha)}</span>
     </Celda>
   );
 }

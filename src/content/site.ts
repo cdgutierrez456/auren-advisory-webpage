@@ -1271,3 +1271,50 @@ export const homeFaqs: readonly Faq[] = [
     a: "Sí. Trabajamos presencialmente en Manizales, Pereira, Armenia y el Eje Cafetero, y de forma remota con el resto de Colombia. El recorrido en sitio del diagnóstico se hace presencial siempre: hay cosas de una operación que no se ven por videollamada.",
   },
 ];
+
+/**
+ * Testimonios.
+ *
+ * `borrador: true` significa TEXTO DE EJEMPLO: no lo dijo nadie. Se marca en
+ * pantalla con un distintivo visible y no se le pone nombre propio ni empresa
+ * inventada — un testimonio falso sin marcar es publicidad engañosa, no un
+ * placeholder. Al reemplazarlo por uno real: quitar `borrador`, poner nombre,
+ * cargo y empresa de quien autorizó la cita.
+ *
+ * `npm test` impide que un testimonio sin `borrador` se publique sin nombre.
+ */
+export type Testimonial = {
+  quote: string;
+  /** Cargo o rol. En los reales, va con nombre. */
+  role: string;
+  /** Nombre y empresa de quien autorizó la cita. Vacío solo en borradores. */
+  name?: string;
+  /** Servicio al que se refiere, para enlazar. */
+  service?: string;
+  /** true = texto de ejemplo, se marca en pantalla. */
+  borrador?: boolean;
+};
+
+export const testimonials: readonly Testimonial[] = [
+  {
+    quote:
+      "Llegamos pidiendo un software y salimos con algo mejor: el mapa de dónde se nos iba el tiempo. Dos de las tres cosas que íbamos a comprar no hacían falta.",
+    role: "Gerente de operaciones · Manufactura",
+    service: "auren-insight",
+    borrador: true,
+  },
+  {
+    quote:
+      "La primera vez que alguien nos dijo cuánto costaba la fricción en pesos. Con esa cifra la junta aprobó el proyecto en una sola reunión.",
+    role: "Dirección financiera · Compañía de servicios",
+    service: "auren-blueprint",
+    borrador: true,
+  },
+  {
+    quote:
+      "El proceso que armamos sigue corriendo solo un año después, y cuando falla algo se sabe dónde. Eso es lo que no habíamos tenido nunca.",
+    role: "Jefe de procesos · Logística",
+    service: "auren-flow",
+    borrador: true,
+  },
+];

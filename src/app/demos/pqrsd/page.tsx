@@ -94,11 +94,11 @@ function Formulario() {
   return (
     <section className="grid gap-14 pt-14 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
       <div>
-        <p className="label text-deep/45">{entidad.nombre}</p>
-        <h2 className="mt-5 text-3xl font-normal tracking-tight text-deep">
+        <p className="label text-fg/40">{entidad.nombre}</p>
+        <h2 className="mt-5 text-3xl font-normal tracking-tight text-fg">
           Radique su petición, queja, reclamo, sugerencia o denuncia
         </h2>
-        <p className="mt-4 max-w-xl text-sm leading-relaxed text-deep/60">
+        <p className="mt-4 max-w-xl text-sm leading-relaxed text-fg/55">
           El término empieza a correr el día hábil siguiente al de radicación.
           Aquí abajo se ve, antes de enviar, hasta cuándo tiene la entidad para
           responder.
@@ -128,7 +128,7 @@ function Formulario() {
             <Boton type="submit" variante="lima">
               Radicar
             </Boton>
-            <p className="text-sm text-deep/60" role="status">
+            <p className="text-sm text-fg/55" role="status">
               {error || `Vence el ${fechaCorta(limite.toISOString())}.`}
             </p>
           </div>
@@ -137,9 +137,9 @@ function Formulario() {
 
       <div className="flex flex-col gap-8">
         {acuse ? (
-          <div className="border-t-2 border-ok bg-ok-suave p-8">
-            <p className="label text-deep/50">Acuse de recibo</p>
-            <p className="mt-5 font-mono text-4xl text-deep">{acuse.numero}</p>
+          <div className="rounded-card border-t-2 border-ok bg-ok-suave p-8">
+            <p className="label text-fg/55">Acuse de recibo</p>
+            <p className="mt-5 font-mono text-4xl text-fg">{acuse.numero}</p>
             <dl className="mt-8 flex flex-col gap-4 text-sm">
               {[
                 ["Tipo", TERMINOS[acuse.tipo].etiqueta],
@@ -151,9 +151,9 @@ function Formulario() {
                 ["Dependencia", acuse.dependencia],
                 ["Responsable", "Sin asignar"],
               ].map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-6 border-b border-rule pb-3">
-                  <dt className="label text-deep/45">{k}</dt>
-                  <dd className="text-right text-deep/80">{v}</dd>
+                <div key={k} className="flex justify-between gap-6 border-b border-line pb-3">
+                  <dt className="label text-fg/40">{k}</dt>
+                  <dd className="text-right text-fg/90">{v}</dd>
                 </div>
               ))}
             </dl>
@@ -162,17 +162,17 @@ function Formulario() {
             </div>
           </div>
         ) : (
-          <div className="border border-rule bg-paper p-8">
-            <p className="label text-deep/45">Qué va a pasar al radicar</p>
-            <ol className="mt-6 flex flex-col gap-4 text-sm leading-relaxed text-deep/75">
-              <li className="border-l border-rule-strong pl-4">
+          <div className="glass rounded-card p-8">
+            <p className="label text-fg/40">Qué va a pasar al radicar</p>
+            <ol className="mt-6 flex flex-col gap-4 text-sm leading-relaxed text-fg/75">
+              <li className="border-l border-line-strong pl-4">
                 Se genera el consecutivo del año y se muestra el acuse en pantalla.
               </li>
-              <li className="border-l border-rule-strong pl-4">
+              <li className="border-l border-line-strong pl-4">
                 El término se calcula en días hábiles, descontando fines de
                 semana y festivos colombianos.
               </li>
-              <li className="border-l border-rule-strong pl-4">
+              <li className="border-l border-line-strong pl-4">
                 Entra a la bandeja <b>sin responsable asignado</b>, arriba del
                 todo. Así entra en la realidad.
               </li>

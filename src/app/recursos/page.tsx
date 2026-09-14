@@ -21,7 +21,7 @@ export default function Recursos() {
         title={
           <>
             <span className="block">Criterio, antes de la cotización.</span>
-            <span className="mt-7 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-deep/70 md:text-2xl">
+            <span className="mt-7 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-fg/75 md:text-2xl">
               Guías sobre automatización de procesos, transformación digital y decisiones
               de tecnología para empresas medianas.
             </span>
@@ -31,26 +31,26 @@ export default function Recursos() {
       />
 
       <Section tone="paper">
-        <ul className="grid gap-px border-y border-rule bg-rule">
+        <ul className="glass grid divide-y divide-line overflow-hidden rounded-card">
           {postsByDate.map((post) => (
-            <li key={post.slug} className="bg-paper">
+            <li key={post.slug}>
               <Link
                 href={`/recursos/${post.slug}`}
-                className="group grid gap-5 py-10 transition-colors duration-500 hover:bg-ivory md:grid-cols-[1fr_20rem] md:gap-16 md:px-6"
+                className="group grid gap-5 px-7 py-9 transition-colors duration-500 hover:bg-fg/5 md:grid-cols-[1fr_20rem] md:gap-16 md:px-10"
               >
                 <div className="flex flex-col gap-4">
-                  <h2 className="text-2xl leading-snug text-balance tracking-tight text-deep md:text-3xl">
+                  <h2 className="text-2xl leading-snug text-balance tracking-tight text-fg md:text-3xl">
                     {post.title}
                   </h2>
-                  <p className="max-w-2xl text-pretty leading-relaxed text-deep/65">
+                  <p className="max-w-2xl text-pretty leading-relaxed text-fg/55">
                     {post.lede}
                   </p>
                 </div>
                 <div className="flex flex-col gap-4 md:items-end md:text-right">
-                  <span className="label text-deep/40">
+                  <span className="label text-fg/40">
                     {fechaLarga(post.published)} · {post.minutes} min
                   </span>
-                  <span className="label flex items-center gap-3 text-deep transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100">
+                  <span className="label flex items-center gap-3 text-fg transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100">
                     Leer <Arrow />
                   </span>
                 </div>

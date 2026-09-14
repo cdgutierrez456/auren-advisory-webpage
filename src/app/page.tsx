@@ -7,6 +7,8 @@ import { Nosotros } from "@/components/sections/nosotros";
 import { Preguntas } from "@/components/sections/preguntas";
 import { Productos } from "@/components/sections/productos";
 import { Sectores } from "@/components/sections/sectores";
+import { Testimonios } from "@/components/sections/testimonios";
+import { CtaBand } from "@/components/ui";
 import { homeFaqs } from "@/content/site";
 import { faqPage, JsonLd } from "@/lib/schema";
 
@@ -21,8 +23,15 @@ export default function Home() {
       <Manifiesto />
       <Metodo />
       <Capacidades />
+      {/* Llamado a mitad de recorrido: quien ya entendió el método y las
+          capacidades no debería tener que llegar al pie para agendar. */}
+      <CtaBand
+        title="¿Sabe dónde se le va el tiempo hoy?"
+        lede="Nosotros tampoco, todavía. Por eso el primer paso es mirar la operación, no proponerle una herramienta. Una conversación de diagnóstico, sin compromiso."
+      />
       <Productos />
       <Sectores />
+      <Testimonios />
       <Nosotros />
       <Preguntas />
       <Contacto />
