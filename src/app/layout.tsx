@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { ChatWidget } from "@/components/chat-widget";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion";
 import { Nav } from "@/components/nav";
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="contenido">{children}</main>
           <Footer />
           <ToTop />
+          <ChatWidget />
         </MotionProvider>
       </body>
     </html>

@@ -1084,9 +1084,20 @@ export const services: readonly Service[] = [
 ];
 
 export const serviceBySlug = (slug: string) => services.find((s) => s.slug === slug);
+export type Founder = {
+  name: string;
+  /** Cargo completo, como va en la firma de correo. */
+  role: string;
+  /** Su correo, no uno genérico. Debe existir en `site.emails`. */
+  email: string;
+};
+
 /**
  * Nosotros.
- * PENDIENTE: nombres y perfiles de los dos socios fundadores.
+ *
+ * Los socios van con nombre y cargo a propósito: una consultora nueva, sin
+ * casos publicados, se sostiene sobre quién responde del trabajo. Una firma
+ * sin cara es una firma sin referencias.
  */
 export const about = {
   eyebrow: "Nosotros",
@@ -1120,6 +1131,24 @@ export const about = {
       body: "Lo que aprendimos en implementaciones reales, incluidas las que no salieron como esperábamos. Medimos antes y después porque la intuición sola se equivoca con frecuencia.",
     },
   ],
+
+  /**
+   * Los dos socios. El correo de cada uno sale de aquí: escribirle a
+   * `founders[n].email` es escribirle a esa persona, no a un buzón.
+   * `npm test` verifica que los dos correos existan en `site.emails`.
+   */
+  founders: [
+    {
+      name: "Juan Manuel Calvo Duque",
+      role: "Socio fundador · Dirección de Soluciones e IA Aplicada",
+      email: "juancalvo@aurenadv.com",
+    },
+    {
+      name: "Cristian David Gutiérrez Bedoya",
+      role: "Socio fundador · Dirección de Ingeniería y Automatización",
+      email: "cristiangutierrez@aurenadv.com",
+    },
+  ] as readonly Founder[],
 
   facts: [
     { k: "Fundada", v: "2026" },

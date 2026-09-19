@@ -34,7 +34,7 @@ export function Testimonios() {
                 </span>
               ) : null}
 
-              <blockquote className="font-serif text-2xl leading-snug text-balance text-fg md:text-[1.75rem]">
+              <blockquote className="font-serif text-2xl leading-snug text-balance text-fg md:text-3xl">
                 {t.quote}
               </blockquote>
 

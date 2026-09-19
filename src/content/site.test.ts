@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { homeFaqs, phases, sectors, serviceBySlug, services, site, testimonials } from "./site.ts";
+import { about, homeFaqs, phases, sectors, serviceBySlug, services, site, testimonials } from "./site.ts";
 
 // El listado, el footer y generateStaticParams se derivan de `services`.
 // Un slug duplicado o un `next` roto rompe rutas en silencio.
@@ -123,4 +123,25 @@ test("el servicio citado en un testimonio existe", () => {
   for (const t of testimonials) {
     if (t.service) assert.ok(serviceBySlug(t.service), `testimonio → «${t.service}» no existe`);
   }
+});
+
+// Los socios se muestran con su correo directo en /nosotros y el bot los cita.
+// Un correo que no exista en `site.emails` es un enlace `mailto:` a un buzón
+// que nadie lee.
+
+test("cada socio tiene nombre, cargo y un correo que existe", () => {
+  assert.equal(about.founders.length, 2, "la firma son dos socios");
+  for (const f of about.founders) {
+    assert.ok(f.name.trim(), "un socio sin nombre");
+    assert.ok(f.role.trim(), `${f.name} sin cargo`);
+    assert.ok(
+      (site.emails as readonly string[]).includes(f.email),
+      `${f.email} no está en site.emails`,
+    );
+  }
+});
+
+test("no hay dos socios con el mismo correo", () => {
+  const correos = about.founders.map((f) => f.email);
+  assert.equal(new Set(correos).size, correos.length);
 });

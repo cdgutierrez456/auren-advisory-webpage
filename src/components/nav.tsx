@@ -67,7 +67,7 @@ export function Nav() {
             <summary className="label flex h-10 cursor-pointer list-none items-center rounded-pill border border-line px-5 text-fg transition-colors hover:border-lime [&::-webkit-details-marker]:hidden">
               Menú
             </summary>
-            <div className="glass shadow-float absolute right-0 top-full mt-4 flex w-60 flex-col gap-1 rounded-card p-3">
+            <div className="panel shadow-float absolute right-0 top-full mt-4 flex w-60 flex-col gap-1 rounded-card p-3">
               {[...nav, { label: "Contacto", href: "/#contacto" }].map((item) => (
                 <Link
                   key={item.href}

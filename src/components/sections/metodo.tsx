@@ -32,7 +32,7 @@ export function Metodo() {
               </div>
 
               <div className="flex flex-col gap-4">
-                <h3 className="text-[clamp(1.75rem,2.6vw,2.5rem)] leading-none tracking-tight">
+                <h3 className="text-subhead">
                   {phase.title}
                 </h3>
                 <p className="text-balance text-lg leading-snug text-fg/90">{phase.claim}</p>

@@ -40,6 +40,9 @@ npm start
 | Pasos, industrias, métricas o preguntas de un servicio | la entrada en `services` |
 | La imagen que se ve al compartir | `src/app/opengraph-image.tsx` |
 | Número de WhatsApp, correo, dominio | `site` en `src/content/site.ts` |
+| Qué **sabe** el asistente del chat | `site.ts` → `npm run build:kb` |
+| Cómo se ve la burbuja del chat | `src/components/chat-widget.tsx` |
+| Negritas, enlaces y listas de la respuesta del bot | `src/lib/chat-format.ts` |
 
 ### Rutas
 
@@ -100,7 +103,9 @@ Las especificaciones, rutas y textos alternativos están en `IMAGENES.md`.
   `border-line`, `glass`, `text-accent`. El tema decide qué color crudo toma
   cada papel; por eso un `bg-deep` o un `text-ivory` sueltos en una sección
   rompen el tema claro. Excepción: `marca/page.tsx`, que exhibe la paleta
-  literal. Superficie elevada = `glass rounded-card`, y no hay otra.
+  literal. Superficie elevada = `glass rounded-card`; si flota sobre contenido con
+  scroll y lleva texto, `panel rounded-card` (el mismo filo, opaco, para que
+  se lea). No hay una tercera.
 - **Oscuro y claro.** El sistema manda por defecto; `data-theme` en `<html>`
   gana, lo escribe `theme-toggle.tsx` y un script en línea en `layout.tsx` lo
   aplica antes de pintar. **El diccionario completo está en `DESIGN.md`** —
@@ -120,7 +125,10 @@ Las especificaciones, rutas y textos alternativos están en `IMAGENES.md`.
 - Nada de iconografía de IA: cerebros, circuitos, robots, hologramas, ojos,
   bombillos. La marca es tecnológica por precisión, no por iconos.
 - El símbolo no se rota, no se inclina y no cambia de proporciones. Cualquier
-  aplicación nueva deriva de las coordenadas en `logo.tsx`.
+  aplicación nueva deriva de las coordenadas en `logo.tsx`. **El texto del
+  lockup se pone con `<Wordmark>`, nunca a mano**: la tarjeta de `/marca` lo
+  tenía copiado con el tracking cambiado (0.44em en vez de 0.46em), y era
+  justo la página que enseña cómo debe verse.
 
 ## Convenciones de código
 
@@ -174,6 +182,50 @@ backend, ni base de datos, ni lead que se pueda perder en silencio.
 
 Verificado con `npm test`: campos vacíos no abren nada, y el enlace apunta al
 número correcto con el texto codificado.
+
+## Asistente del chat
+
+Burbuja flotante en todas las páginas (`chat-widget.tsx`, montada en el
+layout). Habla con el servicio de `../bot-page` (FastAPI + Claude), que
+responde en streaming.
+
+- **El bot no tiene conocimiento propio.** Lee `bot-page/knowledge/auren.md`,
+  que genera `npm run build:kb` desde `site.ts`, `recursos.ts` y `demos.ts`.
+  Cambiar un texto del sitio y no correr `build:kb` deja al bot contestando lo
+  que la página ya no dice — y hay que reiniciar el servicio de Python después,
+  porque el archivo se lee al arrancar.
+- **Los testimonios `borrador` no llegan al bot.** El generador los filtra: son
+  texto de ejemplo, y un bot citándolos como reales es publicidad engañosa.
+- **El bot nunca da precios.** El sitio no publica ninguno y el prompt se lo
+  prohíbe explícitamente; ante la pregunta, remite al diagnóstico.
+- **Sin persistencia, igual que la Radiografía.** La conversación vive en el
+  estado de React: sobrevive a la navegación (el layout no se desmonta) y muere
+  al recargar. Nada de localStorage.
+- **El texto del bot se formatea, no se inyecta.** `src/lib/chat-format.ts`
+  convierte `**negrita**`, viñetas, listas numeradas, rutas y URLs en datos; el
+  widget los pinta como nodos React. Nada de `dangerouslySetInnerHTML`: eso es
+  salida de un modelo. Las rutas del sitio van por `<Link>`, así que navegar
+  desde el chat no recarga y la conversación sigue viva.
+- **Las raíces de ruta enlazables son una lista explícita** (`RAICES` en
+  `chat-format.ts`). Con un `/\w+/` suelto, un «24/7» se volvería un enlace
+  roto. Sección nueva en el sitio → se añade ahí, o el bot la escribirá como
+  texto muerto.
+- **El enlace lleva etiqueta, nunca la ruta cruda.** El bot escribe
+  `[Auren Insight](/servicios/auren-insight)` y el enlace queda dentro de la
+  frase; una ruta pelada en mitad de un párrafo le corta la lectura a
+  cualquiera. Si aun así manda una pelada, `ETIQUETAS` en `chat-format.ts` le
+  repone el nombre («/radiografia» → «Radiografía Auren»).
+- **Un destino que no existe pierde el enlace, no el texto.** El modelo puede
+  inventarse `/precios`; se pinta el texto sin enlazar, porque un 404 desde el
+  chat es peor que texto plano.
+- **«Nombre (Nombre)» se funde en un solo enlace.** Cuando el bot escribe
+  `**Auren Insight** (/servicios/auren-insight)`, el etiquetado automático
+  repone el nombre y el resultado se leía duplicado. `fusionarRedundancia()`
+  absorbe el paréntesis y deja un enlace único, que hereda la negrita
+  (`fuerte`). El artículo se queda FUERA: se subraya «formulario de contacto»,
+  no «el formulario de contacto».
+- `NEXT_PUBLIC_BOT_URL` apunta al servicio; sin ella asume `localhost:8000`.
+  Ver `.env.example`.
 
 ## Integrar servicios en el futuro
 

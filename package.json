@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:kb": "node scripts/build-kb.ts",
     "start": "next start",
     "test": "node --experimental-strip-types --test 'src/**/*.test.ts'"
   },

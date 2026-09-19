@@ -35,6 +35,7 @@ componentes, y lo único que el tema reasigna:
 | `text-fg` | texto | ivory | ink |
 | `border-line` / `-strong` | filos | ivory 11% / 20% | ink 12% / 22% |
 | `glass` | superficie elevada | deep 42% | paper 62% |
+| `panel` | superficie elevada **opaca** | deep-700 | paper |
 | `text-accent` | **texto** de acento | lima | **deep** |
 
 La última fila es una regla de marca, no una decisión estética: **lima nunca es
@@ -69,7 +70,19 @@ siempre con `rounded-card`, y con `shadow-float` cuando flota sobre luz.
 Listas largas (servicios, artículos, pasos) no son N tarjetas: son **un** panel
 glass con `divide-line`. Menos ruido, misma familia.
 
+`@utility panel` es su hermano opaco, y existe por legibilidad, no por estética:
+el glass deja pasar el 42% del fondo (62% en claro), y cuando lo que corre por
+detrás es contenido haciendo scroll, el texto de encima no se lee. Mismo filo,
+mismo radio, sin `backdrop-filter` —no pinta nada detrás de algo opaco y sí
+cuesta GPU.
+
+**Cuál usar:** detrás hay una sección quieta → `glass`. Detrás pasa contenido
+con scroll y encima va texto → `panel`. Hoy lo usan el menú desplegable de móvil
+y el panel del chat.
+
 ## 4. Escala de texto
+
+**Jerarquía por opacidad** — cuánto pesa un texto dentro de su bloque:
 
 | Peldaño | Clase | Uso |
 |---|---|---|
@@ -81,6 +94,39 @@ glass con `divide-line`. Menos ruido, misma familia.
 
 Cinco peldaños, y solo cinco. Salir de la tabla es la forma más rápida de romper
 la armonía — ya pasó una vez: había doce opacidades sueltas antes de normalizar.
+
+**Jerarquía por tamaño** — qué tan grande. Los cuatro de arriba son tokens de
+`@theme`; los tres de abajo son de Tailwind y son los que más se usan:
+
+| Clase | Tamaño | Uso |
+|---|---|---|
+| `text-mega` / `text-display` | fluido | héroes y aperturas de página |
+| `text-headline` | fluido | títulos de sección |
+| `text-subhead` | 27–38px | títulos de fase y de tarjeta grande |
+| `text-quote` | 32–58px | cita editorial en serif |
+| `text-lede` | 17–22px | bajada de un titular |
+| `text-base` | 16px | **texto que se lee seguido**: párrafos, conversación del chat |
+| `text-sm` | 14px | interfaz: tarjetas, listados, metadatos |
+| `text-xs` / `.label` | 12 / 11px | chips, etiquetas de sistema |
+
+La línea que importa es **16px para leer, 14px para interfaz**. El chat nació en
+`text-sm` y con eso su texto salía un 12% más chico que el de la página: misma
+familia, mismas features, y aun así se leía como «aquí la tipografía es otra».
+Un cuerpo por debajo de 16px en un campo de texto tiene además un costo
+concreto: Safari en iOS hace zoom al enfocarlo.
+
+`text-subhead` y `text-quote` nacieron de una auditoría: tres secciones se
+habían inventado por separado un `clamp()` propio y parecido —1.6/2.4vw/2.25,
+1.75/2.6vw/2.5, 2/4.2vw/3.6— para el mismo papel. Tres escalas casi iguales no
+son un sistema, son tres accidentes. Ya no queda ningún tamaño arbitrario en
+`src/`.
+
+**La única excepción son las tarjetas de visita de `/marca`**, y es la misma
+excepción que la paleta literal de esa página: son un especimen impreso a
+escala, donde 300px representan los 85mm reales. A 16px no cabría ni el
+eslogan. Su escala se declara UNA vez (`--tarjeta: 10px`) y lo demás se deriva
+en `em`, así que no hay número suelto que alguien pueda copiar creyendo que es
+sistema.
 
 ## 5. Tipografía
 

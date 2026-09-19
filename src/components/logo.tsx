@@ -52,6 +52,65 @@ export function Mark({
 }
 
 /**
+ * El texto del lockup: AUREN sobre ADVISORY, en las proporciones del manual.
+ *
+ * Existe separado del lockup porque hay aplicaciones donde el símbolo y el
+ * texto no van juntos —una tarjeta de visita con el vértice arriba y el
+ * nombre abajo, por ejemplo— y la regla es que TODA aplicación derive de
+ * aquí. Copiar los tamaños a mano es como se acaba con dos versiones del
+ * lockup que no coinciden.
+ *
+ * `size` es el del símbolo con el que se acompaña: el texto se calcula solo.
+ */
+export function Wordmark({
+  size = 44,
+  tone = "deep",
+  align = "start",
+  className = "",
+}: {
+  size?: number;
+  tone?: Tone;
+  align?: "start" | "center";
+  className?: string;
+}) {
+  const inverted = tone === "invert";
+  const themed = tone === "tema";
+
+  return (
+    <span
+      className={`flex flex-col ${align === "center" ? "items-center gap-1.5" : "gap-1"} ${className}`}
+    >
+      <span
+        className="wordmark leading-none"
+        style={{
+          fontSize: size * 0.5,
+          color: themed ? "var(--color-fg)" : inverted ? "#F2F1EA" : undefined,
+        }}
+      >
+        AUREN
+      </span>
+      <span
+        className="leading-none"
+        style={{
+          fontSize: Math.max(8, size * 0.17),
+          letterSpacing: "0.46em",
+          // El tracking reparte espacio también DESPUÉS de la última letra;
+          // sin compensarlo, el bloque queda descentrado respecto a AUREN.
+          marginRight: "-0.46em",
+          color: themed
+            ? "var(--color-accent)"
+            : inverted
+              ? "#C8F169"
+              : "color-mix(in srgb, #12343B 62%, transparent)",
+        }}
+      >
+        ADVISORY
+      </span>
+    </span>
+  );
+}
+
+/**
  * Lockup completo. `orientation` cubre las versiones horizontal y vertical del
  * manual; el símbolo suelto se usa con <Mark /> directamente.
  */
@@ -66,8 +125,6 @@ export function Logo({
   orientation?: "horizontal" | "vertical";
   className?: string;
 }) {
-  const inverted = tone === "invert";
-  const themed = tone === "tema";
   const vertical = orientation === "vertical";
 
   return (
@@ -77,32 +134,7 @@ export function Logo({
       } ${className}`}
     >
       <Mark size={size} tone={tone} />
-      <span className={`flex flex-col ${vertical ? "items-center gap-1.5" : "gap-1"}`}>
-        <span
-          className="wordmark leading-none"
-          style={{
-            fontSize: size * 0.5,
-            color: themed ? "var(--color-fg)" : inverted ? "#F2F1EA" : undefined,
-          }}
-        >
-          AUREN
-        </span>
-        <span
-          className="leading-none"
-          style={{
-            fontSize: Math.max(8, size * 0.17),
-            letterSpacing: "0.46em",
-            marginRight: "-0.46em",
-            color: themed
-              ? "var(--color-accent)"
-              : inverted
-                ? "#C8F169"
-                : "color-mix(in srgb, #12343B 62%, transparent)",
-          }}
-        >
-          ADVISORY
-        </span>
-      </span>
+      <Wordmark size={size} tone={tone} align={vertical ? "center" : "start"} />
       <span className="sr-only">Auren Advisory</span>
     </span>
   );

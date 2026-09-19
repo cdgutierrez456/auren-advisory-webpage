@@ -61,6 +61,23 @@ export default function NosotrosPage() {
               </p>
             ))}
             <Figura figure={about.photo} />
+
+            {/* Los socios, con nombre y correo directo. En una firma nueva
+                esta es la pieza de confianza: quién responde del trabajo. */}
+            <ul className="mt-2 grid gap-4 sm:grid-cols-2">
+              {about.founders.map((f) => (
+                <li key={f.email} className="glass flex flex-col gap-2 rounded-card px-6 py-5">
+                  <p className="text-pretty text-base text-fg">{f.name}</p>
+                  <p className="text-pretty text-sm leading-relaxed text-fg/55">{f.role}</p>
+                  <a
+                    href={`mailto:${f.email}`}
+                    className="mt-1 text-sm break-all text-accent underline decoration-line-strong underline-offset-2 transition-colors hover:decoration-lime"
+                  >
+                    {f.email}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </Section>
@@ -81,7 +98,7 @@ export default function NosotrosPage() {
               className="glass flex flex-col gap-6 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-10 md:pb-14"
             >
               <span className="font-mono text-xs tracking-widest text-accent">{d.index}</span>
-              <h3 className="text-[clamp(1.6rem,2.4vw,2.25rem)] leading-none tracking-tight">
+              <h3 className="text-subhead">
                 {d.title}
               </h3>
               <p className="text-pretty text-sm leading-relaxed text-fg/60">{d.body}</p>

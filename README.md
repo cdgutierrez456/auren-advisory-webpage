@@ -7,6 +7,9 @@ npm install
 npm run dev
 ```
 
+El chat del sitio necesita además el servicio de `../bot-page` corriendo.
+Después de cambiar textos en `src/content/`, `npm run build:kb` los pasa al bot.
+
 - `/` — presentación: enfoque, capacidades, arquitectura de servicios, contacto.
 - `/marca` — manual de identidad vivo (símbolo *El Vértice*, versiones, paleta, tipografía).
 - `/demos` — demos vendibles de cada servicio. `noindex`: se comparten por enlace, no por buscador.

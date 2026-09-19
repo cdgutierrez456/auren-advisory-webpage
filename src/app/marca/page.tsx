@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
-import { Logo, Mark } from "@/components/logo";
+import { Logo, Mark, Wordmark } from "@/components/logo";
 import { Section, SectionHead } from "@/components/ui";
 import { site } from "@/content/site";
 
@@ -213,26 +213,38 @@ export default function Marca() {
       {/* 05 — TARJETA */}
       <Section tone="ivory">
         <SectionHead index="05" label="Aplicaciones" />
+        {/* Las dos caras de la tarjeta de visita.
+
+            Son un ESPECIMEN IMPRESO A ESCALA, no interfaz: 300px representan
+            los 85mm reales de una tarjeta. Por eso su tipografía no sale de la
+            escala del sitio —a 16px no cabría ni el eslogan— sino de la escala
+            de la pieza, declarada UNA vez en `--tarjeta` y derivada en `em`.
+            Es la misma excepción que la paleta literal de esta página. */}
         <div className="glass flex flex-wrap gap-6 rounded-card p-10 md:p-14">
-          <div className="flex h-[172px] w-full max-w-[300px] flex-col justify-between rounded-lg bg-deep p-6">
+          <div
+            className="flex h-[172px] w-full max-w-[300px] flex-col justify-between rounded-lg bg-deep p-6 text-[length:var(--tarjeta)]"
+            style={{ "--tarjeta": "10px" } as React.CSSProperties}
+          >
             <Mark size={34} tone="invert" />
-            <div className="flex flex-col gap-1.5">
-              <span className="wordmark text-xl text-ivory">AUREN</span>
-              <span className="text-[8px] tracking-[0.44em] text-accent">ADVISORY</span>
-            </div>
+            {/* Derivado de `logo.tsx`: el manual no puede enseñar un lockup
+                con proporciones distintas a las que el código aplica. */}
+            <Wordmark size={40} tone="invert" />
           </div>
-          <div className="flex h-[172px] w-full max-w-[300px] flex-col justify-between rounded-lg bg-ivory p-6 text-ink">
+          <div
+            className="flex h-[172px] w-full max-w-[300px] flex-col justify-between rounded-lg bg-ivory p-6 text-[length:var(--tarjeta)] text-ink"
+            style={{ "--tarjeta": "10px" } as React.CSSProperties}
+          >
             <div className="flex flex-col gap-1">
-              <span className="text-sm font-semibold text-ink">Nombre Apellido</span>
-              <span className="label text-ink/55">Director</span>
+              <span className="text-[1.4em] font-semibold text-ink">Nombre Apellido</span>
+              <span className="text-[0.8em] tracking-[0.34em] text-ink/55 uppercase">Director</span>
             </div>
-            <div className="flex flex-col gap-1 text-[10px] text-ink/75">
+            <div className="flex flex-col gap-1 text-ink/75">
               <span>{site.emails[0]}</span>
               <span>{site.domain}</span>
             </div>
             <div className="flex items-center gap-2.5">
               <span className="h-[3px] w-5 bg-lime" />
-              <span className="text-[8px] tracking-[0.3em] text-ink/75 uppercase">
+              <span className="text-[0.8em] tracking-[0.3em] text-ink/75 uppercase">
                 {site.tagline}
               </span>
             </div>

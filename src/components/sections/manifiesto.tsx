@@ -8,7 +8,7 @@ export function Manifiesto() {
     <Section tone="paper">
       <div className="grid gap-16 md:grid-cols-[1.15fr_1fr] md:gap-24">
         <Reveal as="blockquote">
-          <p className="font-serif text-[clamp(2rem,4.2vw,3.6rem)] leading-[1.12] text-balance text-fg">
+          <p className="font-serif text-quote text-balance text-fg">
             {manifesto.quote}
           </p>
         </Reveal>
