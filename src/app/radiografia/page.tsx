@@ -51,7 +51,7 @@ export default function Radiografia() {
         </Reveal>
       </Section>
 
-      <Section className="!pt-0">
+      <Section tone="paper" className="!pt-0 !pb-24 md:!pb-32">
         <RadiografiaForm />
       </Section>
 

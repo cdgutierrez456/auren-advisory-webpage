@@ -42,10 +42,7 @@ function fillVars(prompt: string, op?: OperationType): string {
     .replace("{cliente}", found?.cliente ?? DEFAULT_CLIENTE);
 }
 
-type Screen =
-  | { kind: "c1" }
-  | { kind: "c2" }
-  | { kind: "question"; index: number };
+type Screen = { kind: "c1" } | { kind: "c2" } | { kind: "question"; index: number };
 
 const screens: Screen[] = [
   { kind: "c1" },
@@ -90,8 +87,9 @@ export function RadiografiaForm() {
       toTop();
       return;
     }
+    // Sin scroll entre pasos: el panel tiene alto mínimo y cambia en su sitio,
+    // así no se mete debajo de la barra fija.
     setStep((s) => Math.min(screens.length - 1, s + 1));
-    toTop();
   }
 
   function goBack() {
@@ -101,7 +99,6 @@ export function RadiografiaForm() {
       return;
     }
     setStep((s) => Math.max(0, s - 1));
-    toTop();
   }
 
   function restart() {
@@ -121,7 +118,6 @@ export function RadiografiaForm() {
     );
   }
 
-  // Progreso: cuenta solo las 12 que puntúan; el contexto va aparte.
   const answeredScored = questions.filter((q) => answers[q.id] !== undefined).length;
 
   return (
@@ -212,7 +208,6 @@ function ProgressHead({
     screen.kind === "question"
       ? `${nav.step} ${screen.index + 1} ${nav.of} ${total}`
       : nav.context;
-  // La barra sigue las 12 que puntúan; en contexto va casi vacía a propósito.
   const pct =
     screen.kind === "question"
       ? ((screen.index + (answeredScored > screen.index ? 1 : 0)) / total) * 100
@@ -283,9 +278,7 @@ function QuestionScreen({
         type="button"
         onClick={() => onSelect("NA")}
         className={`label self-start rounded-pill px-4 py-2 transition-colors duration-200 ${
-          value === "NA"
-            ? "bg-fg/10 text-fg"
-            : "text-fg/40 hover:text-fg/70"
+          value === "NA" ? "bg-fg/10 text-fg" : "text-fg/40 hover:text-fg/70"
         }`}
       >
         {radiografia.naLabel}
@@ -395,11 +388,16 @@ function Result({
   if (result.offScale) {
     return (
       <ResultShell eyebrow={copy.eyebrow}>
-        <h2 className="text-headline text-balance font-normal">{copy.offScale.title}</h2>
-        <p className="mt-6 max-w-2xl text-pretty text-lede leading-relaxed text-fg/75">
-          {copy.offScale.body}
-        </p>
-        <CallToAction result={result} context={context} onReset={onReset} soft={false} bare />
+        <div className="max-w-2xl">
+          <h2 className="text-headline text-balance font-normal">{copy.offScale.title}</h2>
+          <p className="mt-6 text-pretty text-lede leading-relaxed text-fg/75">
+            {copy.offScale.body}
+          </p>
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <CtaLink href={callUrl(result, context)}>{copy.call.cta}</CtaLink>
+            <ResetLink onReset={onReset} />
+          </div>
+        </div>
       </ResultShell>
     );
   }
@@ -410,9 +408,9 @@ function Result({
   return (
     <ResultShell eyebrow={copy.eyebrow}>
       {/* Puntaje + banda */}
-      <div className="grid gap-10 md:grid-cols-[auto_1fr] md:gap-20">
+      <div className="grid gap-10 md:grid-cols-[auto_1fr] md:items-start md:gap-16">
         <div className="flex items-baseline gap-2">
-          <span className="tnum text-mega font-normal leading-none text-accent [text-shadow:0_0_44px_rgba(200,241,105,0.45)]">
+          <span className="tnum text-display font-normal leading-none text-accent [text-shadow:0_0_44px_rgba(200,241,105,0.45)]">
             {result.total}
           </span>
           <span className="label text-fg/55">/ {result.max}</span>
@@ -422,53 +420,77 @@ function Result({
           <p className="font-serif text-quote text-balance leading-snug text-fg/90">
             {band.verdict}
           </p>
-          <p className="max-w-xl text-pretty leading-relaxed text-fg/60">{band.body}</p>
+          <p className="max-w-2xl text-pretty leading-relaxed text-fg/60">{band.body}</p>
         </div>
       </div>
 
-      {/* Bloque 1 — el costo en horas */}
+      {/* Bloque 1 — el costo en horas (ancho completo) */}
       {hours ? (
-        <div className="mt-14 rounded-card border border-lime/30 bg-lime/[0.06] p-7 md:p-9">
-          <p className="max-w-2xl text-pretty text-lede leading-relaxed text-fg/90">{hours}</p>
+        <div className="mt-12 rounded-card border border-lime/30 bg-lime/[0.06] p-7 md:p-9">
+          <p className="max-w-3xl text-pretty text-lede leading-relaxed text-fg/90">{hours}</p>
         </div>
       ) : null}
 
-      {/* Focos */}
-      <div className="mt-14 border-t border-line pt-12">
-        <h3 className="label text-fg/55">{copy.focusTitle}</h3>
-        {result.focuses.length === 0 ? (
-          <p className="mt-6 max-w-xl text-pretty leading-relaxed text-fg/60">{copy.focusNone}</p>
-        ) : (
-          <ol className="mt-8 grid gap-4 md:grid-cols-3">
-            {result.focuses.map((focus) => (
-              <li key={focus.id} className="glass flex flex-col gap-4 rounded-card p-7">
-                <div className="flex items-center gap-3">
-                  <span aria-hidden className="h-0.5 w-6 bg-lime" />
-                  <span className="label text-fg/55">
-                    {focus.score} / {focus.max}
-                  </span>
-                </div>
-                <p className="text-xl leading-tight tracking-tight text-fg">{focus.name}</p>
-                <p className="text-pretty text-sm leading-relaxed text-fg/60">{focus.phrase}</p>
-              </li>
-            ))}
-          </ol>
-        )}
+      {/* Focos a la izquierda · cierre a la derecha */}
+      <div className="mt-14 grid gap-12 border-t border-line pt-12 md:grid-cols-2 md:gap-16">
+        <div>
+          <h3 className="label text-fg/55">{copy.focusTitle}</h3>
+          {result.focuses.length === 0 ? (
+            <p className="mt-6 text-pretty leading-relaxed text-fg/60">{copy.focusNone}</p>
+          ) : (
+            <ol className="mt-8 flex flex-col gap-4">
+              {result.focuses.map((focus) => (
+                <li key={focus.id} className="glass rounded-card p-7">
+                  <div className="flex items-center gap-3">
+                    <span aria-hidden className="h-0.5 w-6 bg-lime" />
+                    <span className="label text-fg/55">
+                      {focus.score} / {focus.max}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-xl leading-tight tracking-tight text-fg">{focus.name}</p>
+                  <p className="mt-3 text-pretty text-sm leading-relaxed text-fg/60">
+                    {focus.phrase}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-8">
+          {band.insightBridge ? (
+            <p className="text-pretty text-lede leading-relaxed text-fg/90">{copy.bridge}</p>
+          ) : null}
+
+          {band.insightBridge ? (
+            <div>
+              <p className="text-fg/90">{copy.call.title}</p>
+              <ul className="mt-5 flex flex-col gap-3">
+                {copy.call.points.map((point) => (
+                  <li key={point} className="flex gap-4 text-pretty leading-relaxed text-fg/75">
+                    <span aria-hidden className="mt-2.5 h-0.5 w-5 shrink-0 bg-lime" />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+              <CtaLink href={callUrl(result, context)}>
+                {band.insightBridge ? copy.call.cta : copy.ctaSoft}
+              </CtaLink>
+              <ResetLink onReset={onReset} />
+            </div>
+            {band.insightBridge ? <p className="text-sm text-fg/45">{copy.call.ctaSub}</p> : null}
+            {band.insightBridge ? <p className="text-sm text-fg/45">{copy.capacity}</p> : null}
+            <p className="max-w-md text-pretty text-sm leading-relaxed text-fg/45">
+              {copy.secondary}
+            </p>
+          </div>
+        </div>
       </div>
-
-      {/* Bloque 3 — puente al Insight (solo bandas media y alta) */}
-      {band.insightBridge ? (
-        <p className="mt-14 max-w-2xl text-pretty text-lede leading-relaxed text-fg/90">
-          {copy.bridge}
-        </p>
-      ) : null}
-
-      <CallToAction
-        result={result}
-        context={context}
-        onReset={onReset}
-        soft={!band.insightBridge}
-      />
     </ResultShell>
   );
 }
@@ -492,66 +514,27 @@ function ResultShell({ eyebrow, children }: { eyebrow: string; children: React.R
   );
 }
 
-/** Bloque 4 (o CTA suave para «Base sólida») + capacidad + salidas. */
-function CallToAction({
-  result,
-  context,
-  onReset,
-  soft,
-  bare = false,
-}: {
-  result: ReturnType<typeof scoreRadiografia>;
-  context: Context;
-  onReset: () => void;
-  soft: boolean;
-  bare?: boolean;
-}) {
-  const copy = radiografia.result;
-  const href = callUrl(result, context);
-
+function CtaLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <div className="mt-14 border-t border-line pt-12">
-      {!bare && !soft ? (
-        <div className="mb-9">
-          <p className="text-fg/90">{copy.call.title}</p>
-          <ul className="mt-5 flex flex-col gap-3">
-            {copy.call.points.map((point) => (
-              <li key={point} className="flex gap-4 text-pretty leading-relaxed text-fg/75">
-                <span aria-hidden className="mt-2.5 h-0.5 w-5 shrink-0 bg-lime" />
-                {point}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="label inline-flex items-center gap-3 rounded-pill bg-lime px-8 py-4 text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-6px_var(--color-lime)] active:translate-y-0 active:scale-[0.97]"
+    >
+      {children} <Arrow />
+    </a>
+  );
+}
 
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="label inline-flex items-center gap-3 rounded-pill bg-lime px-8 py-4 text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-6px_var(--color-lime)] active:translate-y-0 active:scale-[0.97]"
-          >
-            {soft ? copy.ctaSoft : copy.call.cta} <Arrow />
-          </a>
-          <button
-            type="button"
-            onClick={onReset}
-            className="label text-fg/55 underline-offset-8 transition-colors duration-300 hover:text-fg hover:underline"
-          >
-            {copy.reset}
-          </button>
-        </div>
-
-        {!soft && !bare ? <p className="text-sm text-fg/45">{copy.call.ctaSub}</p> : null}
-        {!soft && !bare ? <p className="mt-4 text-sm text-fg/45">{copy.capacity}</p> : null}
-        {!bare ? (
-          <p className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-fg/45">
-            {copy.secondary}
-          </p>
-        ) : null}
-      </div>
-    </div>
+function ResetLink({ onReset }: { onReset: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onReset}
+      className="label text-fg/55 underline-offset-8 transition-colors duration-300 hover:text-fg hover:underline"
+    >
+      {radiografia.result.reset}
+    </button>
   );
 }
