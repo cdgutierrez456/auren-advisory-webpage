@@ -359,25 +359,22 @@ export const radiografia = {
       2: "Según lo que respondió, su equipo dedica cerca de 480 horas al año a mover información a mano. Son tres meses de una persona de tiempo completo.",
       3: "Según lo que respondió, su equipo dedica más de 700 horas al año a mover información a mano. Son cuatro meses y medio de una persona de tiempo completo.",
     } as Record<number, string>,
-    /** Bloque 3 — el puente al Insight (solo bandas media y alta). */
+    /** Puente al Insight (solo bandas media y alta). Deja claro que es un
+        servicio aparte y pagado, distinto de esta lectura gratis. */
     bridge:
-      "El Auren Insight toma estos focos y les pone números de su propia operación. Tres visitas a su empresa en unas tres semanas, y al final queda con un documento que dice qué transformar, en qué orden, cuánto cuesta cada cosa y cuánto le devuelve. Con eso usted decide: puede construirlo con nosotros o con quien quiera. El criterio ya lo tiene.",
-    /** Bloque 4 — qué pasa en la llamada. */
-    call: {
-      title: "La llamada dura 30 minutos y esto es lo que pasa:",
-      points: [
-        "Le leemos su resultado y le decimos qué vimos que usted todavía no vio.",
-        "Le damos una primera estimación de lo que le está costando el foco principal.",
-        "Si tiene sentido un Insight, se lo decimos. Si no, también.",
-      ],
-      cta: "Agendar mi lectura de resultados",
-      ctaSub: "30 minutos · por videollamada · con uno de los dos socios",
-    },
+      "Esta radiografía le muestra dónde mirar. Ponerle números a estos focos (cuánto cuesta cada uno y cuál conviene transformar primero) es el trabajo del Auren Insight: nuestro diagnóstico a fondo, con visitas a su empresa y un documento con qué hacer y en qué orden. Es un servicio aparte; esta lectura es suya y no cuesta nada.",
+    /** Acción principal: hablarlo por WhatsApp. Honesto: el resultado viaja en
+        el mensaje, así que no prometemos una lectura preparada de antemano. */
+    talk: "¿Quiere que le demos una primera lectura de estos focos, sin costo? Escríbanos por WhatsApp: su resultado va incluido en el mensaje.",
+    cta: "Hablar de mi resultado",
+    ctaSub: "Se abre WhatsApp con su resultado ya listo. Le responde uno de los dos socios.",
+    /** Enlace al servicio pagado, para quien quiera leer de qué se trata. */
+    insightCta: "Ver el Auren Insight",
+    insightHref: "/servicios/auren-insight",
     /** CTA suave para la banda «Base sólida». */
     ctaSoft: "Escribirnos por WhatsApp",
-    /** Bloque 5 — capacidad. ponytail: solo publicar si es verdad; ajustar el número. */
-    capacity:
-      "Hacemos tres diagnósticos al mes. Es el techo real de dos personas trabajando a fondo en cada uno.",
+    /** Nota de capacidad. ponytail: sin número inventado; ajustar si aplica. */
+    capacity: "Tomamos pocos diagnósticos al mes para hacer cada uno a fondo.",
     /** 5 o más «No aplica»: se sale del patrón que mide la radiografía. */
     offScale: {
       title: "Su operación se sale del patrón que mide esta radiografía.",

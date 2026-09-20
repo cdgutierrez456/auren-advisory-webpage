@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { Arrow } from "@/components/ui";
 import {
   axes,
@@ -394,7 +395,7 @@ function Result({
             {copy.offScale.body}
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <CtaLink href={callUrl(result, context)}>{copy.call.cta}</CtaLink>
+            <CtaLink href={callUrl(result, context)}>{copy.cta}</CtaLink>
             <ResetLink onReset={onReset} />
           </div>
         </div>
@@ -459,37 +460,33 @@ function Result({
 
         <div className="flex flex-col gap-8">
           {band.insightBridge ? (
-            <p className="text-pretty text-lede leading-relaxed text-fg/90">{copy.bridge}</p>
-          ) : null}
-
-          {band.insightBridge ? (
-            <div>
-              <p className="text-fg/90">{copy.call.title}</p>
-              <ul className="mt-5 flex flex-col gap-3">
-                {copy.call.points.map((point) => (
-                  <li key={point} className="flex gap-4 text-pretty leading-relaxed text-fg/75">
-                    <span aria-hidden className="mt-2.5 h-0.5 w-5 shrink-0 bg-lime" />
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-              <CtaLink href={callUrl(result, context)}>
-                {band.insightBridge ? copy.call.cta : copy.ctaSoft}
-              </CtaLink>
-              <ResetLink onReset={onReset} />
-            </div>
-            {band.insightBridge ? <p className="text-sm text-fg/45">{copy.call.ctaSub}</p> : null}
-            {band.insightBridge ? <p className="text-sm text-fg/45">{copy.capacity}</p> : null}
-            <p className="max-w-md text-pretty text-sm leading-relaxed text-fg/45">
-              {copy.secondary}
-            </p>
-          </div>
+            <>
+              <p className="text-pretty leading-relaxed text-fg/75">{copy.bridge}</p>
+              <div className="flex flex-col gap-4">
+                <p className="text-pretty leading-relaxed text-fg/90">{copy.talk}</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <CtaLink href={callUrl(result, context)}>{copy.cta}</CtaLink>
+                  <Link
+                    href={copy.insightHref}
+                    className="label inline-flex items-center gap-2 rounded-pill border border-line-strong px-6 py-4 text-fg transition-all duration-300 hover:-translate-y-0.5 hover:border-lime hover:text-accent"
+                  >
+                    {copy.insightCta} <Arrow />
+                  </Link>
+                </div>
+                <p className="text-sm text-fg/45">{copy.ctaSub}</p>
+                <p className="text-sm text-fg/45">{copy.capacity}</p>
+              </div>
+            </>
+          ) : (
+            <CtaLink href={callUrl(result, context)}>{copy.ctaSoft}</CtaLink>
+          )}
         </div>
+      </div>
+
+      {/* Salidas «no ahora», a lo ancho y separadas del CTA principal. */}
+      <div className="mt-12 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 border-t border-line pt-8">
+        <p className="max-w-md text-pretty text-sm leading-relaxed text-fg/45">{copy.secondary}</p>
+        <ResetLink onReset={onReset} />
       </div>
     </ResultShell>
   );
