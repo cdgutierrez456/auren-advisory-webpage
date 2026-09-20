@@ -39,7 +39,7 @@ const SUGERENCIAS = [
 ] as const;
 
 const BIENVENIDA =
-  "Hola. Resuelvo dudas sobre Auren Advisory: el método, los servicios, los demos y cómo trabajamos. ¿Qué necesita saber?";
+  "Hola, soy Aura, el asistente de Auren. Estoy para ayudarte a entender cómo trabajamos y si tu empresa tiene una oportunidad de mejora. Cuéntame en qué andas o pregúntame lo que quieras.";
 
 /** Pinta los trozos de una línea: negritas y enlaces que se pueden tocar. */
 function Linea({ trozos }: { trozos: readonly Trozo[] }) {
