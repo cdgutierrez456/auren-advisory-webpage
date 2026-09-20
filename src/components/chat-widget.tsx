@@ -39,7 +39,7 @@ const SUGERENCIAS = [
 ] as const;
 
 const BIENVENIDA =
-  "Hola, soy Aura. Resuelvo dudas sobre Auren Advisory: el método, los servicios, los demos y cómo trabajamos. ¿Qué necesita saber?";
+  "Hola, soy Aura, el asistente de Auren. Estoy para ayudarte a entender cómo trabajamos y si tu empresa tiene una oportunidad de mejora. Cuéntame en qué andas o pregúntame lo que quieras.";
 
 /** Cuánto espera el aviso antes de asomarse. Lo suficiente para que la
  *  persona vea primero la página y no un cartel encima de ella. */
