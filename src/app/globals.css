@@ -366,3 +366,44 @@ body {
     animation: breathe 14s ease-in-out infinite alternate;
   }
 }
+
+/* --- Aviso del asistente ------------------------------------------------
+   El emergente que invita a hablar con Aura y el halo que late bajo el
+   disparador mientras está en pantalla. El aviso entra solo con animación:
+   si el sistema pide menos movimiento aparece y ya, que es lo correcto.
+------------------------------------------------------------------------ */
+@keyframes aviso-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Onda que sale del disparador: lima que se expande y se desvanece. */
+@keyframes halo {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-lime) 60%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 1.5rem transparent;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aviso-in {
+    animation: aviso-in 0.5s var(--ease-out-quint) both;
+  }
+
+  .halo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    animation: halo 2.4s ease-out infinite;
+  }
+}

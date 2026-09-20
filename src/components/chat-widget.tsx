@@ -8,7 +8,7 @@ import { site } from "@/content/site";
 import { formatear, type Trozo } from "@/lib/chat-format";
 
 /**
- * Asistente de Auren — burbuja flotante en todas las páginas.
+ * Aura — la asistente de Auren, burbuja flotante en todas las páginas.
  *
  * Habla con el servicio de `bot-page` (FastAPI + Claude), que responde en
  * streaming sobre el contenido real del sitio. Aquí no hay conocimiento
@@ -39,7 +39,11 @@ const SUGERENCIAS = [
 ] as const;
 
 const BIENVENIDA =
-  "Hola. Resuelvo dudas sobre Auren Advisory: el método, los servicios, los demos y cómo trabajamos. ¿Qué necesita saber?";
+  "Hola, soy Aura. Resuelvo dudas sobre Auren Advisory: el método, los servicios, los demos y cómo trabajamos. ¿Qué necesita saber?";
+
+/** Cuánto espera el aviso antes de asomarse. Lo suficiente para que la
+ *  persona vea primero la página y no un cartel encima de ella. */
+const ESPERA_AVISO = 3500;
 
 /** Pinta los trozos de una línea: negritas y enlaces que se pueden tocar. */
 function Linea({ trozos }: { trozos: readonly Trozo[] }) {
@@ -112,6 +116,10 @@ function Respuesta({ texto }: { texto: string }) {
 
 export function ChatWidget() {
   const [abierto, setAbierto] = useState(false);
+  // El aviso vive tres estados y no vuelve: una vez descartado (o una vez que
+  // la persona abrió el chat) no insiste. Sin localStorage, como el resto del
+  // widget: se olvida al recargar, que es lo que el visitante espera.
+  const [aviso, setAviso] = useState<"espera" | "visible" | "fuera">("espera");
   const [turnos, setTurnos] = useState<Turno[]>([]);
   const [borrador, setBorrador] = useState("");
   const [cargando, setCargando] = useState(false);
@@ -119,6 +127,12 @@ export function ChatWidget() {
   const hilo = useRef<HTMLDivElement>(null);
   const campo = useRef<HTMLTextAreaElement>(null);
   const panel = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (aviso !== "espera") return;
+    const t = setTimeout(() => setAviso("visible"), ESPERA_AVISO);
+    return () => clearTimeout(t);
+  }, [aviso]);
 
   // El hilo sigue al último mensaje mientras el texto llega en streaming.
   useEffect(() => {
@@ -201,6 +215,7 @@ export function ChatWidget() {
   }
 
   const vacio = turnos.length === 0;
+  const invitando = aviso === "visible" && !abierto;
 
   return (
     <>
@@ -209,10 +224,13 @@ export function ChatWidget() {
           del sistema (tono `lime-bg`). */}
       <button
         type="button"
-        onClick={() => setAbierto((v) => !v)}
+        onClick={() => {
+          setAviso("fuera");
+          setAbierto((v) => !v);
+        }}
         aria-expanded={abierto}
-        aria-label={abierto ? "Cerrar el asistente" : "Abrir el asistente de Auren"}
-        className="shadow-float fixed bottom-21 right-6 z-50 inline-flex size-14 items-center justify-center rounded-pill bg-lime text-ink transition-all duration-300 ease-out-quint hover:-translate-y-0.5 hover:shadow-[0_0_44px_-6px_var(--color-lime)] active:scale-[0.97] md:bottom-24 md:right-9"
+        aria-label={abierto ? "Cerrar el chat con Aura" : "Abrir el chat con Aura, la asistente de Auren"}
+        className={`${invitando ? "halo " : ""}shadow-float fixed bottom-21 right-6 z-50 inline-flex size-14 items-center justify-center rounded-pill bg-lime text-ink transition-all duration-300 ease-out-quint hover:-translate-y-0.5 hover:shadow-[0_0_44px_-6px_var(--color-lime)] active:scale-[0.97] md:bottom-24 md:right-9`}
       >
         {abierto ? (
           <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
@@ -223,18 +241,53 @@ export function ChatWidget() {
         )}
       </button>
 
+      {/* El emergente. Lima sobre tinta —el mismo bloque del disparador—, con
+          su cola apuntando al botón: se leen como una sola pieza. Todo él es
+          el disparador; la × solo lo despide. */}
+      {invitando && (
+        <div className="aviso-in fixed bottom-38 right-6 z-50 md:bottom-41 md:right-9">
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-1.5 right-[1.375rem] size-3 rotate-45 rounded-[3px] bg-lime"
+          />
+          <div className="shadow-float relative flex max-w-[16rem] items-center gap-1 rounded-card bg-lime py-2 pl-4 pr-2 text-ink">
+            <button
+              type="button"
+              onClick={() => {
+                setAviso("fuera");
+                setAbierto(true);
+              }}
+              className="flex-1 py-0.5 pr-1 text-left"
+            >
+              <span className="block text-sm font-medium">Habla con Aura</span>
+              <span className="mt-0.5 block text-xs text-ink/65">Resuelve tus dudas al instante</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setAviso("fuera")}
+              aria-label="Cerrar el aviso"
+              className="inline-flex size-7 shrink-0 items-center justify-center rounded-pill text-ink/45 transition-colors duration-300 hover:bg-ink/10 hover:text-ink"
+            >
+              <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
       {abierto && (
         <div
           ref={panel}
           role="dialog"
           aria-modal="false"
-          aria-label="Asistente de Auren Advisory"
+          aria-label="Aura, la asistente de Auren Advisory"
           className="panel shadow-float fixed inset-x-4 bottom-38 z-50 flex max-h-[min(34rem,72vh)] flex-col overflow-hidden rounded-card md:inset-x-auto md:bottom-41 md:right-9 md:w-[26rem]"
         >
           <header className="flex items-center justify-between border-b border-line px-5 py-4">
             <div>
-              <p className="label text-fg/55">Asistente</p>
-              <p className="mt-1.5 text-sm text-fg/90">Preguntas sobre Auren</p>
+              <p className="label text-fg/55">Aura</p>
+              <p className="mt-1.5 text-sm text-fg/90">Asistente de Auren</p>
             </div>
             <button
               type="button"
