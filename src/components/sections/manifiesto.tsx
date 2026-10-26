@@ -1,9 +1,10 @@
 import { Section } from "@/components/ui";
-import { manifesto } from "@/content/site";
+import { getContent } from "@/lib/i18n-server";
 import { Reveal } from "@/components/motion";
 
 /** Recurso editorial: la serif aparece solo aquí y en el norte creativo. */
-export function Manifiesto() {
+export async function Manifiesto() {
+  const { manifesto } = await getContent();
   return (
     <Section tone="paper">
       <div className="grid gap-16 md:grid-cols-[1.15fr_1fr] md:gap-24">

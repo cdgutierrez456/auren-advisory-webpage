@@ -1,5 +1,6 @@
 import type { Post } from "@/content/recursos";
 import { services, site, type Faq, type Service } from "@/content/site";
+import { HTML_LANG, localize, type Lang } from "@/lib/i18n";
 
 /**
  * Datos estructurados (JSON-LD).
@@ -9,6 +10,9 @@ import { services, site, type Faq, type Service } from "@/content/site";
  * servicio o artículo la apunta con ese id. Duplicar el bloque de la
  * organización en cada página le da al buscador varias entidades parecidas
  * en lugar de una sola con más señales.
+ *
+ * La firma se declara en español en las dos versiones del sitio: es una sola
+ * entidad. Lo que cambia por idioma es la página (`inLanguage`, URL, textos).
  */
 
 const base = `https://${site.domain}`;
@@ -84,25 +88,25 @@ export const organization = () => ({
 });
 
 /** Sitio, para que el buscador entienda el dominio como una publicación. */
-export const website = () => ({
+export const website = (lang: Lang = "es") => ({
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": `${base}/#sitio`,
   url: base,
   name: site.name,
-  inLanguage: "es-CO",
+  inLanguage: HTML_LANG[lang],
   publisher: { "@id": ORG_ID },
 });
 
 /** Ruta de migas. El primer nivel siempre es la home. */
-export const breadcrumb = (trail: readonly { name: string; path: string }[]) => ({
+export const breadcrumb = (trail: readonly { name: string; path: string }[], lang: Lang = "es") => ({
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  itemListElement: [{ name: "Inicio", path: "/" }, ...trail].map((item, i) => ({
+  itemListElement: [{ name: lang === "en" ? "Home" : "Inicio", path: "/" }, ...trail].map((item, i) => ({
     "@type": "ListItem",
     position: i + 1,
     name: item.name,
-    item: abs(item.path),
+    item: abs(localize(lang, item.path)),
   })),
 });
 
@@ -116,20 +120,24 @@ export const faqPage = (faqs: readonly Faq[]) => ({
   })),
 });
 
-export const serviceSchema = (s: Service) => ({
+export const serviceSchema = (s: Service, lang: Lang = "es") => ({
   "@context": "https://schema.org",
   "@type": "Service",
   name: `${s.name} — ${s.keyword}`,
   serviceType: s.keyword,
   description: s.summary,
-  url: abs(`/servicios/${s.slug}`),
+  url: abs(localize(lang, `/servicios/${s.slug}`)),
+  inLanguage: HTML_LANG[lang],
   provider: { "@id": ORG_ID },
   areaServed: { "@type": "Country", name: "Colombia" },
-  audience: { "@type": "BusinessAudience", audienceType: "Empresas y entidades" },
+  audience: {
+    "@type": "BusinessAudience",
+    audienceType: lang === "en" ? "Companies and public entities" : "Empresas y entidades",
+  },
   serviceOutput: s.deliverable,
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: `Qué incluye ${s.name}`,
+    name: lang === "en" ? `What ${s.name} includes` : `Qué incluye ${s.name}`,
     itemListElement: s.includes.map((item) => ({
       "@type": "Offer",
       itemOffered: { "@type": "Service", name: item },
@@ -137,18 +145,18 @@ export const serviceSchema = (s: Service) => ({
   },
 });
 
-export const articleSchema = (post: Post) => ({
+export const articleSchema = (post: Post, lang: Lang = "es") => ({
   "@context": "https://schema.org",
   "@type": "Article",
   headline: post.title,
   description: post.description,
-  url: abs(`/recursos/${post.slug}`),
-  mainEntityOfPage: abs(`/recursos/${post.slug}`),
+  url: abs(localize(lang, `/recursos/${post.slug}`)),
+  mainEntityOfPage: abs(localize(lang, `/recursos/${post.slug}`)),
   datePublished: post.published,
   dateModified: post.updated ?? post.published,
-  inLanguage: "es-CO",
+  inLanguage: HTML_LANG[lang],
   author: { "@id": ORG_ID },
   publisher: { "@id": ORG_ID },
   about: post.keyword,
-  image: post.image ? abs(post.image.src) : `${base}/opengraph-image`,
+  image: post.image ? abs(post.image.src) : abs(localize(lang, "/opengraph-image")),
 });

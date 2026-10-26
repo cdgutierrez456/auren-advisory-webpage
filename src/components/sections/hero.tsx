@@ -1,23 +1,28 @@
 import type { CSSProperties } from "react";
 import { Arrow, Button, Em } from "@/components/ui";
 import { Ambient, ContourField } from "@/components/vertex-art";
-import { hero, site } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 import { DrawRule, ParallaxY } from "@/components/motion";
 
-/** Chips de prueba: las tres fases del método, no cifras inventadas. */
-const proof = [
-  { phase: "Fase 01 — Ver", claim: "Operación mapeada" },
-  { phase: "Fase 02 — Entender", claim: "Costo de la fricción, en cifras" },
-  { phase: "Fase 03 — Transformar", claim: "Impacto medido" },
-];
+export async function Hero() {
+  const [{ hero, site }, t] = await Promise.all([getContent(), getT()]);
 
-const trust = [
-  "Sin comisiones de proveedores",
-  "Diagnóstico sin compromiso",
-  "Manizales · Colombia",
-];
+  /** Chips de prueba: las tres fases del método, no cifras inventadas. */
+  const proof = [
+    { phase: t("Fase 01 — Ver", "Phase 01 — See"), claim: t("Operación mapeada", "Operation mapped") },
+    {
+      phase: t("Fase 02 — Entender", "Phase 02 — Understand"),
+      claim: t("Costo de la fricción, en cifras", "Cost of friction, in figures"),
+    },
+    { phase: t("Fase 03 — Transformar", "Phase 03 — Transform"), claim: t("Impacto medido", "Impact measured") },
+  ];
 
-export function Hero() {
+  const trust = [
+    t("Sin comisiones de proveedores", "No vendor commissions"),
+    t("Diagnóstico sin compromiso", "No-commitment diagnosis"),
+    "Manizales · Colombia",
+  ];
+
   return (
     <section className="relative isolate overflow-hidden bg-surface">
       <Ambient />
@@ -108,10 +113,10 @@ export function Hero() {
               style={{ "--i": 7 } as CSSProperties}
               className="enter flex flex-wrap items-center gap-x-6 gap-y-2 pt-2"
             >
-              {trust.map((t) => (
-                <span key={t} className="flex items-center gap-2.5">
+              {trust.map((item) => (
+                <span key={item} className="flex items-center gap-2.5">
                   <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-lime" />
-                  <span className="text-xs text-fg/55">{t}</span>
+                  <span className="text-xs text-fg/55">{item}</span>
                 </span>
               ))}
             </div>

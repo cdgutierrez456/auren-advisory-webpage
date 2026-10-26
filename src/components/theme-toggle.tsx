@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/lib/use-lang";
 
 /**
  * Interruptor de tema.
@@ -16,6 +17,7 @@ import { useEffect, useState } from "react";
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const [claro, setClaro] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     const elegido = document.documentElement.dataset.theme;
@@ -42,8 +44,12 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       type="button"
       onClick={alternar}
       aria-pressed={claro}
-      aria-label={claro ? "Cambiar a tema oscuro" : "Cambiar a tema claro"}
-      title={claro ? "Tema oscuro" : "Tema claro"}
+      aria-label={
+        claro
+          ? t("Cambiar a tema oscuro", "Switch to dark theme")
+          : t("Cambiar a tema claro", "Switch to light theme")
+      }
+      title={claro ? t("Tema oscuro", "Dark theme") : t("Tema claro", "Light theme")}
       className={`inline-flex size-10 shrink-0 items-center justify-center rounded-pill border border-line text-fg/55 transition-all duration-300 hover:border-lime hover:text-fg active:scale-95 ${className}`}
     >
       {/* Círculo mitad lleno: contraste, que es de lo que trata el tema.

@@ -1,8 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/link";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import { Arrow } from "@/components/arrow";
 import { DrawRule, Reveal, RevealItem, RevealList } from "@/components/motion";
 import type { Faq, Figure as FigureType } from "@/content/site";
+import { getLang, getT } from "@/lib/i18n-server";
 import { breadcrumb, JsonLd } from "@/lib/schema";
 
 /**
@@ -13,6 +15,10 @@ import { breadcrumb, JsonLd } from "@/lib/schema";
  * redondeadas y lima como resplandor de acento. Marfil para el texto. DESIGN.md
  * tiene la escala de valores y el presupuesto del lima.
  */
+
+// Vive aparte porque los componentes cliente la usan y este módulo lee el
+// idioma en el servidor (`next/root-params`), que no entra en un bundle cliente.
+export { Arrow };
 
 export function Section({
   id,
@@ -173,15 +179,17 @@ export function PageHero({
 }
 
 /** Cierre de página interior. Toda ruta termina invitando a la conversación. */
-export function CtaBand({
+export async function CtaBand({
   title,
   lede,
-  action = { label: "Agendar diagnóstico", href: "/#contacto" },
+  action,
 }: {
   title: string;
   lede?: string;
   action?: { label: string; href: string };
 }) {
+  const t = await getT();
+  action ??= { label: t("Agendar diagnóstico", "Book a diagnosis"), href: "/#contacto" };
   return (
     <section className="relative isolate overflow-hidden bg-surface-4 py-section text-fg">
       <div
@@ -201,32 +209,18 @@ export function CtaBand({
   );
 }
 
-/** Flecha diagonal: dirección y movimiento, el gesto gráfico del sistema. */
-export function Arrow({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      width="11"
-      height="11"
-      viewBox="0 0 11 11"
-      fill="none"
-      aria-hidden="true"
-      className={className}
-    >
-      <path d="M1 10L10 1M10 1H2.5M10 1V8.5" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
 
 /**
  * Migas de pan: el enlace visible y el JSON-LD salen del mismo array, para que
  * no se puedan desincronizar. `trail` no incluye «Inicio»: se pone solo.
  */
-export function Breadcrumbs({ trail }: { trail: readonly { name: string; path: string }[] }) {
-  const items = [{ name: "Inicio", path: "/" }, ...trail];
+export async function Breadcrumbs({ trail }: { trail: readonly { name: string; path: string }[] }) {
+  const [lang, t] = await Promise.all([getLang(), getT()]);
+  const items = [{ name: t("Inicio", "Home"), path: "/" }, ...trail];
   return (
     <>
-      <JsonLd data={breadcrumb(trail)} />
-      <nav aria-label="Ruta de navegación" className="shell pt-24 md:pt-28">
+      <JsonLd data={breadcrumb(trail, lang)} />
+      <nav aria-label={t("Ruta de navegación", "Breadcrumb")} className="shell pt-24 md:pt-28">
         <ol className="label flex flex-wrap items-center gap-x-3 gap-y-2 text-fg/40">
           {items.map((item, i) => {
             const last = i === items.length - 1;

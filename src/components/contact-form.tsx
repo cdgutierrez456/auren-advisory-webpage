@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Arrow } from "@/components/ui";
+import { Arrow } from "@/components/arrow";
 import { validateLead, whatsappUrl } from "@/lib/lead";
+import { useLang } from "@/lib/use-lang";
+import { translator } from "@/lib/i18n";
 
 const field =
   "w-full border-b bg-transparent py-4 text-fg outline-none transition-colors placeholder:text-fg/30 focus:border-lime";
@@ -10,11 +12,13 @@ const field =
 export function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const lang = useLang();
+  const t = translator(lang);
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const result = validateLead(new FormData(form));
+    const result = validateLead(new FormData(form), lang);
 
     if (!result.ok) {
       setErrors(result.fields);
@@ -23,7 +27,7 @@ export function ContactForm() {
     }
 
     setErrors({});
-    const url = whatsappUrl(result.lead);
+    const url = whatsappUrl(result.lead, lang);
 
     // Si el navegador bloquea la ventana nueva, navegamos en la actual: ahí no
     // hay formulario que limpiar porque la página se va.
@@ -46,7 +50,7 @@ export function ContactForm() {
       className="flex flex-col gap-9"
     >
       <div className="grid gap-9 sm:grid-cols-2">
-        <Field name="name" label="Nombre" autoComplete="name" error={errors.name} />
+        <Field name="name" label={t("Nombre", "Name")} autoComplete="name" error={errors.name} />
         <Field
           name="email"
           label="Email"
@@ -55,15 +59,24 @@ export function ContactForm() {
           error={errors.email}
         />
       </div>
-      <Field name="company" label="Empresa" autoComplete="organization" optional />
+      <Field
+        name="company"
+        label={t("Empresa", "Company")}
+        autoComplete="organization"
+        optional
+        optionalLabel={t("Opcional", "Optional")}
+      />
 
       <label className="flex flex-col gap-3">
-        <Legend text="Qué quiere resolver" error={errors.message} />
+        <Legend text={t("Qué quiere resolver", "What you want to solve")} error={errors.message} />
         <textarea
           name="message"
           rows={4}
           maxLength={4000}
-          placeholder="El proceso, el área o la fricción concreta que tiene hoy."
+          placeholder={t(
+            "El proceso, el área o la fricción concreta que tiene hoy.",
+            "The process, the department or the specific friction you have today.",
+          )}
           aria-invalid={Boolean(errors.message)}
           className={`${field} resize-none ${errors.message ? "border-lime" : "border-line"}`}
         />
@@ -74,10 +87,15 @@ export function ContactForm() {
           type="submit"
           className="label inline-flex items-center gap-3 rounded-pill bg-lime px-8 py-4.5 text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-6px_var(--color-lime)] active:translate-y-0 active:scale-[0.97]"
         >
-          Enviar por WhatsApp <Arrow />
+          {t("Enviar por WhatsApp", "Send via WhatsApp")} <Arrow />
         </button>
         <p role="status" className="max-w-xs text-pretty text-sm text-fg/55">
-          {sent ? "Abrimos WhatsApp con su mensaje listo. Solo falta enviarlo." : null}
+          {sent
+            ? t(
+                "Abrimos WhatsApp con su mensaje listo. Solo falta enviarlo.",
+                "We opened WhatsApp with your message ready. All that's left is to send it.",
+              )
+            : null}
         </p>
       </div>
     </form>
@@ -98,12 +116,14 @@ function Field({
   label,
   error,
   optional = false,
+  optionalLabel,
   ...props
 }: {
   name: string;
   label: string;
   error?: string;
   optional?: boolean;
+  optionalLabel?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <label className="flex flex-col gap-3">
@@ -114,7 +134,7 @@ function Field({
         className={`${field} ${error ? "border-lime" : "border-line"}`}
         {...props}
       />
-      {optional ? <span className="sr-only">Opcional</span> : null}
+      {optional ? <span className="sr-only">{optionalLabel}</span> : null}
     </label>
   );
 }

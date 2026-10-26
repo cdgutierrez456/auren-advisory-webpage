@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/link";
 
 import { Mark } from "@/components/logo";
 import { site } from "@/content/site";
 import { formatear, type Trozo } from "@/lib/chat-format";
+import { translator, type Lang } from "@/lib/i18n";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Aura — la asistente de Auren, burbuja flotante en todas las páginas.
@@ -32,14 +34,27 @@ const BOT_URL = process.env.NEXT_PUBLIC_BOT_URL ?? "http://localhost:8000";
 
 type Turno = { role: "user" | "assistant"; content: string };
 
-const SUGERENCIAS = [
-  "¿Qué hace exactamente Auren?",
-  "¿Cómo sé si necesito automatizar?",
-  "¿Qué incluye el diagnóstico?",
-] as const;
+/**
+ * El bot no recibe el idioma: contesta en el que le escriban. La bienvenida y
+ * las sugerencias en inglés bastan para que la conversación arranque en inglés.
+ */
+const SUGERENCIAS: Record<Lang, readonly string[]> = {
+  es: [
+    "¿Qué hace exactamente Auren?",
+    "¿Cómo sé si necesito automatizar?",
+    "¿Qué incluye el diagnóstico?",
+  ],
+  en: [
+    "What exactly does Auren do?",
+    "How do I know if I need to automate?",
+    "What does the diagnosis include?",
+  ],
+};
 
-const BIENVENIDA =
-  "Hola, soy Aura, el asistente de Auren. Estoy para ayudarte a entender cómo trabajamos y si tu empresa tiene una oportunidad de mejora. Cuéntame en qué andas o pregúntame lo que quieras.";
+const BIENVENIDA: Record<Lang, string> = {
+  es: "Hola, soy Aura, el asistente de Auren. Estoy para ayudarte a entender cómo trabajamos y si tu empresa tiene una oportunidad de mejora. Cuéntame en qué andas o pregúntame lo que quieras.",
+  en: "Hi, I'm Aura, Auren's assistant. I'm here to help you understand how we work and whether your company has room to improve. Tell me what you're working on or ask me anything.",
+};
 
 /** Cuánto espera el aviso antes de asomarse. Lo suficiente para que la
  *  persona vea primero la página y no un cartel encima de ella. */
@@ -83,9 +98,10 @@ function Linea({ trozos }: { trozos: readonly Trozo[] }) {
 
 /** La respuesta del bot, ya formateada. */
 function Respuesta({ texto }: { texto: string }) {
+  const lang = useLang();
   return (
     <>
-      {formatear(texto).map((bloque, i) =>
+      {formatear(texto, lang).map((bloque, i) =>
         bloque.tipo === "lista" ? (
           bloque.ordenada ? (
             <ol key={i} className="ml-1 list-decimal space-y-1.5 pl-5 marker:text-fg/40">
@@ -115,6 +131,8 @@ function Respuesta({ texto }: { texto: string }) {
 }
 
 export function ChatWidget() {
+  const lang = useLang();
+  const t = translator(lang);
   const [abierto, setAbierto] = useState(false);
   // El aviso vive tres estados y no vuelve: una vez descartado (o una vez que
   // la persona abrió el chat) no insiste. Sin localStorage, como el resto del
@@ -130,8 +148,8 @@ export function ChatWidget() {
 
   useEffect(() => {
     if (aviso !== "espera") return;
-    const t = setTimeout(() => setAviso("visible"), ESPERA_AVISO);
-    return () => clearTimeout(t);
+    const espera = setTimeout(() => setAviso("visible"), ESPERA_AVISO);
+    return () => clearTimeout(espera);
   }, [aviso]);
 
   // El hilo sigue al último mensaje mientras el texto llega en streaming.
@@ -163,7 +181,7 @@ export function ChatWidget() {
 
     // Escribe el último turno (el del asistente) conforme llegan los trozos.
     const escribir = (fn: (previo: string) => string) =>
-      setTurnos((t) => t.map((turno, i) => (i === t.length - 1 ? { ...turno, content: fn(turno.content) } : turno)));
+      setTurnos((ts) => ts.map((turno, i) => (i === ts.length - 1 ? { ...turno, content: fn(turno.content) } : turno)));
 
     try {
       const respuesta = await fetch(`${BOT_URL}/api/chat`, {
@@ -175,8 +193,8 @@ export function ChatWidget() {
       if (!respuesta.ok || !respuesta.body) {
         throw new Error(
           respuesta.status === 429
-            ? "Demasiadas preguntas seguidas. Espere un minuto."
-            : "No pude conectarme.",
+            ? t("Demasiadas preguntas seguidas. Espere un minuto.", "Too many questions in a row. Please wait a minute.")
+            : t("No pude conectarme.", "I couldn't connect."),
         );
       }
 
@@ -206,7 +224,10 @@ export function ChatWidget() {
     } catch (e) {
       escribir(
         () =>
-          `${e instanceof Error ? e.message : "Algo falló"} Escríbanos por WhatsApp al ${site.whatsappDisplay} y le respondemos.`,
+          `${e instanceof Error ? e.message : t("Algo falló.", "Something went wrong.")} ${t(
+            `Escríbanos por WhatsApp al ${site.whatsappDisplay} y le respondemos.`,
+            `Write to us on WhatsApp at ${site.whatsappDisplay} and we'll get back to you.`,
+          )}`,
       );
     } finally {
       setCargando(false);
@@ -229,7 +250,11 @@ export function ChatWidget() {
           setAbierto((v) => !v);
         }}
         aria-expanded={abierto}
-        aria-label={abierto ? "Cerrar el chat con Aura" : "Abrir el chat con Aura, la asistente de Auren"}
+        aria-label={
+          abierto
+            ? t("Cerrar el chat con Aura", "Close the chat with Aura")
+            : t("Abrir el chat con Aura, la asistente de Auren", "Open the chat with Aura, Auren's assistant")
+        }
         className={`${invitando ? "halo " : ""}shadow-float fixed bottom-21 right-6 z-50 inline-flex size-14 items-center justify-center rounded-pill bg-lime text-ink transition-all duration-300 ease-out-quint hover:-translate-y-0.5 hover:shadow-[0_0_44px_-6px_var(--color-lime)] active:scale-[0.97] md:bottom-24 md:right-9`}
       >
         {abierto ? (
@@ -259,13 +284,15 @@ export function ChatWidget() {
               }}
               className="flex-1 py-0.5 pr-1 text-left"
             >
-              <span className="block text-sm font-medium">Habla con Aura</span>
-              <span className="mt-0.5 block text-xs text-ink/65">Resuelve tus dudas al instante</span>
+              <span className="block text-sm font-medium">{t("Habla con Aura", "Talk to Aura")}</span>
+              <span className="mt-0.5 block text-xs text-ink/65">
+                {t("Resuelve tus dudas al instante", "Get your questions answered instantly")}
+              </span>
             </button>
             <button
               type="button"
               onClick={() => setAviso("fuera")}
-              aria-label="Cerrar el aviso"
+              aria-label={t("Cerrar el aviso", "Dismiss")}
               className="inline-flex size-7 shrink-0 items-center justify-center rounded-pill text-ink/45 transition-colors duration-300 hover:bg-ink/10 hover:text-ink"
             >
               <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -281,13 +308,13 @@ export function ChatWidget() {
           ref={panel}
           role="dialog"
           aria-modal="false"
-          aria-label="Aura, la asistente de Auren Advisory"
+          aria-label={t("Aura, la asistente de Auren Advisory", "Aura, Auren Advisory's assistant")}
           className="panel shadow-float fixed inset-x-4 bottom-38 z-50 flex max-h-[min(34rem,72vh)] flex-col overflow-hidden rounded-card md:inset-x-auto md:bottom-41 md:right-9 md:w-[26rem]"
         >
           <header className="flex items-center justify-between border-b border-line px-5 py-4">
             <div>
               <p className="label text-fg/55">Aura</p>
-              <p className="mt-1.5 text-sm text-fg/90">Asistente de Auren</p>
+              <p className="mt-1.5 text-sm text-fg/90">{t("Asistente de Auren", "Auren's assistant")}</p>
             </div>
             <button
               type="button"
@@ -295,16 +322,16 @@ export function ChatWidget() {
               disabled={vacio || cargando}
               className="label text-fg/40 transition-colors duration-300 hover:text-accent disabled:pointer-events-none disabled:opacity-0"
             >
-              Limpiar
+              {t("Limpiar", "Clear")}
             </button>
           </header>
 
           <div ref={hilo} className="flex-1 space-y-4 overflow-y-auto px-5 py-5">
-            <p className="text-base leading-relaxed text-fg/75">{BIENVENIDA}</p>
+            <p className="text-base leading-relaxed text-fg/75">{BIENVENIDA[lang]}</p>
 
             {vacio && (
               <div className="flex flex-wrap gap-2 pt-1">
-                {SUGERENCIAS.map((s) => (
+                {SUGERENCIAS[lang].map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -320,17 +347,17 @@ export function ChatWidget() {
             {/* `aria-live` para que un lector de pantalla anuncie la respuesta
                 sin que la persona tenga que ir a buscarla. */}
             <div aria-live="polite" className="space-y-4">
-              {turnos.map((t, i) =>
-                t.role === "user" ? (
+              {turnos.map((turno, i) =>
+                turno.role === "user" ? (
                   <p
                     key={i}
                     className="ml-auto w-fit max-w-[85%] rounded-card bg-surface-3 px-4 py-2.5 text-base leading-relaxed text-fg/90"
                   >
-                    {t.content}
+                    {turno.content}
                   </p>
                 ) : (
                   <div key={i} className="max-w-[92%] space-y-3 text-base leading-relaxed text-fg/75">
-                    <Respuesta texto={t.content} />
+                    <Respuesta texto={turno.content} />
                     {cargando && i === turnos.length - 1 && (
                       <span className="-mt-3 ml-0.5 inline-block h-3.5 w-1.5 animate-pulse bg-lime align-middle" />
                     )}
@@ -348,7 +375,7 @@ export function ChatWidget() {
             className="flex items-end gap-2 border-t border-line px-4 py-3"
           >
             <label className="sr-only" htmlFor="chat-pregunta">
-              Su pregunta
+              {t("Su pregunta", "Your question")}
             </label>
             <textarea
               id="chat-pregunta"
@@ -365,13 +392,13 @@ export function ChatWidget() {
                   enviar(borrador);
                 }
               }}
-              placeholder="Escriba su pregunta…"
+              placeholder={t("Escriba su pregunta…", "Type your question…")}
               className="max-h-28 flex-1 resize-none bg-transparent py-2.5 text-base text-fg placeholder:text-fg/40 focus:outline-none"
             />
             <button
               type="submit"
               disabled={!borrador.trim() || cargando}
-              aria-label="Enviar pregunta"
+              aria-label={t("Enviar pregunta", "Send question")}
               className="inline-flex size-9 shrink-0 items-center justify-center rounded-pill bg-lime text-ink transition-all duration-300 hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-30"
             >
               <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

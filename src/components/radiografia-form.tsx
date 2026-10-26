@@ -1,18 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
-import { Arrow } from "@/components/ui";
-import {
-  axes,
-  DEFAULT_CLIENTE,
-  DEFAULT_UNIDAD,
-  type OperationType,
-  operationTypes,
-  questions,
-  radiografia,
-  sizes,
-} from "@/content/radiografia";
+import Link from "@/components/link";
+import { Arrow } from "@/components/arrow";
+import * as en from "@/content/en/radiografia";
+import * as es from "@/content/radiografia";
+import type { OperationType } from "@/content/radiografia";
 import {
   type AnswerValue,
   type Answers,
@@ -20,6 +13,7 @@ import {
   type Context,
   scoreRadiografia,
 } from "@/lib/radiografia";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Auto-diagnóstico interactivo, una pregunta a la vez.
@@ -31,20 +25,26 @@ import {
  * Recorrido: dos preguntas de contexto (no puntúan) y luego las doce, cada una
  * en su propio panel, con flechas atrás/siguiente. Al terminar, el resultado
  * reemplaza el panel en un contenedor limpio.
+ *
+ * El contenido de los dos idiomas viaja en el bundle (es pequeño) y se elige
+ * con `useDict()`: los ids y el orden de opciones son los mismos, así que
+ * cambiar de idioma no cambia el puntaje.
  */
 
-const nav = radiografia.nav;
+type Dict = typeof es | typeof en;
+const useDict = (): Dict => (useLang() === "en" ? en : es);
 
 /** Reemplaza {unidad}/{cliente} según el tipo de operación elegido en C1. */
-function fillVars(prompt: string, op?: OperationType): string {
-  const found = operationTypes.find((o) => o.id === op);
+function fillVars(dict: Dict, prompt: string, op?: OperationType): string {
+  const found = dict.operationTypes.find((o) => o.id === op);
   return prompt
-    .replace("{unidad}", found?.unidad ?? DEFAULT_UNIDAD)
-    .replace("{cliente}", found?.cliente ?? DEFAULT_CLIENTE);
+    .replace("{unidad}", found?.unidad ?? dict.DEFAULT_UNIDAD)
+    .replace("{cliente}", found?.cliente ?? dict.DEFAULT_CLIENTE);
 }
 
 type Screen = { kind: "c1" } | { kind: "c2" } | { kind: "question"; index: number };
 
+const questions = es.questions;
 const screens: Screen[] = [
   { kind: "c1" },
   { kind: "c2" },
@@ -52,6 +52,9 @@ const screens: Screen[] = [
 ];
 
 export function RadiografiaForm() {
+  const dict = useDict();
+  const { operationTypes, radiografia, sizes } = dict;
+  const nav = radiografia.nav;
   const [answers, setAnswers] = useState<Answers>({});
   const [operacion, setOperacion] = useState<OperationType | undefined>();
   const [tamano, setTamano] = useState<string | undefined>();
@@ -59,10 +62,11 @@ export function RadiografiaForm() {
   const [finished, setFinished] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
 
-  const result = scoreRadiografia(answers);
+  const result = scoreRadiografia(answers, dict);
+  // El tamaño se guarda en español (es el id) y se muestra en el idioma de la página.
   const context: Context = {
     operacion: operationTypes.find((o) => o.id === operacion)?.label,
-    tamano,
+    tamano: tamano === undefined ? undefined : sizes[es.sizes.indexOf(tamano as (typeof es.sizes)[number])],
   };
 
   const screen = screens[step];
@@ -141,8 +145,8 @@ export function RadiografiaForm() {
               eyebrow={nav.context}
               prompt={radiografia.context.c2.prompt}
               options={[...sizes]}
-              selectedIndex={sizes.indexOf((tamano ?? "") as (typeof sizes)[number])}
-              onSelect={(i) => setTamano(sizes[i])}
+              selectedIndex={tamano === undefined ? -1 : es.sizes.indexOf(tamano as (typeof es.sizes)[number])}
+              onSelect={(i) => setTamano(es.sizes[i])}
               compact
             />
           ) : (
@@ -204,6 +208,8 @@ function ProgressHead({
   screen: Screen;
   answeredScored: number;
 }) {
+  const { radiografia } = useDict();
+  const nav = radiografia.nav;
   const total = questions.length;
   const label =
     screen.kind === "question"
@@ -248,17 +254,18 @@ function QuestionScreen({
   value: AnswerValue | undefined;
   onSelect: (value: AnswerValue) => void;
 }) {
-  const q = questions[index];
+  const dict = useDict();
+  const q = dict.questions[index];
   return (
     <fieldset className="flex flex-col gap-7">
-      <legend className="sr-only">{fillVars(q.prompt, operacion)}</legend>
-      <span className="label text-accent">{axes[q.axis].name}</span>
+      <legend className="sr-only">{fillVars(dict, q.prompt, operacion)}</legend>
+      <span className="label text-accent">{dict.axes[q.axis].name}</span>
       <div className="flex flex-col gap-3">
         <p
           aria-hidden
           className="text-balance text-2xl leading-snug tracking-tight text-fg md:text-3xl"
         >
-          {fillVars(q.prompt, operacion)}
+          {fillVars(dict, q.prompt, operacion)}
         </p>
         {q.hint ? <p className="text-pretty text-fg/55">{q.hint}</p> : null}
       </div>
@@ -282,7 +289,7 @@ function QuestionScreen({
           value === "NA" ? "bg-fg/10 text-fg" : "text-fg/40 hover:text-fg/70"
         }`}
       >
-        {radiografia.naLabel}
+        {dict.radiografia.naLabel}
       </button>
     </fieldset>
   );
@@ -383,7 +390,8 @@ function Result({
   context: Context;
   onReset: () => void;
 }) {
-  const copy = radiografia.result;
+  const lang = useLang();
+  const copy = useDict().radiografia.result;
 
   // 5+ «No aplica»: la operación se sale del patrón. Se salta el puntaje.
   if (result.offScale) {
@@ -395,7 +403,7 @@ function Result({
             {copy.offScale.body}
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <CtaLink href={callUrl(result, context)}>{copy.cta}</CtaLink>
+            <CtaLink href={callUrl(result, context, lang)}>{copy.cta}</CtaLink>
             <ResetLink onReset={onReset} />
           </div>
         </div>
@@ -465,7 +473,7 @@ function Result({
               <div className="flex flex-col gap-4">
                 <p className="text-pretty leading-relaxed text-fg/90">{copy.talk}</p>
                 <div className="flex flex-wrap items-center gap-3">
-                  <CtaLink href={callUrl(result, context)}>{copy.cta}</CtaLink>
+                  <CtaLink href={callUrl(result, context, lang)}>{copy.cta}</CtaLink>
                   <Link
                     href={copy.insightHref}
                     className="label inline-flex items-center gap-2 rounded-pill border border-line-strong px-6 py-4 text-fg transition-all duration-300 hover:-translate-y-0.5 hover:border-lime hover:text-accent"
@@ -478,7 +486,7 @@ function Result({
               </div>
             </>
           ) : (
-            <CtaLink href={callUrl(result, context)}>{copy.ctaSoft}</CtaLink>
+            <CtaLink href={callUrl(result, context, lang)}>{copy.ctaSoft}</CtaLink>
           )}
         </div>
       </div>
@@ -525,6 +533,7 @@ function CtaLink({ href, children }: { href: string; children: React.ReactNode }
 }
 
 function ResetLink({ onReset }: { onReset: () => void }) {
+  const { radiografia } = useDict();
   return (
     <button
       type="button"

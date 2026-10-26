@@ -11,6 +11,8 @@
  * camino seguro es construir nodos, no inyectar HTML.
  */
 
+import type { Lang } from "./i18n.ts";
+
 export type Trozo =
   | { tipo: "texto"; texto: string }
   | { tipo: "negrita"; texto: string }
@@ -58,9 +60,23 @@ const ETIQUETAS: Record<string, string> = {
   "/#contacto": "el formulario de contacto",
 };
 
-function etiquetar(href: string): string {
+/** Las mismas, para cuando el bot contesta en inglés desde `/en`. */
+const LABELS: Record<string, string> = {
+  "/": "the home page",
+  "/radiografia": "Auren X-Ray",
+  "/servicios": "our services",
+  "/demos": "the demos",
+  "/recursos": "the resources",
+  "/enfoque": "our approach",
+  "/nosotros": "about us",
+  "/marca": "the brand",
+  "/#contacto": "the contact form",
+};
+
+function etiquetar(href: string, lang: Lang): string {
   const limpio = href.replace(/\/$/, "") || "/";
-  if (ETIQUETAS[limpio]) return ETIQUETAS[limpio];
+  const nombres = lang === "en" ? LABELS : ETIQUETAS;
+  if (nombres[limpio]) return nombres[limpio];
 
   // /servicios/auren-insight → «Auren Insight»
   const servicio = /^\/servicios\/(.+)$/.exec(limpio);
@@ -90,6 +106,9 @@ const esExterno = (href: string) => /^https?:\/\//.test(href);
 /** Como `Trozo`, más la marca de si la etiqueta la puso el bot o la pusimos aquí. */
 type Pieza = Trozo & { auto?: boolean };
 
+/** Artículos que se quedan fuera del enlace, en los dos idiomas. */
+const ARTICULO = /^(el|la|los|las|un|una|the)\s+/i;
+
 /** Normaliza para comparar nombres: sin tildes, sin mayúsculas, sin artículo. */
 function clave(texto: string): string {
   return texto
@@ -99,7 +118,7 @@ function clave(texto: string): string {
     .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
-    .replace(/^(el|la|los|las|un|una)\s+/, "");
+    .replace(ARTICULO, "");
 }
 
 /**
@@ -133,7 +152,7 @@ function absorber(antes: string, etiqueta: string): { resto: string; usar: strin
 
     // El artículo se queda FUERA del enlace: se subraya «formulario de
     // contacto», no «el formulario de contacto». El «el» sigue en la frase.
-    const articulo = /^(el|la|los|las|un|una)\s+/i.exec(usar);
+    const articulo = ARTICULO.exec(usar);
     if (articulo) {
       usar = usar.slice(articulo[0].length);
       // `trimEnd` y no `trim`: el espacio de la IZQUIERDA separa este trozo del
@@ -208,7 +227,7 @@ function fusionarRedundancia(lista: Pieza[]): Trozo[] {
   return salida.filter((t) => t.tipo !== "texto" || t.texto !== "").map(({ auto: _a, ...t }) => t as Trozo);
 }
 
-function trozos(linea: string): Trozo[] {
+function trozos(linea: string, lang: Lang): Trozo[] {
   const salida: Pieza[] = [];
   let cursor = 0;
 
@@ -235,7 +254,13 @@ function trozos(linea: string): Trozo[] {
       salida.push({ tipo: "negrita", texto: negrita });
     } else {
       const { href, sobra } = limpiarCola(url ?? ruta);
-      salida.push({ tipo: "enlace", texto: etiquetar(href), href, externo: url !== undefined, auto: true });
+      salida.push({
+        tipo: "enlace",
+        texto: etiquetar(href, lang),
+        href,
+        externo: url !== undefined,
+        auto: true,
+      });
       empujar(sobra);
     }
   }
@@ -249,14 +274,14 @@ const VINETA = /^\s*[-*•]\s+/;
 // caerían en el mismo párrafo y saldrían como un bloque corrido.
 const NUMERO = /^\s*\d+[.)]\s+/;
 
-export function formatear(respuesta: string): Bloque[] {
+export function formatear(respuesta: string, lang: Lang = "es"): Bloque[] {
   const bloques: Bloque[] = [];
   let lista: { ordenada: boolean; items: Trozo[][] } | null = null;
   let parrafo: string[] = [];
 
   const cerrarParrafo = () => {
     if (parrafo.length) {
-      bloques.push({ tipo: "parrafo", trozos: trozos(parrafo.join(" ")) });
+      bloques.push({ tipo: "parrafo", trozos: trozos(parrafo.join(" "), lang) });
       parrafo = [];
     }
   };
@@ -271,7 +296,7 @@ export function formatear(respuesta: string): Bloque[] {
     cerrarParrafo();
     // Una lista de otro tipo cierra la anterior: no se mezclan viñetas y números.
     if (lista && lista.ordenada !== ordenada) cerrarLista();
-    (lista ??= { ordenada, items: [] }).items.push(trozos(linea.replace(marca, "")));
+    (lista ??= { ordenada, items: [] }).items.push(trozos(linea.replace(marca, ""), lang));
   };
 
   for (const linea of respuesta.split("\n")) {

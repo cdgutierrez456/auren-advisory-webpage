@@ -1,13 +1,17 @@
 import { Headline, Section, SectionHead } from "@/components/ui";
-import { capabilities } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 import { RevealItem, RevealList } from "@/components/motion";
 
-export function Capacidades() {
+export async function Capacidades() {
+  const [{ capabilities }, t] = await Promise.all([getContent(), getT()]);
   return (
     <Section id="capacidades" tone="ivory">
-      <SectionHead index="02" label="Capacidades">
+      <SectionHead index="02" label={t("Capacidades", "Capabilities")}>
         <Headline className="text-fg">
-          La tecnología es el medio. Elegimos la que el problema pide.
+          {t(
+            "La tecnología es el medio. Elegimos la que el problema pide.",
+            "Technology is the means. We choose the one the problem calls for.",
+          )}
         </Headline>
       </SectionHead>
 
@@ -33,7 +37,10 @@ export function Capacidades() {
         <li className="flex flex-col justify-end gap-4 rounded-card bg-surface-3 p-8 text-fg md:p-10 lg:col-span-2">
           <span className="h-0.5 w-8 bg-lime" />
           <p className="text-pretty text-lg leading-snug">
-            Si el problema no necesita ninguna de estas, se lo decimos.
+            {t(
+              "Si el problema no necesita ninguna de estas, se lo decimos.",
+              "If the problem doesn't need any of these, we'll tell you.",
+            )}
           </p>
         </li>
       </RevealList>

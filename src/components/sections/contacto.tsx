@@ -2,10 +2,11 @@ import { ContactForm } from "@/components/contact-form";
 import { Mark } from "@/components/logo";
 import { Card, SectionHead } from "@/components/ui";
 import { Ambient } from "@/components/vertex-art";
-import { contact, site } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 import { Reveal } from "@/components/motion";
 
-export function Contacto() {
+export async function Contacto() {
+  const [{ contact, site }, t] = await Promise.all([getContent(), getT()]);
   return (
     <section id="contacto" className="relative isolate overflow-hidden bg-surface-4 py-section text-fg">
       <Ambient />
@@ -16,7 +17,7 @@ export function Contacto() {
       />
       <div className="shell relative grid gap-16 md:grid-cols-[1fr_1.15fr] md:gap-24">
         <Reveal className="flex flex-col gap-8">
-          <SectionHead index="08" label="Contacto" invert />
+          <SectionHead index="08" label={t("Contacto", "Contact")} invert />
           <h2 className="text-headline font-normal text-balance">{contact.title}</h2>
           <p className="text-pretty leading-relaxed text-fg/60">{contact.lede}</p>
           <div className="mt-2 flex flex-col items-start gap-4">

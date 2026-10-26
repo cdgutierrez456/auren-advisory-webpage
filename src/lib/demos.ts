@@ -58,6 +58,13 @@ export const PALABRA: Record<Estado, string> = {
   vigente: "Vigente",
 };
 
+export const PALABRA_EN: Record<Estado, string> = {
+  vencido: "Expired",
+  critico: "Critical",
+  proximo: "Upcoming",
+  vigente: "Valid",
+};
+
 export const DOCUMENTOS = [
   { campo: "soat", etiqueta: "SOAT" },
   { campo: "tecnomecanica", etiqueta: "Tecnomecánica" },

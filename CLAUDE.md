@@ -27,9 +27,9 @@ npm start
 | Testimonios (y su marca de borrador) | `testimonials` en `src/content/site.ts` |
 | Una sección de la home | `src/components/sections/*.tsx` |
 | El método (Ver/Entender/Transformar) | `phases` y `method` en `site.ts` |
-| La página de un servicio | `src/app/servicios/[slug]/page.tsx` (plantilla única) |
-| Historia de la firma | `about` en `site.ts` → `src/app/nosotros/page.tsx` |
-| El manual de marca público | `src/app/marca/page.tsx` |
+| La página de un servicio | `src/app/[lang]/servicios/[slug]/page.tsx` (plantilla única) |
+| Historia de la firma | `about` en `site.ts` → `src/app/[lang]/nosotros/page.tsx` |
+| El manual de marca público | `src/app/[lang]/marca/page.tsx` |
 | Validación y mensaje de contacto | `src/lib/lead.ts` |
 | Preguntas, ejes, bandas y textos de la Radiografía | `src/content/radiografia.ts` |
 | Cómo se puntúa la Radiografía | `src/lib/radiografia.ts` |
@@ -38,17 +38,21 @@ npm start
 | Publicar un artículo; editar uno | `posts` en `src/content/recursos.ts` |
 | Sectores y preguntas frecuentes de la home | `sectors` y `homeFaqs` en `site.ts` |
 | Pasos, industrias, métricas o preguntas de un servicio | la entrada en `services` |
-| La imagen que se ve al compartir | `src/app/opengraph-image.tsx` |
+| La imagen que se ve al compartir | `src/app/[lang]/opengraph-image.tsx` (una por idioma) |
 | Número de WhatsApp, correo, dominio | `site` en `src/content/site.ts` |
 | Qué **sabe** el asistente del chat | `site.ts` → `npm run build:kb` |
 | Cómo se ve la burbuja del chat | `src/components/chat-widget.tsx` |
 | Negritas, enlaces y listas de la respuesta del bot | `src/lib/chat-format.ts` |
+| Un texto en inglés de contenido (servicios, artículos, Radiografía, demos) | el mismo campo en `src/content/en/*.ts` |
+| Un texto en inglés de interfaz | el `t("español", "english")` junto al texto, en el componente |
+| Un dato sembrado de los demos en inglés | `DATOS_EN` en `src/content/en/demo-data.ts` |
 
 ### Rutas
 
 `/` · `/enfoque` · `/servicios` · `/servicios/[slug]` (8, prerenderizadas) ·
 `/recursos` · `/recursos/[slug]` · `/radiografia` · `/nosotros` · `/marca` ·
-`/demos/*` (en `noindex`, fuera del sitemap)
+`/demos/*` (en `noindex`, fuera del sitemap). Cada una existe también bajo
+`/en` (ver «Idiomas»).
 
 La home es un resumen: cada bloque enlaza a su página completa. El contenido no
 se duplica — home y página interior leen del mismo array en `site.ts`.
@@ -96,6 +100,39 @@ existen.
 servicios, artículos y `about`; mientras no exista, `Figura` no renderiza nada.
 Las especificaciones, rutas y textos alternativos están en `IMAGENES.md`.
 
+## Idiomas (español e inglés)
+
+El español vive en las URLs de siempre (`/servicios`); el inglés, bajo `/en`
+(`/en/servicios`). Todas las rutas cuelgan de `src/app/[lang]/` y
+`src/proxy.ts` **reescribe** (no redirige) lo que no lleva prefijo a `/es/...`.
+Las canónicas y los enlaces viejos en español no cambiaron. Los slugs son los
+mismos en los dos idiomas.
+
+- **El español es la fuente.** `src/content/en/*` espeja `site.ts`,
+  `recursos.ts`, `radiografia.ts` y `demos.ts` con la misma forma y los
+  mismos slugs. Cambiar un texto en español = cambiarlo también en inglés;
+  añadir un servicio o artículo = añadirlo en los dos. `en.test.ts` falla si
+  la forma, un slug, un enlace o un límite SEO se desalinea.
+- **Cómo lee cada componente el idioma.** Server Components: `getContent()` y
+  `getT()` de `src/lib/i18n-server.ts` (leen `[lang]` con `next/root-params`).
+  Componentes cliente: `useLang()`/`useT()` de `src/lib/use-lang.ts`. Nada
+  importa `src/content/en` directo salvo los componentes cliente que necesitan
+  un módulo puntual (radiografía, demos), para no meter todo el contenido al
+  bundle.
+- **Todo enlace interno usa `@/components/link`**, que añade `/en` solo. El
+  contenido escribe rutas sin prefijo. `next/link` directo solo en
+  `lang-switch.tsx`, que enlaza justamente al otro idioma.
+- **SEO**: `pageMetadata()` pone canónica por idioma y el par `hreflang`; el
+  sitemap lista cada página dos veces con su gemela. La organización del
+  JSON-LD se declara en español en las dos versiones: es una sola entidad.
+- **Interfaz con dos textos juntos**: `t("Contacto", "Contact")`. No hay
+  diccionario aparte que se desincronice.
+- **El bot no recibe el idioma**: contesta en el que le escriban. La
+  bienvenida y las sugerencias en inglés arrancan la conversación en inglés.
+- La barra completa aparece desde `xl`: seis enlaces, contacto, idioma y tema
+  no caben en una fila más angosta. En el teléfono el selector va dentro del
+  menú.
+
 ## Reglas de marca (no son decorativas — vienen del brand brief)
 
 - **Nada de colores crudos en los componentes: solo tokens semánticos.**
@@ -107,7 +144,7 @@ Las especificaciones, rutas y textos alternativos están en `IMAGENES.md`.
   scroll y lleva texto, `panel rounded-card` (el mismo filo, opaco, para que
   se lea). No hay una tercera.
 - **Oscuro y claro.** El sistema manda por defecto; `data-theme` en `<html>`
-  gana, lo escribe `theme-toggle.tsx` y un script en línea en `layout.tsx` lo
+  gana, lo escribe `theme-toggle.tsx` y un script en línea en `[lang]/layout.tsx` lo
   aplica antes de pintar. **El diccionario completo está en `DESIGN.md`** —
   leerlo antes de inventar una superficie, un radio o una opacidad.
 - **`text-accent` existe porque lima nunca es texto sobre marfil**: en claro

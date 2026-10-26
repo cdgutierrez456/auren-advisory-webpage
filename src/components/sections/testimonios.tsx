@@ -1,6 +1,6 @@
-import Link from "next/link";
+import Link from "@/components/link";
 import { Arrow, Em, Headline, Section, SectionHead } from "@/components/ui";
-import { serviceBySlug, testimonials } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 import { RevealItem, RevealList } from "@/components/motion";
 
 /**
@@ -8,14 +8,22 @@ import { RevealItem, RevealList } from "@/components/motion";
  * pantalla: sin el distintivo serían citas falsas atribuidas a alguien real.
  * Ver `testimonials` en `site.ts` para reemplazarlos.
  */
-export function Testimonios() {
+export async function Testimonios() {
+  const [{ serviceBySlug, testimonials }, tr] = await Promise.all([getContent(), getT()]);
   if (testimonials.length === 0) return null;
 
   return (
     <Section id="testimonios" tone="paper">
-      <SectionHead index="05" label="Lo que dicen">
+      <SectionHead index="05" label={tr("Lo que dicen", "What they say")}>
         <Headline className="text-fg">
-          La conversación que <Em className="text-accent">no</Em> esperaban tener.
+          {tr(
+            <>
+              La conversación que <Em className="text-accent">no</Em> esperaban tener.
+            </>,
+            <>
+              The conversation they <Em className="text-accent">didn&apos;t</Em> expect to have.
+            </>,
+          )}
         </Headline>
       </SectionHead>
 
@@ -30,7 +38,7 @@ export function Testimonios() {
             >
               {t.borrador ? (
                 <span className="label w-fit rounded-pill border border-line-strong px-3 py-1.5 text-fg/40">
-                  Texto de ejemplo
+                  {tr("Texto de ejemplo", "Sample text")}
                 </span>
               ) : null}
 

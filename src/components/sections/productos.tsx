@@ -1,17 +1,22 @@
-import Link from "next/link";
+import Link from "@/components/link";
 import { Mark } from "@/components/logo";
 import { Arrow, Button, Headline, Section, SectionHead } from "@/components/ui";
-import { services } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 import { Reveal } from "@/components/motion";
 
-export function Productos() {
+export async function Productos() {
+  const [{ services }, t] = await Promise.all([getContent(), getT()]);
   return (
     <Section id="servicios" tone="paper">
-      <SectionHead index="03" label="Arquitectura de servicios">
-        <Headline className="text-fg">Un solo sistema. Ocho puertas de entrada.</Headline>
+      <SectionHead index="03" label={t("Arquitectura de servicios", "Service architecture")}>
+        <Headline className="text-fg">
+          {t("Un solo sistema. Ocho puertas de entrada.", "One system. Eight ways in.")}
+        </Headline>
         <p className="mt-6 max-w-xl text-pretty leading-relaxed text-fg/55">
-          Cada servicio resuelve una etapa distinta, pero todos pertenecen a la misma firma y
-          comparten método, lenguaje y forma de medir.
+          {t(
+            "Cada servicio resuelve una etapa distinta, pero todos pertenecen a la misma firma y comparten método, lenguaje y forma de medir.",
+            "Each service solves a different stage, but they all belong to the same firm and share one method, one language and one way of measuring.",
+          )}
         </p>
       </SectionHead>
 
@@ -40,7 +45,7 @@ export function Productos() {
 
       <div className="mt-12">
         <Button href="/servicios" variant="outline">
-          Ver todos los servicios <Arrow />
+          {t("Ver todos los servicios", "See all services")} <Arrow />
         </Button>
       </div>
     </Section>

@@ -1,11 +1,15 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useState } from "react";
-import { Arrow } from "@/components/ui";
-import { demoBySlug, demos } from "@/content/demos";
+import { Arrow } from "@/components/arrow";
+import * as demosEs from "@/content/demos";
+import { DATOS_EN } from "@/content/en/demo-data";
+import * as demosEn from "@/content/en/demos";
 import { reiniciarTodo } from "@/lib/demo-store";
+import { unlocalize, type Lang } from "@/lib/i18n";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Primitivas de los demos. Todas viven aquí porque cada pantalla de demo es
@@ -16,6 +20,20 @@ import { reiniciarTodo } from "@/lib/demo-store";
  * presenta sola. Todas abren con qué se está viendo, qué probar y qué NO hace
  * el demo. Si hay que explicar un paso de viva voz, ese paso está mal hecho.
  */
+
+/* --- Idioma ------------------------------------------------------------ */
+
+/**
+ * Los datos sembrados viven en español; `dato()` da su versión en inglés (o
+ * el mismo texto si la página está en español). Nombres y placas no pasan
+ * por aquí.
+ */
+export function useDato() {
+  const lang = useLang();
+  return (texto: string) => (lang === "en" ? (DATOS_EN[texto] ?? texto) : texto);
+}
+
+const useDemos = () => (useLang() === "en" ? demosEn : demosEs);
 
 /* --- Guardia de cliente ------------------------------------------------ */
 
@@ -30,12 +48,13 @@ import { reiniciarTodo } from "@/lib/demo-store";
  */
 export function SoloCliente({ children }: { children: ReactNode }) {
   const [montado, setMontado] = useState(false);
+  const lang = useLang();
   useEffect(() => setMontado(true), []);
 
   if (!montado) {
     return (
       <p className="label py-20 text-fg/40" role="status">
-        Cargando datos del demo…
+        {lang === "en" ? "Loading demo data…" : "Cargando datos del demo…"}
       </p>
     );
   }
@@ -46,7 +65,8 @@ export function SoloCliente({ children }: { children: ReactNode }) {
 
 /** Apertura de cada demo: servicio, qué es, qué probar y qué no hace. */
 export function DemoHeader({ slug, children }: { slug: string; children?: ReactNode }) {
-  const demo = demoBySlug(slug);
+  const en = useLang() === "en";
+  const demo = useDemos().demoBySlug(slug);
   if (!demo) return null;
 
   return (
@@ -70,7 +90,7 @@ export function DemoHeader({ slug, children }: { slug: string; children?: ReactN
 
       <div className="mt-10 grid gap-4 md:grid-cols-[1.15fr_1fr]">
         <div className="glass rounded-card p-7">
-          <p className="label text-fg/40">Qué probar</p>
+          <p className="label text-fg/40">{en ? "What to try" : "Qué probar"}</p>
           <ol className="mt-5 flex flex-col gap-3">
             {demo.pasos.map((paso, i) => (
               <li key={paso} className="flex gap-4 text-pretty leading-relaxed text-fg/90">
@@ -84,11 +104,11 @@ export function DemoHeader({ slug, children }: { slug: string; children?: ReactN
         </div>
         <div className="glass flex flex-col gap-6 rounded-card p-7">
           <div>
-            <p className="label text-fg/40">Por qué importa</p>
+            <p className="label text-fg/40">{en ? "Why it matters" : "Por qué importa"}</p>
             <p className="mt-4 text-pretty text-sm leading-relaxed text-fg/75">{demo.dolor}</p>
           </div>
           <div className="border-t border-line pt-5">
-            <p className="label text-fg/40">Hasta dónde llega el demo</p>
+            <p className="label text-fg/40">{en ? "Where the demo stops" : "Hasta dónde llega el demo"}</p>
             <p className="mt-4 text-pretty text-sm leading-relaxed text-fg/75">{demo.limite}</p>
           </div>
         </div>
@@ -324,20 +344,38 @@ export function Paso({ href, children }: { href: string; children: ReactNode }) 
 
 /* --- Formato ----------------------------------------------------------- */
 
-export const pesos = (n: number) =>
-  new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(n);
+/** Pesos siempre (los datos son colombianos); separadores y fechas, del idioma. */
+const LOCALE: Record<Lang, string> = { es: "es-CO", en: "en-US" };
 
-export const numero = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+export const pesos = (n: number, lang: Lang = "es") =>
+  new Intl.NumberFormat(LOCALE[lang], {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  }).format(n);
 
-export const fechaCorta = (iso: string) =>
-  new Date(iso.length > 10 ? iso : `${iso}T00:00:00`).toLocaleDateString("es-CO", {
+export const numero = (n: number, lang: Lang = "es") => new Intl.NumberFormat(LOCALE[lang]).format(n);
+
+export const fechaCorta = (iso: string, lang: Lang = "es") =>
+  new Date(iso.length > 10 ? iso : `${iso}T00:00:00`).toLocaleDateString(LOCALE[lang], {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
 
-export const horaCorta = (iso: string) =>
-  new Date(iso).toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
+export const horaCorta = (iso: string, lang: Lang = "es") =>
+  new Date(iso).toLocaleTimeString(LOCALE[lang], { hour: "2-digit", minute: "2-digit" });
+
+/** Los cuatro formatos, ya en el idioma de la página. */
+export function useFormato() {
+  const lang = useLang();
+  return {
+    pesos: (n: number) => pesos(n, lang),
+    numero: (n: number) => numero(n, lang),
+    fechaCorta: (iso: string) => fechaCorta(iso, lang),
+    horaCorta: (iso: string) => horaCorta(iso, lang),
+  };
+}
 
 /* --- Barra de la sección ----------------------------------------------- */
 
@@ -349,7 +387,9 @@ export const horaCorta = (iso: string) =>
  * pide ver el flujo otra vez.
  */
 export function BarraDemos() {
-  const ruta = usePathname();
+  const ruta = unlocalize(usePathname());
+  const en = useLang() === "en";
+  const { demos } = useDemos();
   const activo = (slug: string) => ruta === `/demos/${slug}` || ruta.startsWith(`/demos/${slug}/`);
 
   return (
@@ -381,14 +421,15 @@ export function BarraDemos() {
         </nav>
 
         <span className="label inline-flex shrink-0 rounded-pill bg-lime px-3.5 py-1.5 text-ink">
-          Demo<span className="hidden sm:inline">&nbsp;· datos sintéticos</span>
+          Demo
+          <span className="hidden sm:inline">&nbsp;· {en ? "synthetic data" : "datos sintéticos"}</span>
         </span>
         <button
           type="button"
           onClick={reiniciarTodo}
           className="label shrink-0 text-fg/40 underline-offset-4 transition-colors hover:text-fg hover:underline"
         >
-          Reiniciar
+          {en ? "Reset" : "Reiniciar"}
         </button>
       </div>
     </div>

@@ -1,7 +1,9 @@
 // Import relativo (no `@/`): este módulo también corre bajo el runner de Node,
 // que no conoce el alias del tsconfig. Misma razón que en `lead.ts`.
-import { axes, bands, questions, type AxisId } from "../content/radiografia.ts";
+import * as es from "../content/radiografia.ts";
+import type { AxisId, Question } from "../content/radiografia.ts";
 import { site } from "../content/site.ts";
+import type { Lang } from "./i18n.ts";
 
 /**
  * Puntaje de la Radiografía Auren (v2).
@@ -14,7 +16,26 @@ import { site } from "../content/site.ts";
  * - Un eje con UNA pregunta NA: su puntaje es el de la otra × 2.
  * - Un eje con las DOS NA: se excluye y el total se escala a los ejes vivos.
  * - 5 o más NA en total: no se muestra banda (la operación se sale del patrón).
+ *
+ * Los textos (nombre de eje, banda) llegan en `dict`: el de la página. Los
+ * ids, el orden de las opciones y los cortes son los mismos en los dos
+ * idiomas, así que el puntaje no depende de en cuál se responda.
  */
+
+export type Band = {
+  min: number;
+  name: string;
+  verdict: string;
+  body: string;
+  insightBridge: boolean;
+};
+
+/** Lo que el puntaje necesita del contenido. Por defecto, el español. */
+export type Dict = {
+  axes: Record<AxisId, { name: string; priority: number; phrase: string }>;
+  bands: readonly Band[];
+  questions: readonly Question[];
+};
 
 /** Valor de una respuesta: el índice de la opción (0–3) o «NA». */
 export type AnswerValue = number | "NA";
@@ -36,14 +57,14 @@ export type Result = {
   total: number;
   max: number;
   /** Null solo cuando `offScale`. */
-  band: (typeof bands)[number] | null;
+  band: Band | null;
   /** Los ejes foco, de mayor a menor. Vacío si no hay ninguno. */
   focuses: Focus[];
   /** Puntaje de la P1 (0–3) si es numérico; null si NA o sin responder. Para el costo en horas. */
   p1: number | null;
 };
 
-export const TOTAL_QUESTIONS = questions.length;
+export const TOTAL_QUESTIONS = es.questions.length;
 export const MAX_SCORE = 36;
 const AXIS_MAX = 6;
 
@@ -55,10 +76,11 @@ function isAnswered(value: AnswerValue | undefined): boolean {
   return isScore(value) || value === "NA";
 }
 
-const questionsByAxis = (axis: AxisId) => questions.filter((q) => q.axis === axis);
-const axisIds = Object.keys(axes) as AxisId[];
+export function scoreRadiografia(answers: Answers, dict: Dict = es): Result {
+  const { axes, questions } = dict;
+  const questionsByAxis = (axis: AxisId) => questions.filter((q) => q.axis === axis);
+  const axisIds = Object.keys(axes) as AxisId[];
 
-export function scoreRadiografia(answers: Answers): Result {
   let answered = 0;
   let naCount = 0;
   for (const q of questions) {
@@ -99,15 +121,15 @@ export function scoreRadiografia(answers: Answers): Result {
     offScale,
     total,
     max: MAX_SCORE,
-    band: offScale ? null : bandFor(total),
-    focuses: offScale ? [] : focusesFrom(perAxis),
+    band: offScale ? null : bandFor(total, dict.bands),
+    focuses: offScale ? [] : focusesFrom(perAxis, axes),
     p1,
   };
 }
 
 /** La última banda cuyo `min` no supera el puntaje. */
-export function bandFor(total: number): (typeof bands)[number] {
-  let match: (typeof bands)[number] = bands[0];
+export function bandFor(total: number, bands: readonly Band[] = es.bands): Band {
+  let match = bands[0];
   for (const band of bands) if (total >= band.min) match = band;
   return match;
 }
@@ -118,7 +140,7 @@ export function bandFor(total: number): (typeof bands)[number] {
  * (menor gana): dispersa, repetido, visibilidad, seguimiento, dependencia,
  * decisiones. Todos los ejes valen máx. 6, así que ordenar por crudo es justo.
  */
-function focusesFrom(perAxis: { id: AxisId; score: number }[]): Focus[] {
+function focusesFrom(perAxis: { id: AxisId; score: number }[], axes: Dict["axes"]): Focus[] {
   const scored = perAxis
     .filter((a) => a.score > 0)
     .sort((a, b) => b.score - a.score || axes[a.id].priority - axes[b.id].priority);
@@ -136,21 +158,29 @@ function focusesFrom(perAxis: { id: AxisId; score: number }[]): Focus[] {
 }
 
 /** Enlace para agendar la lectura de resultados con el contexto ya en la mano. */
-export function callUrl(result: Result, context: Context = {}): string {
-  const focuses = result.focuses.map((f) => f.name).join(", ") || "ninguno marcado";
+export function callUrl(result: Result, context: Context = {}, lang: Lang = "es"): string {
+  const en = lang === "en";
+  const focuses =
+    result.focuses.map((f) => f.name).join(", ") || (en ? "none flagged" : "ninguno marcado");
   const puntaje = result.offScale
-    ? "Mi operación se sale del patrón de la radiografía"
-    : `${result.total} de ${result.max} — ${result.band?.name}`;
+    ? en
+      ? "My operation falls outside the X-ray's pattern"
+      : "Mi operación se sale del patrón de la radiografía"
+    : `${result.total} ${en ? "of" : "de"} ${result.max} — ${result.band?.name}`;
 
   const text = [
-    `Hola ${site.name}, acabo de hacer la Radiografía.`,
+    en
+      ? `Hi ${site.name}, I just took the X-Ray.`
+      : `Hola ${site.name}, acabo de hacer la Radiografía.`,
     "",
-    context.operacion ? `Operación: ${context.operacion}` : null,
-    context.tamano ? `Tamaño: ${context.tamano}` : null,
-    `Puntaje: ${puntaje}`,
-    `Focos: ${focuses}`,
+    context.operacion ? `${en ? "Operation" : "Operación"}: ${context.operacion}` : null,
+    context.tamano ? `${en ? "Size" : "Tamaño"}: ${context.tamano}` : null,
+    `${en ? "Score" : "Puntaje"}: ${puntaje}`,
+    `${en ? "Leaks" : "Focos"}: ${focuses}`,
     "",
-    "Quiero agendar la lectura de resultados de 30 minutos.",
+    en
+      ? "I'd like to book the 30-minute results reading."
+      : "Quiero agendar la lectura de resultados de 30 minutos.",
   ]
     .filter((line) => line !== null)
     .join("\n");

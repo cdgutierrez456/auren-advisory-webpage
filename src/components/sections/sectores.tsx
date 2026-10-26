@@ -1,6 +1,6 @@
-import Link from "next/link";
+import Link from "@/components/link";
 import { Arrow, Headline, Section, SectionHead } from "@/components/ui";
-import { sectors, serviceBySlug } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 import { DrawRule, RevealItem, RevealList } from "@/components/motion";
 
 /**
@@ -9,14 +9,22 @@ import { DrawRule, RevealItem, RevealList } from "@/components/motion";
  * los servicios al vocabulario de cada industria y enlaza a la página que
  * corresponde.
  */
-export function Sectores() {
+export async function Sectores() {
+  const [{ sectors, serviceBySlug }, t] = await Promise.all([getContent(), getT()]);
   return (
     <Section id="sectores" tone="ivory">
-      <SectionHead index="04" label="Sectores">
-        <Headline className="text-fg">Dónde trabajamos, y con qué se encuentra uno ahí.</Headline>
+      <SectionHead index="04" label={t("Sectores", "Sectors")}>
+        <Headline className="text-fg">
+          {t(
+            "Dónde trabajamos, y con qué se encuentra uno ahí.",
+            "Where we work, and what you run into there.",
+          )}
+        </Headline>
         <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-fg/55">
-          El método es el mismo en todos, pero la fricción no. Estos son los cuatro
-          entornos donde más hemos visto repetirse los mismos costos escondidos.
+          {t(
+            "El método es el mismo en todos, pero la fricción no. Estos son los cuatro entornos donde más hemos visto repetirse los mismos costos escondidos.",
+            "The method is the same in all of them, but the friction isn't. These are the four settings where we've most often seen the same hidden costs repeat.",
+          )}
         </p>
       </SectionHead>
 

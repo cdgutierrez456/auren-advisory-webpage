@@ -78,6 +78,14 @@ export const PALABRA_TERMINO: Record<Semaforo, string> = {
   cerrado: "Cerrado",
 };
 
+export const PALABRA_TERMINO_EN: Record<Semaforo, string> = {
+  vencido: "Overdue",
+  critico: "Critical",
+  atencion: "Attention",
+  "en-termino": "On time",
+  cerrado: "Closed",
+};
+
 export function evaluarRadicado(
   r: Radicado,
   hoy = new Date(),

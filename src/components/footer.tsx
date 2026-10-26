@@ -1,13 +1,13 @@
-import Link from "next/link";
+import Link from "@/components/link";
 import { Logo } from "@/components/logo";
-import { nav, services, site } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 
-const secondary = [
-  { label: "Sistema de identidad", href: "/marca" },
-  { label: "Contacto", href: "/#contacto" },
-];
-
-export function Footer() {
+export async function Footer() {
+  const [{ nav, services, site }, t] = await Promise.all([getContent(), getT()]);
+  const secondary = [
+    { label: t("Sistema de identidad", "Identity system"), href: "/marca" },
+    { label: t("Contacto", "Contact"), href: "/#contacto" },
+  ];
   return (
     <footer className="border-t border-line bg-surface-4 text-fg">
       <div className="shell grid gap-16 py-20 md:grid-cols-[1.4fr_1fr_1.2fr] md:py-28">
@@ -20,7 +20,7 @@ export function Footer() {
         </div>
 
         <nav className="flex flex-col gap-5">
-          <span className="label text-accent">Navegación</span>
+          <span className="label text-accent">{t("Navegación", "Navigation")}</span>
           {[...nav, ...secondary].map((item) => (
             <Link
               key={item.href}
@@ -33,7 +33,7 @@ export function Footer() {
         </nav>
 
         <div className="flex flex-col gap-5">
-          <span className="label text-accent">Servicios</span>
+          <span className="label text-accent">{t("Servicios", "Services")}</span>
           <ul className="grid gap-2.5 sm:grid-cols-2">
             {services.map((s) => (
               <li key={s.slug}>

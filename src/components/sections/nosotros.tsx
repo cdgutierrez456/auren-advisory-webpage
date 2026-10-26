@@ -1,10 +1,11 @@
 import { Arrow, Button, Section, SectionHead } from "@/components/ui";
 import { Ambient } from "@/components/vertex-art";
-import { about } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 import { Reveal } from "@/components/motion";
 
 /** Adelanto en la home. La versión completa vive en /nosotros. */
-export function Nosotros() {
+export async function Nosotros() {
+  const [{ about }, t] = await Promise.all([getContent(), getT()]);
   return (
     <Section tone="deep" className="relative isolate overflow-hidden">
       <Ambient />
@@ -15,7 +16,7 @@ export function Nosotros() {
           <h2 className="text-headline text-balance font-normal">{about.title}</h2>
           <p className="text-lede text-pretty text-fg/75">{about.lede}</p>
           <Button href="/nosotros" variant="lime" className="mt-2 w-fit">
-            Conocer la firma <Arrow />
+            {t("Conocer la firma", "Meet the firm")} <Arrow />
           </Button>
         </Reveal>
 

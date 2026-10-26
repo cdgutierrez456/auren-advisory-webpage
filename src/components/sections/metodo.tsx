@@ -1,11 +1,12 @@
-import Link from "next/link";
+import Link from "@/components/link";
 import { Arrow, Button, Headline, Section, SectionHead } from "@/components/ui";
 import { HairlineField } from "@/components/vertex-art";
-import { method, phases } from "@/content/site";
+import { getContent, getT } from "@/lib/i18n-server";
 import { RevealItem, RevealList } from "@/components/motion";
 
 /** Adelanto en la home. El desarrollo completo vive en /enfoque. */
-export function Metodo() {
+export async function Metodo() {
+  const [{ method, phases }, t] = await Promise.all([getContent(), getT()]);
   return (
     <Section tone="ink" className="relative isolate overflow-hidden">
       <div
@@ -52,7 +53,7 @@ export function Metodo() {
 
       <div className="relative mt-12">
         <Button href="/enfoque" variant="lime">
-          Ver el método completo <Arrow />
+          {t("Ver el método completo", "See the full method")} <Arrow />
         </Button>
       </div>
     </Section>
