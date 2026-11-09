@@ -127,7 +127,7 @@ export function RadiografiaForm() {
 
   return (
     <div ref={topRef} className="scroll-mt-28">
-      <div className="glass mx-auto flex max-w-3xl flex-col rounded-card p-7 md:p-12">
+      <div className="card mx-auto flex max-w-3xl flex-col rounded-card p-7 md:p-12">
         <ProgressHead screen={screen} answeredScored={answeredScored} />
 
         <div className="mt-10 min-h-[20rem] md:min-h-[22rem]">
@@ -315,7 +315,7 @@ function Choice({
       className={`group flex items-center gap-4 rounded-card border px-5 py-4 text-left transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime ${
         selected
           ? "border-lime/60 bg-lime/10 text-fg"
-          : "border-line-strong text-fg/75 hover:-translate-y-0.5 hover:border-lime/40 hover:text-fg"
+          : "border-line-strong text-fg/75 hover:-translate-y-0.5 hover:border-fg/40 hover:text-fg"
       }`}
     >
       <span
@@ -368,7 +368,7 @@ function SingleChoice({
             className={`rounded-card border px-5 py-4 text-left text-pretty leading-snug transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime ${
               selectedIndex === i
                 ? "border-lime/60 bg-lime/10 text-fg"
-                : "border-line-strong text-fg/75 hover:-translate-y-0.5 hover:border-lime/40 hover:text-fg"
+                : "border-line-strong text-fg/75 hover:-translate-y-0.5 hover:border-fg/40 hover:text-fg"
             }`}
           >
             {option}
@@ -449,7 +449,7 @@ function Result({
           ) : (
             <ol className="mt-8 flex flex-col gap-4">
               {result.focuses.map((focus) => (
-                <li key={focus.id} className="glass rounded-card p-7">
+                <li key={focus.id} className="card rounded-card p-7">
                   <div className="flex items-center gap-3">
                     <span aria-hidden className="h-0.5 w-6 bg-lime" />
                     <span className="label text-fg/55">
@@ -504,10 +504,6 @@ function Result({
 function ResultShell({ eyebrow, children }: { eyebrow: string; children: React.ReactNode }) {
   return (
     <section className="relative isolate overflow-hidden rounded-card bg-surface-4 p-8 text-fg md:p-14">
-      <div
-        aria-hidden
-        className="glow breathe pointer-events-none absolute -top-24 right-[6%] h-72 w-72 bg-lime"
-      />
       <div className="relative">
         <div className="flex items-center gap-4">
           <span aria-hidden className="h-0.5 w-8 bg-lime" />

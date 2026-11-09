@@ -19,9 +19,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const pages: { path: string; priority: number; lastModified?: Date }[] = [
     { path: "/", priority: 1 },
-    ...["/servicios", "/enfoque", "/recursos", "/radiografia", "/nosotros", "/marca"].map((p) => ({
+    ...["/soluciones", "/sectores", "/recursos", "/radiografia", "/nosotros", "/contacto"].map((p) => ({
       path: p,
-      priority: p === "/marca" ? 0.4 : 0.8,
+      priority: 0.8,
     })),
     ...services.map((s) => ({ path: `/servicios/${s.slug}`, priority: 0.7 })),
     // Los artículos sí tienen fecha de contenido que reflejar.

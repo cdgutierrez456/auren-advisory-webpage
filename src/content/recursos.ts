@@ -48,6 +48,7 @@ export type Post = {
 export const posts: readonly Post[] = [
   {
     slug: "senales-de-que-su-empresa-necesita-automatizacion",
+    image: { src: "/images/recursos/automatizacion.jpg", alt: "Puesto de trabajo con datos copiándose a mano entre dos pantallas y una planilla", width: 1680, height: 944 },
     title: "Siete señales de que su empresa ya necesita automatizar procesos",
     seoTitle: "Cómo saber si su empresa necesita automatización",
     description:
@@ -68,7 +69,7 @@ export const posts: readonly Post[] = [
         heading: "1. Hay personas cuyo trabajo es mover datos entre sistemas",
         body: [
           "Es la señal más clara y la más fácil de cuantificar. Alguien exporta de un sistema, ajusta en Excel y sube a otro. A veces es media hora al día; a veces es una persona completa. Si además esa persona es la única que sabe hacerlo, la empresa no tiene un proceso: tiene una dependencia.",
-          "Para ponerle número basta con una pregunta a quien lo hace: cuántas veces por semana y cuánto se demora cada vez. Multiplique por cuatro y tendrá las horas al mes. Es una cifra que suele sorprender hacia arriba, sobre todo cuando se suman tres o cuatro tareas parecidas repartidas entre áreas distintas.",
+          "Para ponerle número basta con una pregunta a quien lo hace: cuántas veces por semana y cuánto se demora cada vez. Multiplicado por cuatro, da las horas al mes. Es una cifra que suele sorprender hacia arriba, sobre todo cuando se suman tres o cuatro tareas parecidas repartidas entre áreas distintas.",
         ],
       },
       {
@@ -82,14 +83,14 @@ export const posts: readonly Post[] = [
         heading: "3. Las aprobaciones viven en el correo o en el chat",
         body: [
           "Un descuento aprobado por WhatsApp no deja rastro utilizable. Cuando seis meses después alguien pregunta quién autorizó ese precio, la respuesta es una búsqueda en un chat, si es que la persona sigue en la empresa.",
-          "Aquí el costo tiene dos caras: el tiempo que se va persiguiendo la firma —que suele ser el cuello de botella real del proceso, no el trabajo en sí— y el riesgo de no poder demostrar la autorización cuando toca. En sectores regulados la segunda cara es la cara cara.",
+          "Aquí el costo tiene dos caras: el tiempo que se va persiguiendo la firma, que suele ser el cuello de botella real del proceso y no el trabajo en sí, y el riesgo de no poder demostrar la autorización cuando se exige. En sectores regulados la segunda suele ser la más costosa.",
         ],
       },
       {
         heading: "4. El mismo dato se digita más de una vez",
         body: [
           "Los datos del cliente se escriben en la cotización, se vuelven a escribir en el pedido y se escriben una tercera vez en la factura. Cada digitación es una oportunidad de error, y el error se descubre al final: en el despacho equivocado o en la factura rechazada.",
-          "Una regla práctica: cuente cuántas veces aparece el mismo dato escrito a mano en el recorrido completo. Si aparece más de una, hay reproceso garantizado y probablemente ya lo esté pagando en notas crédito.",
+          "Una regla práctica: contar cuántas veces aparece el mismo dato escrito a mano en el recorrido completo. Si aparece más de una, hay reproceso garantizado y probablemente ya se esté pagando en notas crédito.",
         ],
       },
       {
@@ -117,7 +118,7 @@ export const posts: readonly Post[] = [
         heading: "Cómo ponerle cifra antes de pedir presupuesto",
         body: [
           "Ninguna de las siete señales justifica por sí sola una inversión. Lo que la justifica es la suma, y la suma se calcula con una tabla sencilla que cualquier jefe de área puede llenar en una tarde: por cada tarea manual identificada, cuántas veces al mes ocurre, cuánto dura y cuánto vale la hora de quien la hace.",
-          "A esa cifra súmele lo que cuestan los reprocesos: notas crédito, despachos repetidos, horas extra de cierre. Y añada el riesgo de cumplimiento cuando aplique, que en sectores regulados suele pesar más que todo lo anterior junto.",
+          "A esa cifra se suma lo que cuestan los reprocesos: notas crédito, despachos repetidos, horas extra de cierre. Y se añade el riesgo de cumplimiento cuando aplique, que en sectores regulados suele pesar más que todo lo anterior junto.",
           "Con ese número sobre la mesa la conversación cambia de tono. Deja de ser «deberíamos modernizarnos» y pasa a ser «esto cuesta tanto al mes y resolverlo cuesta tanto». La primera versión es una discusión de opiniones; la segunda es una decisión.",
         ],
         list: [
@@ -130,9 +131,9 @@ export const posts: readonly Post[] = [
       {
         heading: "Por dónde empezar sin comprometer medio presupuesto",
         body: [
-          "Empiece por un solo flujo, y que no sea el más complicado. El objetivo del primero no es el ahorro máximo: es demostrarle al equipo que esto funciona y aprender cómo reacciona su operación al cambio. Un proceso repetitivo, de reglas estables y volumen alto es el candidato ideal.",
-          "Antes de automatizarlo, rediséñelo. La pregunta no es cómo hacer más rápido lo que hoy se hace, sino qué pasos dejarían de hacer falta si el proceso se pensara desde cero. Automatizar sobre un proceso mal diseñado solo consigue que los errores ocurran más rápido y en mayor volumen.",
-          "Y defina de antemano cómo va a saber si sirvió. Una métrica, medida antes de empezar. Sin línea base, al final del proyecto nadie va a poder demostrar qué mejoró, y la siguiente inversión volverá a ser una discusión de opiniones.",
+          "Conviene empezar por un solo flujo, y no por el más complicado. El objetivo del primero no es el ahorro máximo: es demostrar al equipo que el enfoque funciona y aprender cómo reacciona la operación al cambio. Un proceso repetitivo, de reglas estables y volumen alto es el candidato ideal.",
+          "Antes de automatizarlo hay que rediseñarlo. La pregunta no es cómo hacer más rápido lo que hoy se hace, sino qué pasos dejarían de hacer falta si el proceso se pensara desde cero. Automatizar sobre un proceso mal diseñado solo consigue que los errores ocurran más rápido y en mayor volumen.",
+          "Y conviene definir de antemano cómo se sabrá si sirvió. Una métrica, medida antes de empezar. Sin línea base, al final del proyecto nadie va a poder demostrar qué mejoró, y la siguiente inversión volverá a ser una discusión de opiniones.",
         ],
       },
     ],
@@ -155,6 +156,7 @@ export const posts: readonly Post[] = [
   },
   {
     slug: "que-es-la-transformacion-digital-para-pymes",
+    image: { src: "/images/recursos/transformacion-digital.jpg", alt: "Operario junto a una máquina en el taller de una empresa mediana", width: 1680, height: 944 },
     title: "Qué es la transformación digital para pymes (y qué no es)",
     seoTitle: "Qué es la transformación digital para pymes",
     description:
@@ -168,7 +170,7 @@ export const posts: readonly Post[] = [
         heading: "Una definición que sirve para decidir",
         body: [
           "Transformación digital es cambiar cómo funciona un proceso del negocio usando tecnología, de modo que produzca un resultado medible distinto: menos tiempo, menos error, más control o información que antes no existía.",
-          "Las tres partes importan. Si no cambia el proceso, es una compra de software. Si no hay tecnología de por medio, es mejora de procesos —igual de válida, pero otra cosa—. Y si el resultado no se puede medir, no hay forma de saber si sirvió, que es exactamente el estado en el que termina la mayoría de estos proyectos.",
+          "Las tres partes importan. Si no cambia el proceso, es una compra de software. Si no hay tecnología de por medio, es mejora de procesos, igual de válida pero distinta. Y si el resultado no se puede medir, no hay forma de saber si sirvió, que es exactamente el estado en el que termina la mayoría de estos proyectos.",
           "Bajo esa definición, digitalizar un formato de papel en un PDF que se sigue llenando a mano y archivando en una carpeta no es transformación digital: es el mismo proceso con otro soporte. En cambio, convertir esa inspección en un formulario móvil que bloquea la salida del vehículo cuando falla un ítem crítico sí lo es, porque cambió lo que ocurre.",
         ],
       },
@@ -181,7 +183,7 @@ export const posts: readonly Post[] = [
         ],
         list: [
           "Comprar un ERP, un CRM o cualquier plataforma antes de definir el proceso objetivo",
-          "Confundir presencia digital —web, redes, comercio electrónico— con transformación de la operación",
+          "Confundir presencia digital (web, redes, comercio electrónico) con transformación de la operación",
           "Talleres de innovación sin nadie asignado a implementar lo que salga de ahí",
           "Empezar por inteligencia artificial cuando los datos todavía no cuadran entre áreas",
         ],
@@ -199,7 +201,7 @@ export const posts: readonly Post[] = [
         body: [
           "En manufactura, el caso típico no es un robot: es que el registro de producción deje de llenarse en papel y empiece a alimentar un tablero donde el costo por lote aparece el mismo día y no en el cierre del mes. Con eso, la conversación sobre merma cambia de anecdótica a factual.",
           "En transporte, es que los vencimientos de SOAT y tecnomecánica dejen de vivir en una hoja de cálculo y avisen solos con treinta días de anticipación, y que el preoperacional deje evidencia utilizable en una auditoría del PESV.",
-          "En una empresa de servicios, es que la solicitud del cliente tenga un estado consultable y un responsable visible, en vez de un hilo de correo donde nadie sabe si alguien ya respondió. Ninguno de los tres es espectacular. Los tres cambian el día de alguien.",
+          "En una empresa de servicios, es que la solicitud del cliente tenga un estado consultable y un responsable visible, en vez de un hilo de correo donde nadie sabe si alguien ya respondió. Ninguno de los tres es espectacular; los tres cambian la jornada de un equipo.",
         ],
       },
       {
@@ -226,7 +228,7 @@ export const posts: readonly Post[] = [
       },
       {
         q: "¿Cuánto tiempo toma ver resultados?",
-        a: "Con un alcance bien partido, el primer cambio en producción se ve entre la semana seis y la diez. Si el plan que le presentan no entrega nada útil antes de seis meses, probablemente está agrupando cosas que se pueden entregar por separado.",
+        a: "Con un alcance bien partido, el primer cambio en producción se ve entre la semana seis y la diez. Si un plan no entrega nada útil antes de seis meses, probablemente está agrupando cosas que se pueden entregar por separado.",
       },
       {
         q: "¿Necesito contratar personal de sistemas para sostenerlo?",
@@ -245,6 +247,7 @@ export const posts: readonly Post[] = [
   },
   {
     slug: "software-a-la-medida-o-saas",
+    image: { src: "/images/recursos/software-a-la-medida.jpg", alt: "Dos portátiles con herramientas distintas en una sala de reuniones", width: 1680, height: 944 },
     title: "Software a la medida o SaaS: cómo decidir sin arrepentirse",
     seoTitle: "Software a la medida vs. SaaS: cómo decidir",
     description:
@@ -258,14 +261,14 @@ export const posts: readonly Post[] = [
         heading: "La pregunta correcta no es cuál es mejor",
         body: [
           "Es cuál encaja con este proceso, en esta empresa, con este horizonte. Comprar una suscripción y construir a la medida son decisiones con perfiles de riesgo distintos, y ninguna de las dos es intrínsecamente más barata.",
-          "Conviene además descartar el falso dilema: la respuesta más frecuente en la práctica es mixta. Se compra el estándar para lo estándar —contabilidad, nómina, facturación electrónica— y se construye solo la pieza que no existe en el mercado, integrada con lo demás.",
+          "Conviene además descartar el falso dilema: la respuesta más frecuente en la práctica es mixta. Se compra el estándar para lo estándar (contabilidad, nómina, facturación electrónica) y se construye solo la pieza que no existe en el mercado, integrada con lo demás.",
         ],
       },
       {
         heading: "Cuándo gana comprar",
         body: [
           "Cuando el proceso es estándar y regulado, comprar gana casi siempre. La facturación electrónica en Colombia cambia con la normativa, y mantener eso al día es trabajo permanente que un proveedor especializado hace mejor y más barato que cualquier equipo interno.",
-          "También gana cuando se necesita algo funcionando este mes y no el próximo trimestre, cuando el volumen de usuarios es bajo —las licencias por puesto son baratas hasta cierto punto— y cuando el proceso no es un diferencial competitivo. Nadie gana clientes por tener una nómina distinta.",
+          "También gana cuando se necesita algo funcionando este mes y no el próximo trimestre, cuando el volumen de usuarios es bajo, pues las licencias por puesto son baratas hasta cierto punto, y cuando el proceso no es un diferencial competitivo. Nadie gana clientes por tener una nómina distinta.",
         ],
         list: [
           "El proceso es estándar: contabilidad, nómina, facturación, firma electrónica",
@@ -277,8 +280,8 @@ export const posts: readonly Post[] = [
       {
         heading: "Cuándo gana construir",
         body: [
-          "Cuando el proceso es justamente la ventaja de la empresa. Si su forma de programar la producción, rutear los despachos o liquidar a los proveedores es parte de por qué le va bien, meterla a la fuerza en un producto genérico es renunciar a ella para ahorrarse una suscripción.",
-          "También cuando ya evaluó tres herramientas y ninguna encaja sin trabajo pesado de configuración; cuando paga licencias por usuario para gente que usa dos pantallas; y cuando lleva años adaptando la operación al software en vez de al revés. Esa última señal es la más costosa y la que menos se nota, porque el costo se paga en pequeñas incomodidades diarias que nadie factura.",
+          "Cuando el proceso es justamente la ventaja de la empresa. Si la forma de programar la producción, rutear los despachos o liquidar a los proveedores es parte de por qué le va bien, meterla a la fuerza en un producto genérico es renunciar a ella para ahorrar una suscripción.",
+          "También cuando ya evaluó tres herramientas y ninguna encaja sin trabajo pesado de configuración; cuando se pagan licencias por usuario para personas que usan dos pantallas; y cuando se llevan años adaptando la operación al software en vez de al revés. Esa última señal es la más costosa y la que menos se nota, porque el costo se paga en pequeñas incomodidades diarias que nadie factura.",
         ],
         list: [
           "El proceso es el diferencial del negocio y ningún producto lo modela bien",
@@ -291,7 +294,7 @@ export const posts: readonly Post[] = [
         heading: "El número que casi nadie calcula",
         body: [
           "La comparación válida no es precio de licencia contra precio de desarrollo. Es costo total en un horizonte de tres a cinco años, y ahí entran cosas que no aparecen en ninguna cotización.",
-          "Del lado de la suscripción: licencias por usuario proyectadas al crecimiento esperado, módulos que se cobran aparte, el costo de la implementación inicial, las integraciones y —el rubro olvidado— cuánto costaría salir de ahí en el año cuatro si el proveedor sube el precio o cierra.",
+          "Del lado de la suscripción: licencias por usuario proyectadas al crecimiento esperado, módulos que se cobran aparte, el costo de la implementación inicial, las integraciones y, el rubro olvidado, cuánto costaría salir de ahí en el año cuatro si el proveedor sube el precio o cierra.",
           "Del lado de la medida: el desarrollo inicial, la infraestructura mensual, el mantenimiento correctivo y la evolución. Ese último rubro es el que se subestima; un software propio sin presupuesto de evolución envejece hasta volverse el problema que vino a resolver.",
         ],
         list: [
@@ -304,8 +307,8 @@ export const posts: readonly Post[] = [
       {
         heading: "Tres situaciones donde la respuesta obvia falla",
         body: [
-          "La primera: «es más barato comprar». Suele serlo el primer año y dejar de serlo cuando el número de usuarios crece o cuando la personalización necesaria termina costando más que el desarrollo que se quería evitar. Vale la pena revisar cuánto de la implementación es configuración pesada.",
-          "La segunda: «nosotros somos únicos». Casi todas las empresas creen que su proceso es especial, y en la mayoría de los casos lo especial es un diez por ciento del flujo. La pregunta útil es si ese diez por ciento es lo que le hace ganar dinero. Si no lo es, cámbielo y compre.",
+          "La primera: «es más barato comprar». Suele serlo el primer año y dejar de serlo cuando el número de usuarios crece o cuando la personalización necesaria termina costando más que el desarrollo que se quería evitar. Conviene revisar cuánto de la implementación es configuración pesada.",
+          "La segunda: «nosotros somos únicos». Casi todas las empresas creen que su proceso es especial, y en la mayoría de los casos lo especial es un diez por ciento del flujo. La pregunta útil es si ese diez por ciento es lo que le hace ganar dinero. Si no lo es, conviene cambiarlo y comprar.",
           "La tercera: «lo desarrollamos internamente». Es viable con un equipo técnico estable y con capacidad libre. Es riesgoso cuando queda dependiendo de una sola persona: el conocimiento se va con ella, y recuperar un sistema sin documentación cuesta más que haberlo comprado.",
         ],
       },
@@ -313,8 +316,8 @@ export const posts: readonly Post[] = [
         heading: "Qué preguntar antes de firmar, en cualquiera de los dos casos",
         body: [
           "La mayoría de los arrepentimientos no vienen de haber elegido mal entre comprar y construir, sino de no haber preguntado cuatro cosas a tiempo. Sirven igual para un contrato de suscripción que para uno de desarrollo.",
-          "Primero, cómo salgo. Pida ver una exportación real de sus datos, no la promesa de que existe: formato, alcance y si incluye los adjuntos y el histórico. Segundo, qué pasa con las integraciones cuando la otra parte cambie: quién asume el ajuste y con qué tiempo de respuesta.",
-          "Tercero, qué se cobra aparte. Módulos, usuarios adicionales, ambientes de prueba, horas de soporte, cambios de alcance: la lista de lo que no está incluido dice más del costo real que el precio de la portada. Y cuarto, quién queda sabiendo cómo funciona esto dentro de su empresa, con nombre propio y con tiempo asignado.",
+          "Primero, cómo se sale. Conviene pedir una exportación real de los datos, no la promesa de que existe: formato, alcance y si incluye los adjuntos y el histórico. Segundo, qué pasa con las integraciones cuando la otra parte cambie: quién asume el ajuste y con qué tiempo de respuesta.",
+          "Tercero, qué se cobra aparte. Módulos, usuarios adicionales, ambientes de prueba, horas de soporte, cambios de alcance: la lista de lo que no está incluido dice más del costo real que el precio de la portada. Y cuarto, quién queda sabiendo cómo funciona el sistema dentro de la empresa, con nombre propio y con tiempo asignado.",
         ],
         list: [
           "Exportación completa de datos: formato, histórico y adjuntos, demostrada",
@@ -326,9 +329,9 @@ export const posts: readonly Post[] = [
       {
         heading: "Cómo decidir en una tarde",
         body: [
-          "Escriba el proceso en pasos. Marque cuáles son estándar y cuáles son propios de su negocio. Si lo propio es marginal, compre y ajuste el proceso. Si lo propio es el corazón del asunto, construya esa parte y compre el resto.",
-          "Después haga el número a tres años, con las dos opciones al mismo nivel de detalle e incluyendo integración y salida. Y por último pregúntese quién va a operar y evolucionar lo que quede: si la respuesta es «alguien lo verá», la opción de menor riesgo es la que menos dependa de que ese alguien aparezca.",
-          "Una advertencia final sobre quién le está aconsejando. Un proveedor que revende licencias tiene incentivo para recomendar la compra, y una fábrica de software tiene incentivo para recomendar el desarrollo. Vale la pena preguntar de frente cómo gana dinero quien le está dando el consejo.",
+          "El proceso se escribe en pasos y se marca cuáles son estándar y cuáles propios del negocio. Si lo propio es marginal, conviene comprar y ajustar el proceso. Si lo propio es el corazón del asunto, se construye esa parte y se compra el resto.",
+          "Después se hace el número a tres años, con las dos opciones al mismo nivel de detalle e incluyendo integración y salida. Por último, la pregunta es quién va a operar y evolucionar lo que quede: si la respuesta es «alguien lo verá», la opción de menor riesgo es la que menos dependa de que ese alguien aparezca.",
+          "Una advertencia final sobre quién aconseja. Un proveedor que revende licencias tiene incentivo para recomendar la compra, y una fábrica de software tiene incentivo para recomendar el desarrollo. Conviene preguntar de frente cómo gana dinero quien da el consejo.",
         ],
       },
     ],

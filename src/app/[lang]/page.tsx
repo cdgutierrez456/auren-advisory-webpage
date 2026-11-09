@@ -1,44 +1,41 @@
-import { Capacidades } from "@/components/sections/capacidades";
-import { Contacto } from "@/components/sections/contacto";
+import { Confianza } from "@/components/sections/confianza";
 import { Hero } from "@/components/sections/hero";
-import { Manifiesto } from "@/components/sections/manifiesto";
 import { Metodo } from "@/components/sections/metodo";
-import { Nosotros } from "@/components/sections/nosotros";
-import { Preguntas } from "@/components/sections/preguntas";
-import { Productos } from "@/components/sections/productos";
+import { Problemas } from "@/components/sections/problemas";
+import { QueHacemos } from "@/components/sections/que-hacemos";
 import { Sectores } from "@/components/sections/sectores";
+import { Soluciones } from "@/components/sections/soluciones";
 import { Testimonios } from "@/components/sections/testimonios";
 import { CtaBand } from "@/components/ui";
-import { getContent, getT } from "@/lib/i18n-server";
-import { faqPage, JsonLd } from "@/lib/schema";
+import { getT } from "@/lib/i18n-server";
 
+/**
+ * La home muestra poco y abre lo demás bajo demanda: hero, qué hacemos,
+ * soluciones, método, sectores, ¿le suena?, por qué creer y conversación.
+ * Las preguntas frecuentes viven en /contacto, donde se leen completas.
+ */
 export default async function Home() {
-  const [{ homeFaqs }, t] = await Promise.all([getContent(), getT()]);
+  const t = await getT();
   return (
     <>
-      {/* Las respuestas están visibles en la sección Preguntas; el JSON-LD solo
-          se las declara al buscador. Nunca marcar aquí algo que no esté en la
-          página: es exactamente lo que Google penaliza. */}
-      <JsonLd data={faqPage(homeFaqs)} />
       <Hero />
-      <Manifiesto />
+      <QueHacemos />
+      <Soluciones />
       <Metodo />
-      <Capacidades />
-      {/* Llamado a mitad de recorrido: quien ya entendió el método y las
-          capacidades no debería tener que llegar al pie para agendar. */}
+      <Sectores />
+      <Problemas />
+      <Confianza />
+      <Testimonios />
       <CtaBand
-        title={t("¿Sabe dónde se le va el tiempo hoy?", "Do you know where your time goes today?")}
+        title={t(
+          "El primer paso es ver dónde puede funcionar mejor su empresa.",
+          "The first step is to see where your company can work better.",
+        )}
         lede={t(
-          "Nosotros tampoco, todavía. Por eso el primer paso es mirar la operación, no proponerle una herramienta. Una conversación de diagnóstico, sin compromiso.",
-          "Neither do we, yet. That's why the first step is to look at the operation, not to pitch you a tool. A no-commitment diagnostic conversation.",
+          "Una primera conversación de treinta minutos. Si hay caso, se define por dónde empezar; si no lo hay, también se dice con claridad.",
+          "A first thirty-minute conversation. If there's a case, we define where to start; if there isn't, we say so clearly.",
         )}
       />
-      <Productos />
-      <Sectores />
-      <Testimonios />
-      <Nosotros />
-      <Preguntas />
-      <Contacto />
     </>
   );
 }

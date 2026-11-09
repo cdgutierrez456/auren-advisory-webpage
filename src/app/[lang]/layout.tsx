@@ -35,7 +35,7 @@ export const generateStaticParams = () => LANGS.map((lang) => ({ lang }));
 export async function generateMetadata(): Promise<Metadata> {
   const [{ site }, t] = await Promise.all([getContent(), getT()]);
   const home = await pageMetadata(
-    t("Transformación empresarial en Colombia", "Business transformation in Colombia"),
+    t("Transformación empresarial mediante tecnología", "Business transformation through technology"),
     site.description,
     "/",
   );
@@ -43,14 +43,14 @@ export async function generateMetadata(): Promise<Metadata> {
     ...home,
     metadataBase: new URL(`https://${site.domain}`),
     title: {
-      default: `${site.name} — ${t("Transformación empresarial y automatización", "Business transformation and automation")}`,
+      default: `${site.name} — ${t("Transformación empresarial mediante tecnología", "Business transformation through technology")}`,
       template: `%s — ${site.name}`,
     },
   };
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [lang, t, { nav, site }] = await Promise.all([getLang(), getT(), getContent()]);
+  const [lang, t, { nav, navCta, site }] = await Promise.all([getLang(), getT(), getContent()]);
   return (
     <html
       lang={HTML_LANG[lang]}
@@ -92,7 +92,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
         </noscript>
         <MotionProvider>
-          <Nav nav={nav} name={site.name} />
+          <Nav nav={nav} navCta={navCta} name={site.name} />
           <main id="contenido">{children}</main>
           <Footer />
           <ToTop />

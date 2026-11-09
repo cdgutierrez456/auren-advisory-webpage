@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "@/components/link";
 import { notFound } from "next/navigation";
-import { Mark } from "@/components/logo";
 import {
   Arrow,
   Breadcrumbs,
@@ -9,6 +8,7 @@ import {
   FaqList,
   Figura,
   Headline,
+  NumberedList,
   PageHero,
   Section,
   SectionHead,
@@ -17,7 +17,7 @@ import { services } from "@/content/site";
 import { getContent, getLang, getT } from "@/lib/i18n-server";
 import { faqPage, JsonLd, serviceSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
-import { DrawRule, Reveal, RevealItem, RevealList } from "@/components/motion";
+import { Reveal, RevealItem, RevealList } from "@/components/motion";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -38,17 +38,17 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   );
 }
 
+/**
+ * Página de servicio, en cinco pasos legibles: qué es y cuándo tiene sentido
+ * → cómo trabajamos → qué incluye y qué se mide → preguntas → qué sigue.
+ * El contenido SEO se conserva completo; lo que cambió es el orden y el aire.
+ */
 export default async function ServicioDetalle({ params }: Params) {
-  const [{ posts, serviceBySlug, services }, lang, t] = await Promise.all([
-    getContent(),
-    getLang(),
-    getT(),
-  ]);
+  const [{ posts, serviceBySlug }, lang, t] = await Promise.all([getContent(), getLang(), getT()]);
   const service = serviceBySlug((await params).slug);
   if (!service) notFound();
 
   const next = serviceBySlug(service.next);
-  const others = services.filter((s) => s.slug !== service.slug && s.slug !== next?.slug);
   const lecturas = posts.filter((p) => p.services.includes(service.slug));
 
   return (
@@ -58,266 +58,184 @@ export default async function ServicioDetalle({ params }: Params) {
 
       <Breadcrumbs
         trail={[
-          { name: t("Servicios", "Services"), path: "/servicios" },
+          { name: t("Soluciones", "Solutions"), path: "/soluciones" },
           { name: service.name, path: `/servicios/${service.slug}` },
         ]}
       />
 
       <PageHero
-        eyebrow={service.kind}
-        pad={false}
+        eyebrow={`${service.name} · ${service.kind}`}
         title={
           <>
-            <span className="block">{service.name}</span>
-            <span className="mt-7 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-fg/75 md:text-2xl">
+            {/* La necesidad va primero y la marca después: nadie busca «Auren
+                Flow», busca «automatización de procesos». */}
+            <span className="block">{service.keyword}</span>
+            <span className="mt-5 block max-w-3xl text-balance text-lg leading-snug tracking-tight text-fg/75 md:text-xl">
               {service.headline}
             </span>
           </>
         }
         lede={service.lede}
       >
-        <dl className="mt-2 grid gap-3 sm:grid-cols-3">
-          <div className="glass flex flex-col gap-2 rounded-card px-6 py-5">
-            <dt className="label text-accent/80">{t("Entrega", "Deliverable")}</dt>
-            <dd className="text-sm text-fg/90">{service.deliverable}</dd>
-          </div>
-          <div className="glass flex flex-col gap-2 rounded-card px-6 py-5">
-            <dt className="label text-accent/80">{t("Duración de referencia", "Typical length")}</dt>
-            <dd className="text-sm text-fg/90">{service.duration}</dd>
-          </div>
-          <div className="glass flex flex-col gap-2 rounded-card px-6 py-5">
-            <dt className="label text-accent/80">{t("Etapa", "Stage")}</dt>
-            <dd className="text-sm text-fg/90">{service.kind}</dd>
-          </div>
+        <dl className="grid gap-2 sm:grid-cols-3">
+          {[
+            [t("Entrega", "Deliverable"), service.deliverable],
+            [t("Duración de referencia", "Reference duration"), service.duration],
+            [t("Paso siguiente", "Next step"), next?.name ?? "—"],
+          ].map(([k, v]) => (
+            <div key={k} className="card flex flex-col gap-1 rounded-card px-5 py-4">
+              <dt className="label text-fg/45">{k}</dt>
+              <dd className="text-sm text-fg/90">{v}</dd>
+            </div>
+          ))}
         </dl>
       </PageHero>
 
-      {/* Qué es + cuándo tiene sentido */}
+      {/* 1 · Qué es y cuándo tiene sentido */}
       <Section tone="paper">
-        <div className="grid gap-16 md:grid-cols-[1.15fr_1fr] md:gap-24">
-          <div className="flex flex-col gap-6">
+        <div className="grid gap-10 md:grid-cols-[1.1fr_1fr] md:gap-16">
+          <Reveal className="flex flex-col gap-5">
             {service.body.map((p) => (
-              <p key={p} className="text-pretty leading-relaxed text-fg/75">
+              <p key={p} className="text-pretty text-lg leading-relaxed text-fg/85">
                 {p}
               </p>
             ))}
             <Figura figure={service.image} />
-          </div>
-
-          <div className="flex flex-col gap-7 self-start border-l border-lime pl-8">
-            <span className="label text-fg/55">{t("Cuándo tiene sentido", "When it makes sense")}</span>
-            <ul className="flex flex-col gap-4">
+          </Reveal>
+          <Reveal className="flex flex-col gap-4 self-start border-l-2 border-lime pl-6">
+            <span className="label text-fg/50">{t("Tiene sentido si", "It makes sense if")}</span>
+            <ul className="flex flex-col gap-3">
               {service.signals.map((s) => (
-                <li key={s} className="flex gap-3.5 text-pretty text-sm leading-relaxed text-fg/75">
-                  <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-line-strong" />
+                <li key={s} className="text-pretty leading-snug text-fg/90">
                   {s}
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
         </div>
       </Section>
 
-      {/* El trabajo, paso a paso. Responde «y ustedes qué hacen exactamente». */}
+      {/* 2 · Cómo trabajamos */}
       <Section tone="ivory">
-        <SectionHead index="01" label={t("Cómo trabajamos", "How we work")}>
-          <Headline className="text-fg">
+        <SectionHead label={t("Cómo trabajamos", "How we work")}>
+          <Headline>
             {service.keyword}, {t("paso a paso.", "step by step.")}
           </Headline>
         </SectionHead>
-        <Reveal as="ol" className="glass grid divide-y divide-line overflow-hidden rounded-card">
-          {service.steps.map((step, i) => (
-            <li
-              key={step.title}
-              className="grid gap-4 px-7 py-8 md:grid-cols-[4rem_18rem_1fr] md:gap-10 md:px-10 md:py-10"
-            >
-              <span className="font-mono text-xs text-fg/40">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="text-xl leading-snug tracking-tight text-balance text-fg">
-                {step.title}
-              </h3>
-              <p className="max-w-2xl text-pretty leading-relaxed text-fg/75">{step.body}</p>
-            </li>
-          ))}
+        <Reveal>
+          <NumberedList items={service.steps} />
         </Reveal>
       </Section>
 
-      {/* Qué incluye + con qué se queda */}
-      <Section tone="ink">
-        <div className="grid gap-16 md:grid-cols-[1.3fr_1fr] md:gap-24">
-          <div className="flex flex-col">
-            <SectionHead index="02" label={t("Qué incluye", "What it includes")} invert tight />
-            <ol className="grid gap-3">
+      {/* 3 · Qué obtiene, qué incluye y cómo se demuestra */}
+      <Section tone="deep">
+        <div className="grid gap-12 md:grid-cols-3 md:gap-10">
+          <Reveal className="flex flex-col gap-5">
+            <span className="label text-fg/50">{t("Con qué se queda", "What you keep")}</span>
+            <ul className="flex flex-col gap-4">
+              {service.outcome.map((o) => (
+                <li key={o} className="flex gap-3 text-pretty text-lg leading-snug text-fg/90">
+                  <span aria-hidden className="mt-3 h-0.5 w-4 shrink-0 bg-lime" />
+                  {o}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal className="flex flex-col gap-5">
+            <span className="label text-fg/50">{t("Qué incluye", "What's included")}</span>
+            <ol className="flex flex-col gap-3">
               {service.includes.map((item, i) => (
-                <li key={item} className="glass flex gap-6 rounded-card px-6 py-5">
-                  <span className="font-mono text-xs text-accent">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-pretty text-fg/90">{item}</span>
+                <li key={item} className="flex gap-3 text-pretty text-sm leading-relaxed text-fg/80">
+                  <span className="cota mt-1 shrink-0 text-accent">{String(i + 1).padStart(2, "0")}</span>
+                  {item}
                 </li>
               ))}
             </ol>
-          </div>
-
-          <div className="flex flex-col">
-            <SectionHead index="03" label={t("Con qué se queda", "What you keep")} invert tight />
-            <ul className="flex flex-col gap-6">
-              {service.outcome.map((o) => (
-                <li key={o} className="flex flex-col gap-3">
-                  <DrawRule className="h-0.5 w-6 bg-lime" />
-                  <span className="text-pretty leading-snug text-fg/90">{o}</span>
+          </Reveal>
+          <Reveal className="flex flex-col gap-5">
+            <span className="label text-fg/50">{t("Cómo se demuestra", "How it's proven")}</span>
+            <ul className="flex flex-col gap-3">
+              {service.measures.map((m) => (
+                <li key={m} className="flex gap-3 text-pretty text-sm leading-relaxed text-fg/80">
+                  <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-line-strong" />
+                  {m}
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
         </div>
       </Section>
 
-      {/* Dónde aplica: el mismo servicio en el lenguaje de cada industria. */}
+      {/* 4 · Dónde aplica, compacto */}
       <Section tone="paper">
-        <SectionHead index="04" label={t("Dónde aplica", "Where it applies")}>
-          <Headline className="text-fg">
-            {t(`¿En qué sectores aplica ${service.name}?`, `Which sectors is ${service.name} for?`)}
+        <SectionHead label={t("Dónde aplica", "Where it applies")}>
+          <Headline>
+            {t("El mismo servicio, en el lenguaje de cada sector.", "The same service, in each sector's language.")}
           </Headline>
-          <p className="mt-6 text-pretty leading-relaxed text-fg/55">
-            {t(
-              "El método no cambia entre sectores; la fricción sí. Así se ve este servicio según dónde se aplique.",
-              "The method doesn't change between sectors; the friction does. This is what the service looks like depending on where it's applied.",
-            )}
-          </p>
         </SectionHead>
-        <RevealList className="grid gap-4 md:grid-cols-3">
+        <RevealList as="ul" className="grid gap-px overflow-hidden rounded-card border border-line bg-line md:grid-cols-3">
           {service.industries.map((ind) => (
-            <RevealItem
-              as="article"
-              key={ind.sector}
-              className="glass flex flex-col gap-4 rounded-card p-8 md:p-10"
-            >
-              <DrawRule className="h-0.5 w-8 bg-lime" />
+            <RevealItem as="li" key={ind.sector} className="flex flex-col gap-3 bg-surface-2 p-7">
               <h3 className="text-lg leading-snug text-balance text-fg">{ind.sector}</h3>
-              <p className="text-pretty text-sm leading-relaxed text-fg/55">{ind.body}</p>
+              <p className="text-pretty text-sm leading-relaxed text-fg/65">{ind.body}</p>
             </RevealItem>
           ))}
         </RevealList>
       </Section>
 
-      {/* Qué se mide. La métrica se acuerda antes de empezar, no al final. */}
-      <Section tone="ivory" className="!py-20">
-        <SectionHead index="05" label={t("Qué medimos", "What we measure")}>
-          <Headline className="text-fg">
-            {t("Cómo se demuestra el resultado.", "How the result is proven.")}
-          </Headline>
-          <p className="mt-6 text-pretty leading-relaxed text-fg/55">
-            {t(
-              "Se acuerdan al inicio, con la línea base tomada antes de tocar nada. Sin punto de partida medido no hay forma de demostrar el resultado después.",
-              "They're agreed at the start, with the baseline taken before touching anything. Without a measured starting point there's no way to prove the result afterwards.",
-            )}
-          </p>
-        </SectionHead>
-        <RevealList as="ul" className="grid gap-4 sm:grid-cols-2">
-          {service.measures.map((m) => (
-            <RevealItem as="li" key={m} className="glass flex gap-4 rounded-card p-7">
-              <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-lime" />
-              <span className="text-pretty text-sm leading-relaxed text-fg/75">{m}</span>
-            </RevealItem>
-          ))}
-        </RevealList>
-      </Section>
-
-      {/* Preguntas frecuentes: objeciones de venta y búsquedas de cola larga. */}
-      <Section tone="ink">
-        <SectionHead index="06" label={t("Preguntas frecuentes", "Frequently asked questions")} invert>
-          <h2 className="text-headline text-balance font-normal">
-            {t(
-              `Lo que se pregunta antes de contratar ${service.name}.`,
-              `What people ask before hiring ${service.name}.`,
-            )}
-          </h2>
+      {/* 5 · Preguntas */}
+      <Section tone="ivory">
+        <SectionHead label={t("Preguntas frecuentes", "Frequently asked questions")}>
+          <Headline>{t("Lo que se pregunta antes de contratar.", "What people ask before hiring.")}</Headline>
         </SectionHead>
         <FaqList faqs={service.faqs} />
-      </Section>
 
-      {/* Paso siguiente + resto del sistema */}
-      <Section tone="ivory">
-        <SectionHead index="07" label={t("Dentro del sistema Auren", "Within the Auren system")}>
-          <Headline className="text-fg">
-            {t(`Qué sigue después de ${service.name}.`, `What comes after ${service.name}.`)}
-          </Headline>
-        </SectionHead>
-
-        {next ? (
-          <Link
-            href={`/servicios/${next.slug}`}
-            className="glass group flex flex-col gap-8 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-12"
-          >
-            <div className="flex items-center justify-between gap-6">
-              <span className="label text-fg/40 transition-colors duration-500 group-hover:text-accent">
-                {t("Paso siguiente", "Next step")}
+        {/* Qué sigue + lectura, en una sola fila al pie. */}
+        <div className="mt-14 grid gap-4 border-t border-line pt-10 md:grid-cols-2">
+          {next ? (
+            <Link
+              href={`/servicios/${next.slug}`}
+              className="card group flex flex-col gap-3 rounded-card p-7 transition-colors hover:bg-surface-3"
+            >
+              <span className="label text-fg/50">{t("Paso siguiente", "Next step")}</span>
+              <span className="text-xl tracking-tight text-fg">{next.keyword}</span>
+              <span className="text-sm text-fg/60">{next.name}</span>
+              <span className="label mt-2 flex items-center gap-2.5 text-fg/60 transition-colors group-hover:text-fg">
+                {t("Ver servicio", "See service")} <Arrow />
               </span>
-              <Arrow className="text-fg/40 transition-transform duration-500 ease-out-quint group-hover:translate-x-1 group-hover:text-accent" />
+            </Link>
+          ) : null}
+          {lecturas.length ? (
+            <div className="card flex flex-col gap-3 rounded-card p-7">
+              <span className="label text-fg/50">{t("Para leer antes de decidir", "Reading before deciding")}</span>
+              <ul className="flex flex-col divide-y divide-line">
+                {lecturas.map((post) => (
+                  <li key={post.slug}>
+                    <Link
+                      href={`/recursos/${post.slug}`}
+                      className="group flex items-baseline justify-between gap-4 py-3 text-sm text-fg transition-colors hover:text-accent"
+                    >
+                      {post.title}
+                      <span className="label flex shrink-0 items-center gap-2 text-fg/45">
+                        {post.minutes} min <Arrow />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="flex flex-col gap-3">
-              <h3 className="wordmark text-xl uppercase text-fg">
-                {next.name}
-              </h3>
-              <p className="max-w-2xl text-pretty text-sm leading-relaxed text-fg/55 transition-colors duration-500 group-hover:text-fg/75">
-                {next.summary}
-              </p>
-            </div>
-          </Link>
-        ) : null}
-
-        <RevealList as="ul" className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {others.map((s) => (
-            <RevealItem as="li" key={s.slug}>
-              <Link
-                href={`/servicios/${s.slug}`}
-                className="glass group flex h-full items-center gap-4 rounded-card p-6 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40"
-              >
-                <Mark
-                  size={18}
-                  className="shrink-0 opacity-45 transition-opacity duration-500 group-hover:opacity-100"
-                />
-                <span className="flex flex-col gap-1">
-                  <span className="wordmark text-xs uppercase text-fg">{s.name}</span>
-                  <span className="text-xs text-fg/55">{s.kind}</span>
-                </span>
-              </Link>
-            </RevealItem>
-          ))}
-        </RevealList>
-
-        {lecturas.length ? (
-          <div className="mt-16 flex flex-col gap-6 border-t border-line pt-10">
-            <span className="label text-fg/40">{t("Para leer antes de decidir", "Read before you decide")}</span>
-            <ul className="glass flex flex-col divide-y divide-line overflow-hidden rounded-card">
-              {lecturas.map((post) => (
-                <li key={post.slug}>
-                  <Link
-                    href={`/recursos/${post.slug}`}
-                    className="group flex items-baseline justify-between gap-6 px-6 py-5 transition-colors hover:bg-fg/5"
-                  >
-                    <span className="text-pretty text-fg">{post.title}</span>
-                    <span className="label flex shrink-0 items-center gap-3 text-fg/40 transition-colors group-hover:text-accent">
-                      {post.minutes} min <Arrow />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </Section>
 
       <CtaBand
         title={t(
-          `Hablemos de si ${service.name} es lo que su empresa necesita.`,
-          `Let's talk about whether ${service.name} is what your company needs.`,
+          `Hablemos de si ${service.keyword.toLowerCase()} es lo que su empresa necesita.`,
+          `Let's talk about whether ${service.keyword.toLowerCase()} is what your company needs.`,
         )}
         lede={t(
-          "Una primera conversación sin compromiso. Si el problema que tiene se resuelve con otro servicio —o sin tecnología— también se lo vamos a decir.",
-          "A first, no-commitment conversation. If your problem is solved by another service —or without technology— we'll tell you that too.",
+          "Si el problema se resuelve con otro servicio, o sin tecnología, también se lo vamos a decir.",
+          "If the problem is solved by another service, or without technology, we'll tell you that too.",
         )}
       />
     </>

@@ -160,7 +160,7 @@ export const demos: readonly Demo[] = [
       "El equivalente en personas a tiempo completo es la cifra que se repite en la reunión.",
     ],
     limite:
-      "Es una estimación con la base de cálculo a la vista. No incluye reprocesos, errores ni costo de oportunidad — que suelen ser mayores.",
+      "Es una estimación con la base de cálculo a la vista. No incluye reprocesos, errores ni costo de oportunidad, que suelen ser mayores.",
   },
 ];
 

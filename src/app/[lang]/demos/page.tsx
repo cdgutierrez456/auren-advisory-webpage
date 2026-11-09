@@ -84,8 +84,8 @@ export default async function Demos() {
       <section className="py-12">
         <p className="max-w-2xl text-pretty text-sm leading-relaxed text-fg/55">
           {t(
-            "Los tres demos de cámara comparten el mismo motor. Añadir un modo nuevo —conteo de piezas, nivel en tanque, detección de EPP— cuesta uno o dos días porque el shell de cámara, los permisos y el manejo de errores ya están construidos.",
-            "The three camera demos share the same engine. Adding a new mode —part counting, tank level, PPE detection— takes a day or two because the camera shell, permissions and error handling are already built.",
+            "Los tres demos de cámara comparten el mismo motor. Añadir un modo nuevo (conteo de piezas, nivel en tanque, detección de EPP) cuesta uno o dos días porque el shell de cámara, los permisos y el manejo de errores ya están construidos.",
+            "The three camera demos share the same engine. Adding a new mode (part counting, tank level, PPE detection) takes a day or two because the camera shell, permissions and error handling are already built.",
           )}
         </p>
       </section>

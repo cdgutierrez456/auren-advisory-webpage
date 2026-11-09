@@ -6,11 +6,14 @@
 import type * as es from "../site.ts";
 import type {
   Capability,
+  Dimension,
   Faq,
   Phase,
+  Problem,
   Principle,
   Sector,
   Service,
+  Solution,
   Testimonial,
 } from "../site.ts";
 import type { Loc } from "../../lib/i18n.ts";
@@ -27,49 +30,275 @@ export const site: Loc<typeof es.site> = {
   description:
     "Business transformation, automation and AI consulting in Colombia. We diagnose how your operation really works before recommending any technology.",
   descriptionLong:
-    "Business transformation firm based in Manizales, Colombia. We observe how your company actually works, measure the cost of friction, and only then decide which technology —automation, data, artificial intelligence or custom software— makes sense.",
+    "Business transformation firm based in Manizales, Colombia. It observes how each company actually works, measures the cost of friction, and only then decides which technology (automation, data, artificial intelligence or custom software) makes sense.",
   city: "Manizales",
   region: "Caldas",
   geo: { lat: 5.0689, lng: -75.5174 },
 };
 
 export const nav: Loc<typeof es.nav> = [
-  { label: "Approach", href: "/enfoque" },
-  { label: "Services", href: "/servicios" },
+  { label: "Solutions", href: "/soluciones" },
+  { label: "Sectors", href: "/sectores" },
   { label: "About", href: "/nosotros" },
-  { label: "X-Ray", href: "/radiografia" },
-  { label: "Demos", href: "/demos" },
   { label: "Resources", href: "/recursos" },
 ];
 
+export const navCta: Loc<typeof es.navCta> = { label: "Contact", href: "/contacto" };
+
 export const hero: Loc<typeof es.hero> = {
-  eyebrow: "Business transformation",
-  title: ["See.", "Understand.", "Transform."],
+  eyebrow: "Business transformation through technology",
+  title: "Your company can work better. The first step is to see where.",
+  image: {
+    src: "/images/hero.jpg",
+    alt: "An engineer watches a plant's production line at dawn",
+    width: 1536,
+    height: 1024,
+  },
   titleSub:
-    "Business transformation, automation and artificial intelligence consulting for companies in Colombia.",
-  lede: "We help organizations find real opportunities and turn them into tailored solutions. First we observe how the company works. Technology comes after.",
-  primary: { label: "Book a diagnosis", href: "/#contacto" },
-  secondary: { label: "How we work", href: "/enfoque" },
-  meta: [
-    { k: "Industry", v: "Manufacturing and operations" },
-    { k: "Services", v: "Service companies" },
-    { k: "Technology", v: "Products and platforms" },
-  ],
+    "Business transformation through technology: strategy, processes, automation, data and applied intelligence.",
+  lede: "Auren understands how each business works, identifies the opportunities nobody is seeing and turns them into solutions that transform it. Technology is the instrument; the result is a company that operates better.",
+  primary: { label: "Start a conversation", href: "/contacto" },
+  secondary: { label: "How we work", href: "/nosotros#metodo" },
+  tertiary: {
+    label: "You can also take the X-Ray: 12 questions, 10 minutes, no sign-up",
+    href: "/radiografia",
+  },
 };
 
 export const manifesto: Loc<typeof es.manifesto> = {
-  quote:
-    "Auren is not a company that sells artificial intelligence. It is the company that knows when, where and how to use it.",
+  quote: "We don't sell technology for technology's sake.",
   body: [
-    "Most technology projects fail before a single line of code is written: someone buys a tool for a problem nobody diagnosed.",
-    "Our work starts at the opposite end. We step into the operation, measure the real friction, and only then recommend —or rule out— technology.",
+    "Every solution that gets built, whether an automation, a model, a dashboard or a custom system, is the consequence of first understanding how the company works and where it should evolve.",
+    "That's why the work spans four dimensions at once: the strategy that defines where, the processes that define how, the technology that makes it possible, and the support that turns the solution into a real, measured improvement.",
   ],
 };
+
+export const dimensions: readonly Dimension[] = [
+  {
+    index: "01",
+    title: "Strategy",
+    body: "Understand the business, diagnose needs, identify opportunities and define where the organization should evolve.",
+  },
+  {
+    index: "02",
+    title: "Processes",
+    body: "Analyze, redesign and optimize the way the company works before putting technology on top of it.",
+  },
+  {
+    index: "03",
+    title: "Technology",
+    body: "Design and implement the solution the problem calls for: automation, artificial intelligence, data, software, computer vision or connected systems.",
+  },
+  {
+    index: "04",
+    title: "Transformation",
+    body: "Support implementation, adoption and measurement so the identified opportunity becomes a real improvement.",
+  },
+];
+
+export const problems: readonly Problem[] = [
+  {
+    quote: "We know something isn't working, but we don't know what or how much it costs us.",
+    solution: "estrategia",
+    hint: "A diagnosis with evidence and figures, and a plan for where to start.",
+  },
+  {
+    quote: "We have people copying data from one system to another and approvals chased over WhatsApp.",
+    solution: "automatizacion",
+    hint: "Automated flows between systems and departments, with traceability.",
+  },
+  {
+    quote: "Every department brings different figures for the same month and the meeting goes into arguing which is right.",
+    solution: "datos",
+    hint: "A single version of the truth and dashboards to decide with.",
+  },
+  {
+    quote: "No software on the market fits: we end up adapting the operation to the tool.",
+    solution: "soluciones-digitales",
+    hint: "Software built for your exact process, with the code in your hands.",
+  },
+  {
+    quote: "What happens on the plant floor, in the yard or at the gate is written down by hand, when it's written down at all.",
+    solution: "sistemas-inteligentes",
+    hint: "Cameras, sensors and existing equipment turned into data.",
+  },
+  {
+    quote: "We were offered artificial intelligence and we don't know whether we need it.",
+    solution: "estrategia",
+    hint: "A frank assessment of whether there's a case and what should be put in order first.",
+  },
+];
+
+export const solutions: readonly Solution[] = [
+  {
+    slug: "estrategia",
+    title: "Transformation strategy and diagnosis",
+    short: "Strategy and diagnosis",
+    tagline: "Where to start, with evidence",
+    image: { src: "/images/soluciones/estrategia.jpg", alt: "Two people review a printed process diagram on the table", width: 1456, height: 1088 },
+    question: "Where is the opportunity, and where do we start?",
+    problem:
+      "Most companies know something isn't working, but the conversation stays at the level of perceptions: “sales is slow”, “information gets lost between the warehouse and billing”. Without a diagnosis with figures, any technology investment is a bet, and bets are lost more often than they're won.",
+    symptoms: [
+      "You suspect rework but can't size it",
+      "You've been offered software or artificial intelligence and don't know whether you need it",
+      "Several initiatives compete for the same budget",
+      "You're about to invest and want to decide with evidence, not a demo",
+    ],
+    work: [
+      "We walk through the operation with the people who run it, at their desk and with their tools",
+      "We quantify the friction: hours, rework, risks and opportunity cost",
+      "We identify the opportunities and rank them by impact and effort",
+      "We design the roadmap: what gets done, in what order, with which technology and which metric",
+    ],
+    outcomes: [
+      "A diagnosis built on evidence, not opinions",
+      "A phased plan your team can execute, with or without us",
+      "An investment case you can defend before the board or partners",
+    ],
+    start:
+      "An initial thirty-minute conversation to understand the situation. From it we conclude whether a diagnosis makes sense, with what scope and in how much time.",
+    technologies: ["Process analysis", "Cost modeling", "Solution architecture", "Buy / build assessment"],
+    services: ["auren-insight", "auren-blueprint"],
+    glyph: "lente",
+  },
+  {
+    slug: "automatizacion",
+    title: "Automation and artificial intelligence",
+    short: "Automation and AI",
+    tagline: "Stop doing repetitive work by hand",
+    image: { src: "/images/soluciones/automatizacion.jpg", alt: "A supervisor approves a request from a tablet in the warehouse", width: 1456, height: 1088 },
+    question: "How do we stop doing by hand what adds no value?",
+    problem:
+      "Everything that moves today by email, by chat or by copying from one system to another is paid time that produces nothing. And every manual hand-off is a place where data goes wrong, approvals stall and nobody knows where a request stands without asking.",
+    symptoms: [
+      "People dedicated to keying in or copying information between systems",
+      "Approvals chased over email or WhatsApp",
+      "Reports someone builds by hand every week",
+      "Documents, invoices or forms that have to be read and transcribed",
+    ],
+    work: [
+      "We simplify the flow before automating it: the biggest saving is in the steps that get removed",
+      "We connect the systems you already use so the data travels on its own",
+      "We apply artificial intelligence where it pays off: classification, document extraction, internal assistants and prediction",
+      "We leave exception rules, alerts and a trail for every case",
+    ],
+    outcomes: [
+      "Team hours returned to work that actually adds value",
+      "Visibility into where each request stands",
+      "Fewer errors, and the ones that happen are caught in time",
+    ],
+    start:
+      "You start with a single flow, the one that consumes the most hours. It lets you validate the approach with the team before committing more budget.",
+    technologies: ["Systems integration", "Workflows", "Language models", "Document extraction", "Internal assistants"],
+    services: ["auren-flow"],
+    glyph: "cadena",
+  },
+  {
+    slug: "datos",
+    title: "Data and business intelligence",
+    short: "Data and business intelligence",
+    tagline: "A single version of the truth",
+    image: { src: "/images/soluciones/datos.jpg", alt: "A dashboard projected in a meeting room", width: 1456, height: 1088 },
+    question: "How do we decide with figures everyone trusts?",
+    problem:
+      "The information exists, spread across the ERP, the CRM, spreadsheets and emails, but it can't be queried in time and no two departments calculate it the same way. The result is that management decides with the oldest figure or with the one best defended in the meeting.",
+    symptoms: [
+      "Each department reports different numbers for the same thing",
+      "Consolidating a report takes days of manual work",
+      "The indicators exist, but nobody trusts them",
+      "You want to apply artificial intelligence and first need orderly data",
+    ],
+    work: [
+      "We inventory the sources and assess the quality of each one",
+      "We agree the definitions with each department: what counts as a sale, what goes into cost",
+      "We integrate and model a layer where every figure has a source and a calculation rule",
+      "We build the dashboards leadership actually uses to decide",
+    ],
+    outcomes: [
+      "A single version of the truth, agreed across departments",
+      "Reports that generate themselves instead of being built by hand",
+      "The technical foundation any artificial intelligence project needs",
+    ],
+    start:
+      "You start with one domain (sales, production or receivables) and a short set of indicators. The first useful dashboard validates that the definitions are right.",
+    technologies: ["Data integration", "Modeling", "Management dashboards", "Analytics", "Data quality"],
+    services: ["auren-data"],
+    glyph: "convergencia",
+  },
+  {
+    slug: "soluciones-digitales",
+    title: "Custom digital solutions",
+    short: "Digital solutions",
+    tagline: "Software built for your process",
+    image: { src: "/images/soluciones/soluciones-digitales.jpg", alt: "Two people review the interface of an internal tool on a laptop", width: 1456, height: 1088 },
+    question: "What do we do when no software on the market fits?",
+    problem:
+      "Sometimes the tool your operation needs isn't for sale. So the company pays licenses for features nobody uses or, worse, bends its process to fit someone else's product. When the process is precisely your competitive edge, that costs more than building.",
+    symptoms: [
+      "You evaluated tools on the market and none fit",
+      "You pay per-seat licenses for features nobody uses",
+      "A portal, a field app or an internal system that doesn't exist",
+      "A system that does exist, but nobody finished implementing",
+    ],
+    work: [
+      "First we check whether buying makes sense: if a tool solves ninety percent, that's the recommendation",
+      "We define the minimum scope that already works in production",
+      "We design the screens with the people who will use them eight hours a day",
+      "We build in increments, integrate with what you already have and take it to production with your team",
+    ],
+    outcomes: [
+      "A tool that fits the way the company works",
+      "Ownership of the code and freedom from the vendor",
+      "Predictable running costs, with no per-user licenses",
+    ],
+    start:
+      "A session to understand the process and review the market. If building is the answer, the scope of the first useful version comes out of it.",
+    technologies: ["Web platforms", "Mobile and field apps", "Customer and supplier portals", "ERP and CRM integration"],
+    services: ["auren-studio", "auren-transform"],
+    glyph: "marco",
+  },
+  {
+    slug: "sistemas-inteligentes",
+    title: "Intelligent systems and connected technologies",
+    short: "Intelligent systems",
+    tagline: "What happens on the floor, as data",
+    image: { src: "/images/soluciones/sistemas-inteligentes.jpg", alt: "An industrial camera pointed at an analog pressure gauge on the plant floor", width: 1456, height: 1088 },
+    question: "How do we turn what happens on the floor, in the yard or in the room into data?",
+    problem:
+      "In physical operations there's information nobody captures: the gauge someone reads three times a day, the plate the gatekeeper writes in a notebook, the scale display copied onto a sheet. The cameras and equipment are already there; what's missing is processing what they see.",
+    symptoms: [
+      "Instrument readings written down by hand",
+      "Quality inspection that depends on each shift's judgment",
+      "Counts, headcounts and access with no reliable record",
+      "Old equipment with no digital output that won't be replaced",
+    ],
+    work: [
+      "First we define which decision will change with that data",
+      "We assess feasibility with real images and conditions from your operation",
+      "We build a proof of concept measured against human inspection",
+      "We integrate the result with the operation: alerts, logs, dashboards or stoppages",
+    ],
+    outcomes: [
+      "Operational data that didn't exist before, with timestamp and evidence",
+      "Consistent judgment across shifts and people",
+      "Retrofit without replacing equipment or stopping production",
+    ],
+    start:
+      "A feasibility assessment with material you already have takes days, not months. The camera-reading demos can be tried today in the browser.",
+    technologies: ["Computer vision", "Internet of things", "Embedded systems", "Real-time monitoring", "Instrument reading"],
+    services: ["auren-vision"],
+    glyph: "senal",
+  },
+];
+
+export const solutionBySlug = (slug: string) => solutions.find((s) => s.slug === slug);
 
 /** `title` doubles as the /enfoque anchor: `#see`, `#understand`, `#transform`. */
 export const phases: readonly Phase[] = [
   {
     index: "01",
+    image: { src: "/images/metodo/ver.jpg", alt: "A consultant walks the plant with the head of operations", width: 1088, height: 1456 },
     title: "See",
     claim: "We observe the company as it really is.",
     detail:
@@ -90,6 +319,7 @@ export const phases: readonly Phase[] = [
   },
   {
     index: "02",
+    image: { src: "/images/metodo/entender.jpg", alt: "Hands over a process map drawn on paper", width: 1088, height: 1456 },
     title: "Understand",
     claim: "We interpret causes, not symptoms.",
     detail:
@@ -110,6 +340,7 @@ export const phases: readonly Phase[] = [
   },
   {
     index: "03",
+    image: { src: "/images/metodo/transformar.jpg", alt: "A team uses the new tool with support at their workstation", width: 1088, height: 1456 },
     title: "Transform",
     claim: "We design, implement and measure.",
     detail:
@@ -117,7 +348,7 @@ export const phases: readonly Phase[] = [
     question: "What do we build, in what order, and how will we know it worked?",
     body: [
       "Only here does technology appear, and it appears chosen: sometimes it's automation, sometimes a model, sometimes integrating two systems you already have, and sometimes simply removing a step that wasn't needed.",
-      "We deliver in increments that work on their own, support the team that will use them, and measure against the metric agreed before we started. If the number didn't move, we say so.",
+      "Delivery comes in increments that work on their own, with support for the team that will use them, measured against the metric agreed before starting. If the number didn't move, that gets reported and adjusted.",
     ],
     points: [
       "Solution design and architecture",
@@ -1063,6 +1294,12 @@ export const about: Loc<typeof es.about> = {
   ],
 
   photo: undefined,
+  image: {
+    src: "/images/nosotros.jpg",
+    alt: "A worktable by a large window with the mountains of Manizales at dawn",
+    width: 1536,
+    height: 1024,
+  },
 
   region: {
     title: "Why Manizales matters here",
@@ -1086,58 +1323,123 @@ export const principles: readonly Principle[] = [
 ];
 
 export const contact: Loc<typeof es.contact> = {
-  title: "Let's start by seeing.",
-  lede: "A no-commitment diagnostic conversation: we understand your operation and tell you frankly where the real opportunity is.",
+  title: "Start a conversation.",
+  image: {
+    src: "/images/contacto.jpg",
+    alt: "Two people talk standing by a tall window",
+    width: 1456,
+    height: 1088,
+  },
+  lede: "A first conversation is enough to understand the company's situation and say frankly whether there's a case, where it makes sense to start and what would be worth measuring.",
+  steps: [
+    {
+      title: "First contact",
+      body: "Through the form, WhatsApp or email. Two lines about the process or area that worries you are enough.",
+    },
+    {
+      title: "A thirty-minute conversation",
+      body: "A call to understand the company, what has been tried before and what is expected. No sales pitch: questions.",
+    },
+    {
+      title: "Scope proposal",
+      body: "If there's a case, a concrete, bounded scope is proposed. If the problem can be solved without Auren or without technology, that gets said too.",
+    },
+  ],
+  promises: [
+    "Reply within one business day",
+    "No commissions from software vendors",
+    "On-site in the Coffee Region, remote across the rest of the country",
+  ],
 };
 
 export const sectors: readonly Sector[] = [
   {
     id: "manufactura",
     title: "Manufacturing and agribusiness",
+    tagline: "Plant, quality and cost per lot",
+    image: { src: "/images/sectores/manufactura.jpg", alt: "A worker beside the packaging line of a food plant", width: 1088, height: 1456 },
     body: "Plants where the ERP is half-used, the real schedule lives in a spreadsheet and quality control depends on each shift's judgment. The cost hides in waste, rework and someone's hours reconciling figures at night.",
+    question: "How many times a day does someone copy a scale, counter or gauge reading by hand?",
     cases: [
       "Production control and lot traceability",
       "Quality inspection with computer vision",
       "Real cost per lot and per line",
       "Maintenance and unplanned stoppages",
     ],
+    opportunities: [
+      "Automatic instrument reading without replacing the equipment",
+      "A single cost-per-lot figure that reconciles with accounting",
+      "Quality and maintenance checklists with photo and signature",
+      "Plant scheduling out of the spreadsheet",
+    ],
     services: ["auren-insight", "auren-vision", "auren-data"],
+    demos: ["vision/siete-segmentos", "vision/medidor", "friccion"],
   },
   {
     id: "transporte",
     title: "Transport and logistics",
+    tagline: "Fleet, pre-trip checks and compliance",
+    image: { src: "/images/sectores/transporte.jpg", alt: "A driver checks a truck in the yard at dawn", width: 1088, height: 1456 },
     body: "Operations with heavy regulatory demands held together on paper: pre-trip inspections nobody reads, insurance and inspection certificates found expired too late, and settlements built by hand trip by trip.",
+    question: "Could you say right now how many of your vehicles are on the road with an expired document?",
     cases: [
       "Digital pre-trip inspection with evidence",
       "Fleet document control and expiry alerts",
       "Road-safety plan (PESV) compliance with an auditable trail",
       "Trip settlement and cost control",
     ],
+    opportunities: [
+      "Automatic vehicle lock when a critical item fails",
+      "Expiry traffic light sorted by urgency, no filtering",
+      "Plate reading at the gate cross-checked against fleet documents",
+      "Road-safety plan indicators built on the pre-trip check, no re-keying",
+    ],
     services: ["auren-flow", "auren-studio", "auren-data"],
+    demos: ["flota", "preoperacional", "vision/placas"],
   },
   {
     id: "servicios",
     title: "Services, healthcare and retail",
+    tagline: "Appointments, receivables, smooth service",
+    image: { src: "/images/sectores/servicios.jpg", alt: "A clinic reception with a person being attended", width: 1088, height: 1456 },
     body: "Companies where margin is lost in the hand-offs: information asked for twice, approvals chased over chat, and receivables discovered overdue when there's no longer anyone to talk to.",
+    question: "How many times do you ask the same customer or patient for the same information?",
     cases: [
       "Sales process and CRM with clean data",
       "Scheduling, billing and collections",
       "Self-service portals for customers",
       "After-sales and case tracking",
     ],
+    opportunities: [
+      "Reminders and confirmations that cut no-shows",
+      "Supply and calibration expiries as an alert, not an inventory",
+      "Portals where customers solve on their own what goes through the phone today",
+      "Receivables visible before they become uncollectable",
+    ],
     services: ["auren-flow", "auren-data", "auren-studio"],
+    demos: ["pqrsd", "vision/medidor", "friccion"],
   },
   {
     id: "publico",
     title: "Public entities",
+    tagline: "Deadlines, filings and traceability",
+    image: { src: "/images/sectores/publico.jpg", alt: "A citizen service window with filing cabinets in the background", width: 1088, height: 1456 },
     body: "Where friction doesn't only cost time: a missed deadline has disciplinary consequences. Control usually sits in an Excel file that only one person understands and nobody checks on Fridays.",
+    question: "How many of your filed requests don't have a named owner today?",
     cases: [
       "Citizen requests (PQRSD) with deadline control in business days",
       "Routing by department and alerts before the deadline",
       "Compliance dashboards for internal control",
       "Digitizing case files and filing",
     ],
+    opportunities: [
+      "Deadlines counted in business days with holidays, not by eye",
+      "“No owner” as a column, not a conversation",
+      "Citizen reports with photo, map and status",
+      "Procurement and development-plan dashboards on open data",
+    ],
     services: ["auren-flow", "auren-insight", "auren-studio"],
+    demos: ["pqrsd", "friccion"],
   },
 ];
 

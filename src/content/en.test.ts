@@ -25,6 +25,7 @@ const IDENTIDAD = new Set([
   "email", "emails", "domain", "whatsapp", "whatsappDisplay", "published",
   "updated", "minutes", "min", "priority", "insightBridge", "borrador", "service",
   "insightHref", "city", "region", "lat", "lng", "servicioNombre",
+  "solution", "glyph", "demos",
 ]);
 
 function mismaForma(es: unknown, en: unknown, ruta: string, clave = ""): void {

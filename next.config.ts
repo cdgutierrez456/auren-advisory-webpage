@@ -12,6 +12,17 @@ import type { NextConfig } from "next";
  * correcta es la del dominio desnudo, que es la que usan `site.domain`, la
  * canónica de cada página y el sitemap. Ver SEO.md.
  */
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  // Rutas que dejaron de existir en V2.3. Internas: no tienen que ver con la
+  // redirección www, que sigue siendo de Vercel.
+  async redirects() {
+    return [
+      { source: "/enfoque", destination: "/nosotros", permanent: true },
+      { source: "/servicios", destination: "/soluciones", permanent: true },
+      { source: "/en/enfoque", destination: "/en/nosotros", permanent: true },
+      { source: "/en/servicios", destination: "/en/soluciones", permanent: true },
+    ];
+  },
+};
 
 export default nextConfig;

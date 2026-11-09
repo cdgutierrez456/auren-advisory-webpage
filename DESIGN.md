@@ -1,11 +1,16 @@
-# Diccionario de diseño — Auren Advisory
+# Diccionario de diseño — Auren Advisory · sistema «Plano»
 
 Qué es este archivo: el contrato visual del sitio. Si algo no está aquí ni en
 `globals.css`, no es sistema: es un accidente que alguien dejó en una clase.
 
-Tesis: **una sola composición, dos temperaturas**. El sitio nació oscuro y esa
-sigue siendo la voz de la marca; el tema claro no es otro diseño, es el mismo
-con los papeles reasignados. Por eso los componentes no saben de qué color son.
+Tesis: **Ver. Entender. Transformar. como un plano de obra.** Auren lee la
+operación como un ingeniero lee un plano: la ve entera, entiende cómo funciona
+y la rediseña. El sistema visual es el de un plano: papel marfil para leer,
+Auren Deep para declarar, trazos de 1–1,5 px que explican, cotas en mono que
+miden, y un solo acento. Nada decorativo: **cada recurso gráfico explica algo.**
+
+El razonamiento completo (diagnóstico, direcciones descartadas, por qué esta)
+está en `REDISENO-V2.md`.
 
 ---
 
@@ -26,203 +31,194 @@ con los papeles reasignados. Por eso los componentes no saben de qué color son.
 **Semánticos** — el papel que cumple un color. Es lo único que usan los
 componentes, y lo único que el tema reasigna:
 
-| Token | Papel | Oscuro | Claro |
+| Token | Papel | Claro (casa) | Oscuro |
 |---|---|---|---|
-| `bg-surface` | base del sitio | deep-900 | ivory |
-| `bg-surface-2` | segundo escalón | deep-700 | paper |
-| `bg-surface-3` | tercer escalón | deep | `#eceadf` |
-| `bg-surface-4` | cuarto escalón | ink | `#e3e0d3` |
-| `text-fg` | texto | ivory | ink |
-| `border-line` / `-strong` | filos | ivory 11% / 20% | ink 12% / 22% |
-| `glass` | superficie elevada | deep 42% | paper 62% |
-| `panel` | superficie elevada **opaca** | deep-700 | paper |
-| `text-accent` | **texto** de acento | lima | **deep** |
+| `bg-surface` | base del sitio | ivory | deep-900 |
+| `bg-surface-2` | tarjeta, segundo escalón | paper | deep-700 |
+| `bg-surface-3` | tercer escalón | `#e9e7dc` | deep |
+| `bg-surface-4` | cuarto escalón | `#dedbcd` | ink |
+| `text-fg` | texto | ink | ivory |
+| `border-line` / `-strong` | filos | ink 14% / 28% | ivory 13% / 24% |
+| `text-accent` | **texto** de acento | **deep** | lima |
 
 La última fila es una regla de marca, no una decisión estética: **lima nunca es
 texto sobre marfil.** Por eso `text-accent` cambia de color, mientras el lima de
-relleno (`bg-lime`, reglas, trazos, bordes) es el mismo en los dos temas.
+relleno (`bg-lime`, reglas, trazos, el nodo final de un diagrama) es el mismo
+en los dos temas.
 
-Regla de fondo: los cuatro escalones se alternan para dar ritmo; ninguno
-«significa» algo, y una sección nunca salta más de un escalón respecto a su
-vecina. Nada de hue nuevos: el contraste se construye con valor y translucidez.
+## 2. La superficie de declaración: `inverse`
 
-## 2. Temas
+`@utility inverse` es Auren Deep con marfil **en los dos temas**. No es una
+variante de tema: es la superficie de marca. La usan el hero, la banda del
+método y el cierre (`CtaBand`). Re-mapea los semánticos de sus descendientes
+(`--color-surface`, `--color-fg`, `--color-line`, `--color-accent` → lima), así
+los mismos componentes funcionan dentro sin saber dónde están.
 
-- **Por defecto manda el sistema operativo**: `:root` trae el oscuro y
-  `@media (prefers-color-scheme: light)` lo reasigna.
+Regla: **a lo sumo dos bandas `inverse` por página**, y nunca dos seguidas.
+Es el contraste lo que la hace hablar; repetida, vuelve a ser el sitio oscuro.
+
+`<Section tone="deep">` es la forma de obtenerla.
+
+## 3. Temas
+
+- **Claro es el tema de la casa.** `:root` trae el claro;
+  `@media (prefers-color-scheme: dark)` reasigna.
 - **`data-theme` en `<html>` gana siempre**, y es lo que escribe el interruptor
   (`theme-toggle.tsx` → `localStorage.tema`).
 - Un script en línea en `layout.tsx` aplica el tema guardado **antes de pintar**.
-  Es el único JavaScript en línea del sitio y existe solo para eso: sin él, quien
-  guardó el tema claro ve un fogonazo oscuro en cada carga.
-- El bloque de tokens claros está escrito dos veces a propósito (media query y
+- El bloque oscuro está escrito dos veces a propósito (media query y
   atributo). CSS no tiene mixins; duplicar doce líneas sale más barato que
   sostener una clase extra en `<html>`.
-- `--glow-opacity` y `--shadow-color` también son del tema: la luz ambiental y
-  las sombras bajan de intensidad en claro, donde una sombra negra es un moretón.
 
-## 3. Superficies
+Por qué se invirtió el predeterminado: el oscuro con lima, tarjetas
+translúcidas y resplandores era la causa principal de que el sitio se leyera
+como «startup de IA». Sobre marfil, la misma paleta se lee como una firma.
 
-`@utility glass` = fondo semitransparente + `backdrop-filter: blur(18px)
-saturate(1.1)` + filo `line`. **Es LA tarjeta del sistema, no hay otra.** Va
-siempre con `rounded-card`, y con `shadow-float` cuando flota sobre luz.
+## 4. Superficies
 
-Listas largas (servicios, artículos, pasos) no son N tarjetas: son **un** panel
-glass con `divide-line`. Menos ruido, misma familia.
+Una sola tarjeta: `@utility card` = `surface-2` + filo `line` de 1 px. Va
+siempre con `rounded-card` (1 rem). **Sin `backdrop-filter`, sin resplandor,
+sin sombra** salvo lo que flota sobre contenido con scroll (menú móvil, chat:
+`shadow-float`).
 
-`@utility panel` es su hermano opaco, y existe por legibilidad, no por estética:
-el glass deja pasar el 42% del fondo (62% en claro), y cuando lo que corre por
-detrás es contenido haciendo scroll, el texto de encima no se lee. Mismo filo,
-mismo radio, sin `backdrop-filter` —no pinta nada detrás de algo opaco y sí
-cuesta GPU.
+Listas largas (servicios, pasos, soluciones) no son N tarjetas: son **un**
+panel `card` con `divide-line`. Las franjas de ítems contiguos (dimensiones,
+fases) son `grid gap-px bg-line` con cada celda en `bg-surface-2`: el filo de
+1 px entre celdas es la línea del plano.
 
-**Cuál usar:** detrás hay una sección quieta → `glass`. Detrás pasa contenido
-con scroll y encima va texto → `panel`. Hoy lo usan el menú desplegable de móvil
-y el panel del chat.
+`glass` y `panel` siguen definidos **como alias de `card`** porque los demos,
+el chat y la Radiografía los nombran. En código nuevo se usa `card`. `glow`
+es un no-op: existe para que una clase huérfana no rompa nada.
 
-## 4. Escala de texto
+## 5. Recursos gráficos (`components/diagrams.tsx`)
 
-**Jerarquía por opacidad** — cuánto pesa un texto dentro de su bloque:
+| Recurso | Qué explica | Dónde |
+|---|---|---|
+| `TransformDiagram` | la operación como es → vértice → flujo rediseñado y medido; cotas de las tres fases | hero |
+| `SolutionGlyph` (5) | una lente, una cadena que se acorta, líneas que convergen, un marco a la medida, una señal leída | soluciones |
+| `BeforeAfter` | cinco pasos con dos traspasos que desaparecen | disponible para servicios |
+| `paper-grid` | retícula de papel técnico a 4 rem, 9 % de `currentColor` | hero, aperturas, cierre |
+
+Reglas: todo es SVG propio, `currentColor` para el trazo, `var(--color-lime)`
+**solo** en el trazo que marca la transformación, `strokeWidth` 1–1,5 (2 para
+el lima). Nada de cerebros, circuitos, robots, hologramas, ojos ni bombillos.
+Un diagrama que no explica nada no entra.
+
+Los diagramas se dibujan al cargar con CSS: cada `path` lleva
+`pathLength={1}` y `data-draw`; los nodos, `data-pop`. El contenedor lleva
+`.draw` y `--i` escalona. Sin JavaScript y respetando `prefers-reduced-motion`.
+
+## 6. Cotas y etiquetas
+
+- `.cota` (mono 11 px, tracking .14em, mayúsculas) con `.cota-tick` delante:
+  la etiqueta técnica del sistema. Índices de capítulo («01 — Qué hacemos»),
+  metadatos, números de paso, encabezados de bloque. **Es la voz del plano**
+  y reemplaza a `.label` en todo lo nuevo.
+- `.label` (11 px, tracking .3em) se conserva para lo que ya lo usaba.
+- `Cota` en `ui.tsx` es el componente; `SectionHead` lo usa con la regla
+  superior `border-line-strong`.
+
+## 7. Escala de texto
+
+**Jerarquía por opacidad** — cinco peldaños, y solo cinco:
 
 | Peldaño | Clase | Uso |
 |---|---|---|
 | Titular | `text-fg` | h1, h2, cifras |
 | Cuerpo fuerte | `text-fg/90` | claim de tarjeta |
 | Cuerpo | `text-fg/75` | párrafos |
-| Secundario | `text-fg/55` | labels, metadatos |
-| Terciario | `text-fg/40` | copyright, apoyos |
+| Secundario | `text-fg/55` | cotas, metadatos |
+| Terciario | `text-fg/45` | índices, copyright |
 
-Cinco peldaños, y solo cinco. Salir de la tabla es la forma más rápida de romper
-la armonía — ya pasó una vez: había doce opacidades sueltas antes de normalizar.
+(`/70`, `/65`, `/60` aparecen en texto corrido sobre `surface-2`, donde `/75`
+sube demasiado el contraste. Son el mismo peldaño «cuerpo» ajustado a la
+superficie; no son peldaños nuevos.)
 
-**Jerarquía por tamaño** — qué tan grande. Los cuatro de arriba son tokens de
-`@theme`; los tres de abajo son de Tailwind y son los que más se usan:
+**Jerarquía por tamaño:**
 
 | Clase | Tamaño | Uso |
 |---|---|---|
-| `text-mega` / `text-display` | fluido | héroes y aperturas de página |
-| `text-headline` | fluido | títulos de sección |
-| `text-subhead` | 27–38px | títulos de fase y de tarjeta grande |
-| `text-quote` | 32–58px | cita editorial en serif |
-| `text-lede` | 17–22px | bajada de un titular |
-| `text-base` | 16px | **texto que se lee seguido**: párrafos, conversación del chat |
-| `text-sm` | 14px | interfaz: tarjetas, listados, metadatos |
-| `text-xs` / `.label` | 12 / 11px | chips, etiquetas de sistema |
+| `text-display` | 40–76 px fluido | hero y aperturas de página |
+| `text-headline` | 30–48 px fluido | títulos de sección |
+| `text-subhead` | 24–34 px fluido | títulos de tarjeta y de solución |
+| `text-quote` | 32–56 px | la cita en serif |
+| `text-lede` | 17–21 px | bajada de un titular |
+| `text-base` | 16 px | **texto que se lee seguido** |
+| `text-sm` | 14 px | interfaz: tarjetas, listados |
+| `.cota` / `.label` | 11 px | etiquetas de sistema |
 
-La línea que importa es **16px para leer, 14px para interfaz**. El chat nació en
-`text-sm` y con eso su texto salía un 12% más chico que el de la página: misma
-familia, mismas features, y aun así se leía como «aquí la tipografía es otra».
-Un cuerpo por debajo de 16px en un campo de texto tiene además un costo
-concreto: Safari en iOS hace zoom al enfocarlo.
+`text-mega` queda definido pero sin uso: el hero ya no grita.
 
-`text-subhead` y `text-quote` nacieron de una auditoría: tres secciones se
-habían inventado por separado un `clamp()` propio y parecido —1.6/2.4vw/2.25,
-1.75/2.6vw/2.5, 2/4.2vw/3.6— para el mismo papel. Tres escalas casi iguales no
-son un sistema, son tres accidentes. Ya no queda ningún tamaño arbitrario en
-`src/`.
+## 8. Tipografía
 
-**La única excepción son las tarjetas de visita de `/marca`**, y es la misma
-excepción que la paleta literal de esa página: son un especimen impreso a
-escala, donde 300px representan los 85mm reales. A 16px no cabría ni el
-eslogan. Su escala se declara UNA vez (`--tarjeta: 10px`) y lo demás se deriva
-en `em`, así que no hay número suelto que alguien pueda copiar creyendo que es
-sistema.
-
-## 5. Tipografía
-
-- **Geist** para todo. **Instrument Serif itálica** solo vía `<Em>`: una o dos
-  palabras por sección, las de mayor carga. Requiere `style: ["normal","italic"]`
-  en `layout.tsx` o el navegador sintetiza la itálica y se nota.
-- **Geist Mono** solo para índices de fase.
-- Escala fluida sin breakpoints: `text-mega` → `text-display` → `text-headline`
-  → `text-lede`. `.label` (11px, tracking .34em) es el conector del sistema.
+- **Geist** para todo. **Instrument Serif itálica** solo vía `<Em>` y en las
+  preguntas de sector/solución: una frase por bloque, la de mayor carga. La
+  cita del manifiesto es la única serif a gran tamaño.
+- **Geist Mono** para cotas y para los textos de los diagramas.
 - `.tnum` en toda cifra.
 
-## 6. Forma
+## 9. Forma
 
-`--radius-card: 1.5rem` (tarjetas, paneles, menús) · `--radius-lg: 1rem` (ítems
-dentro de una tarjeta) · `--radius-pill` (botones, chips, puntos). Cero esquinas
-rectas en superficies; las únicas rectas son las reglas de 1–2px y los divisores.
+`--radius-card: 1rem` (tarjetas, paneles, menús) · `--radius-lg: .625rem`
+(ítems dentro de una tarjeta) · `--radius-pill` (botones, chips). Las únicas
+rectas son las reglas de 1–2 px, los divisores y los marcos de los diagramas.
 
-Ritmo: `py-section` y `shell`. Toda sección es `<Section>`; nada define su propio
-padding vertical.
+Ritmo: `py-section` y `shell`. Toda sección es `<Section>`.
 
-## 7. Movimiento
+## 10. Botones
 
-Dos motores, y la división no es capricho:
-
-**Motion** (`components/motion.tsx`) para todo lo que depende del scroll.
-`animation-timeline: view()` no existe en Firefox ni en Safari anteriores al 26:
-ahí las animaciones de scroll no corrían en absoluto, y ese fue el motivo para
-añadir la única dependencia de animación del proyecto.
-
-| Componente | Qué hace |
-|---|---|
-| `<Reveal>` | un bloque que entra al aparecer (opacidad + subida + desenfoque) |
-| `<RevealList>` + `<RevealItem>` | rejilla escalonada; el padre orquesta, 70ms entre hijos |
-| `<DrawRule>` | el trazo lima que se dibuja de izquierda a derecha |
-| `<ParallaxY>` | telón que sube más lento que el contenido |
-| `<ToTopButton>` | volver arriba: aparece entre 400 y 700px de scroll |
-
-Todo se dispara **una sola vez** (`once: true`): volver a subir no vuelve a
-animar. `<MotionProvider reducedMotion="user">` envuelve el sitio en
-`layout.tsx`, así que quien pide menos movimiento recibe solo opacidad.
-
-**CSS** (`globals.css`) para lo que no necesita JavaScript: `.enter` (entrada
-del hero, escalonada con `--i`) y `.drift` / `.breathe` (telón y luz ambiental,
-continuos). El hero se queda en CSS a propósito: **el contenido sobre el pliegue
-no debería depender de que cargue un bundle para hacerse visible.**
-
-Por lo mismo, `layout.tsx` trae un `<noscript>` que fuerza la visibilidad de lo
-que Motion deja en `opacity: 0`. La animación es un lujo; el texto no.
-
-## 8. Microinteracciones
-
-Un solo gesto, repetido:
-
-- **Botón**: `hover` sube 2px + resplandor lima; `active` vuelve a su sitio y
-  encoge a 0.97. La flecha hija se desplaza en diagonal — la anima el botón con
-  `[&_svg]`, no cada llamada.
-- **Tarjeta enlazada**: `hover` sube 4px y el filo pasa a `lime/40`, 500ms.
-- **Enlace de texto**: cambia a `text-accent`. Siempre con `transition-colors`:
-  un color que salta se siente roto.
-- **Fila de tabla/listado**: `hover:bg-fg/5`.
-
-## 9. El semáforo operativo (demos)
-
-`/demos/*` es la única parte del sitio con color que no es marca: un tablero de
-riesgo necesita rojo/ámbar/verde reales. Cada tema trae su calibración —claros
-sobre oscuro, oscuros de imprenta sobre marfil— y el tinte `-suave` se deriva
-solo con `color-mix(… 16%, transparent)`.
-
-| Token | Oscuro | Claro |
+| Variante | Qué es | Dónde |
 |---|---|---|
-| `--color-alerta` | `#ff8173` | `#a4231c` |
-| `--color-aviso` | `#f5b83d` | `#7d5100` |
-| `--color-ok` | `#5fd3a3` | `#1c6142` |
+| `solid` | `bg-fg text-surface`: se invierte con la superficie | acción primaria en páginas claras y en el menú |
+| `lime` | `bg-lime text-ink` | **una vez por pantalla**, sobre `inverse` (hero, cierre) |
+| `outline` | filo `line-strong` | acción secundaria |
 
-El verde se va al menta en oscuro a propósito: un verde amarillento competiría
-con el lima y el tablero dejaría de distinguir estado de acento. Estado = color
-**más** palabra, siempre. Relleno sólido lleva `text-surface`, que se invierte
-con el tema.
+Microinteracción única: `hover` sube 0,5 px, la flecha hija se desplaza en
+diagonal, `active` encoge a 0,98.
 
-## 10. Testimonios
+## 11. Movimiento
 
-`borrador: true` en `site.ts` significa **texto de ejemplo**: no lo dijo nadie, y
-la tarjeta lo declara en pantalla. Un borrador no lleva nombre propio ni empresa
-inventada — un testimonio falso sin marcar es publicidad engañosa, no un
-placeholder. `npm test` impide publicar (quitar `borrador`) sin atribución.
+Dos motores:
 
-## 11. Dónde vive cada pieza
+**CSS** (`globals.css`): `.enter` (entrada del hero al cargar, sin desenfoque,
+máx. 400 ms de escalonado) y `.draw` (trazado de diagramas). El contenido
+sobre el pliegue no depende de un bundle para verse.
+
+**Motion** (`components/motion.tsx`) para lo que depende del scroll:
+`<Reveal>`, `<RevealList>`/`<RevealItem>`, `<DrawRule>`, `<ParallaxY>`,
+`<ToTopButton>`. V2 bajó el *reveal* a **14 px, 0,5 s y sin desenfoque**: el
+anterior (28 px + blur 10 px + 0,75 s) dejaba media pantalla vacía al bajar
+rápido. Todo se dispara **una sola vez**. `<MotionProvider
+reducedMotion="user">` envuelve el sitio.
+
+## 12. El semáforo operativo (demos)
+
+`/demos/*` es la única parte del sitio con color que no es marca. Cada tema
+trae su calibración y el tinte `-suave` se deriva con `color-mix`. Estado =
+color **más** palabra, siempre.
+
+| Token | Claro | Oscuro |
+|---|---|---|
+| `--color-alerta` | `#a4231c` | `#ff8173` |
+| `--color-aviso` | `#7d5100` | `#f5b83d` |
+| `--color-ok` | `#1c6142` | `#5fd3a3` |
+
+## 13. Testimonios
+
+`borrador: true` en `site.ts` significa **texto de ejemplo**: no lo dijo nadie.
+V2 **no los muestra en la home**: la sección `Testimonios` filtra los
+borradores y no se renderiza mientras no haya uno real con nombre y cargo.
+`npm test` impide publicar (quitar `borrador`) sin atribución.
+
+## 14. Dónde vive cada pieza
 
 | Pieza | Archivo |
 |---|---|
-| Paleta, semánticos, temas, `glass`, `glow`, movimiento CSS | `src/app/globals.css` |
+| Paleta, semánticos, temas, `inverse`, `card`, `cota`, `paper-grid`, movimiento CSS | `src/app/globals.css` |
+| Diagramas | `src/components/diagrams.tsx` |
 | Animaciones de scroll (Motion) | `src/components/motion.tsx` |
-| `Section`, `Card`, `Em`, `Button`, `SectionHead`, `PageHero`, `CtaBand`, `FaqList` | `src/components/ui.tsx` |
+| `Section`, `SectionHead`, `Cota`, `Card`, `Em`, `Button`, `PageHero`, `CtaBand`, `FaqList`, `NumberedList`, `Figura` | `src/components/ui.tsx` |
 | Interruptor de tema | `src/components/theme-toggle.tsx` + script en `layout.tsx` |
-| Volver arriba | `src/components/to-top.tsx` (ancla + `ToTopButton`) |
-| Telones y luz ambiental | `src/components/vertex-art.tsx` |
 | Lockup que sigue al tema | `<Logo tone="tema" />` en `logo.tsx` |
 | Kit de los demos | `src/components/demo-ui.tsx` |
 

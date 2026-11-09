@@ -1,51 +1,35 @@
 import Link from "@/components/link";
-import { Arrow, Em, Headline, Section, SectionHead } from "@/components/ui";
+import { Arrow, Headline, Section, SectionHead } from "@/components/ui";
 import { getContent, getT } from "@/lib/i18n-server";
 import { RevealItem, RevealList } from "@/components/motion";
 
 /**
- * Testimonios. Los marcados como `borrador` son texto de ejemplo y lo dicen en
- * pantalla: sin el distintivo serían citas falsas atribuidas a alguien real.
- * Ver `testimonials` en `site.ts` para reemplazarlos.
+ * Testimonios. Solo se muestran los reales (sin `borrador`): un «texto de
+ * ejemplo» en la portada resta más confianza de la que suma. Mientras no haya
+ * ninguno, la sección no se renderiza; el día que exista uno con nombre y
+ * cargo, aparece sola. `npm test` impide publicar uno sin atribución.
  */
 export async function Testimonios() {
   const [{ serviceBySlug, testimonials }, tr] = await Promise.all([getContent(), getT()]);
-  if (testimonials.length === 0) return null;
+  const reales = testimonials.filter((t) => !t.borrador);
+  if (reales.length === 0) return null;
 
   return (
     <Section id="testimonios" tone="paper">
-      <SectionHead index="05" label={tr("Lo que dicen", "What they say")}>
-        <Headline className="text-fg">
-          {tr(
-            <>
-              La conversación que <Em className="text-accent">no</Em> esperaban tener.
-            </>,
-            <>
-              The conversation they <Em className="text-accent">didn&apos;t</Em> expect to have.
-            </>,
-          )}
+      <SectionHead index="07" label={tr("Lo que dicen", "What they say")}>
+        <Headline>
+          {tr("La conversación que no esperaban tener.", "The conversation they didn't expect to have.")}
         </Headline>
       </SectionHead>
 
       <RevealList as="ul" className="grid gap-4 md:grid-cols-3">
-        {testimonials.map((t) => {
+        {reales.map((t) => {
           const service = t.service ? serviceBySlug(t.service) : undefined;
           return (
-            <RevealItem
-              as="li"
-              key={t.quote}
-              className="glass flex flex-col gap-7 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-10"
-            >
-              {t.borrador ? (
-                <span className="label w-fit rounded-pill border border-line-strong px-3 py-1.5 text-fg/40">
-                  {tr("Texto de ejemplo", "Sample text")}
-                </span>
-              ) : null}
-
+            <RevealItem as="li" key={t.quote} className="card flex flex-col gap-7 rounded-card p-8 md:p-10">
               <blockquote className="font-serif text-2xl leading-snug text-balance text-fg md:text-3xl">
                 {t.quote}
               </blockquote>
-
               <div className="mt-auto flex flex-col gap-3 border-t border-line pt-6">
                 <span className="text-sm text-fg/75">
                   {t.name ? `${t.name} · ` : ""}
@@ -54,10 +38,10 @@ export async function Testimonios() {
                 {service ? (
                   <Link
                     href={`/servicios/${service.slug}`}
-                    className="label group inline-flex w-fit items-center gap-2.5 text-fg/55 transition-colors hover:text-accent"
+                    className="cota inline-flex w-fit items-center gap-2.5 text-fg/55 transition-colors hover:text-fg"
                   >
                     {service.name}
-                    <Arrow className="transition-transform duration-500 ease-out-quint group-hover:translate-x-0.5" />
+                    <Arrow />
                   </Link>
                 ) : null}
               </div>

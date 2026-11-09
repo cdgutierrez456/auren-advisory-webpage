@@ -49,7 +49,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
             {site.tagline}
           </div>
           <div style={{ marginTop: 24, fontSize: 30, color: "rgba(242,241,234,0.7)" }}>
-            {`${site.name} · ${en ? "Business transformation" : "Transformación empresarial"}`}
+            {`${site.name} · ${en ? "Business transformation through technology" : "Transformación empresarial mediante tecnología"}`}
           </div>
         </div>
       </div>

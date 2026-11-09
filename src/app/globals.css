@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   AUREN ADVISORY — tokens de marca
+   AUREN ADVISORY — tokens de marca · sistema «Plano»
+
    Fuente de verdad. Nada de hex sueltos en componentes: usar estos tokens.
 
    Dos capas, y la distinción importa:
@@ -12,6 +13,11 @@
 
    Los componentes usan SOLO los semánticos (`bg-surface`, `text-fg/75`,
    `border-line`). Así el sitio entero cambia de tema sin tocar una clase.
+
+   V2: el tema de la casa es el CLARO (marfil como superficie de lectura).
+   El oscuro sigue completo y se elige por sistema o con el interruptor.
+   Las superficies de declaración (hero, bandas de capítulo) son `inverse`:
+   Auren Deep en los dos temas, porque son marca, no tema.
    El diccionario completo está en DESIGN.md.
 --------------------------------------------------------------------------- */
 
@@ -33,8 +39,10 @@
   --color-fg: var(--fg);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
-  --color-glass: var(--glass);
-  --color-glass-strong: var(--glass-strong);
+  /* Legado: `glass`/`panel` siguen existiendo para los demos y el chat, pero
+     ya son superficies planas. Resuelven a surface-2. */
+  --color-glass: var(--surface-2);
+  --color-glass-strong: var(--surface-2);
   /* Acento de TEXTO. En claro es Auren Deep, no lima: la regla de marca
      prohíbe lima como texto sobre marfil. El lima de relleno sigue siendo
      `bg-lime` en los dos temas, que sí está permitido. */
@@ -42,8 +50,7 @@
 
   /* Semáforo operativo (solo demos). El lima es marca, no estado: un tablero
      de riesgo necesita rojo/ámbar/verde reales o no se lee. Cada estado lleva
-     además su palabra en pantalla, para daltonismo y videobeam malo.
-     Cada tema trae su calibración; el tinte «suave» se deriva solo. */
+     además su palabra en pantalla, para daltonismo y videobeam malo. */
   --color-alerta: var(--alerta);
   --color-aviso: var(--aviso);
   --color-ok: var(--ok);
@@ -60,33 +67,27 @@
   --text-mega: clamp(3.25rem, 11vw, 9rem);
   --text-mega--line-height: 0.9;
   --text-mega--letter-spacing: -0.045em;
-  --text-display: clamp(2.75rem, 7vw, 6.5rem);
-  --text-display--line-height: 0.94;
+  --text-display: clamp(2.5rem, 5vw, 4.75rem);
+  --text-display--line-height: 1;
   --text-display--letter-spacing: -0.03em;
-  --text-headline: clamp(1.9rem, 3.6vw, 3.25rem);
-  --text-headline--line-height: 1.06;
+  --text-headline: clamp(1.9rem, 3.4vw, 3rem);
+  --text-headline--line-height: 1.08;
   --text-headline--letter-spacing: -0.02em;
-  --text-lede: clamp(1.05rem, 1.5vw, 1.375rem);
+  --text-lede: clamp(1.05rem, 1.4vw, 1.3rem);
   --text-lede--line-height: 1.55;
-  /* Subtítulo: el peldaño entre `headline` y el cuerpo — títulos de tarjeta
-     grande y de fase. Existe porque faltaba: tres secciones se lo habían
-     inventado por separado con tres clamps parecidos pero distintos. */
-  --text-subhead: clamp(1.7rem, 2.5vw, 2.4rem);
-  --text-subhead--line-height: 1;
+  --text-subhead: clamp(1.5rem, 2.2vw, 2.1rem);
+  --text-subhead--line-height: 1.08;
   --text-subhead--letter-spacing: -0.02em;
-  /* Cita editorial en serif. Más grande que un subtítulo y con su propio
-     interlineado: el serif a este cuerpo necesita más aire. */
-  --text-quote: clamp(2rem, 4.2vw, 3.6rem);
+  --text-quote: clamp(2rem, 4vw, 3.5rem);
   --text-quote--line-height: 1.12;
 
   /* Ritmo vertical de sección */
-  --spacing-section: clamp(6rem, 12vw, 11rem);
-  --spacing-gutter: clamp(1.5rem, 5vw, 5rem);
+  --spacing-section: clamp(5rem, 9vw, 8.5rem);
+  --spacing-gutter: clamp(1.25rem, 5vw, 5rem);
 
-  /* Radios: en superficies no hay esquinas rectas. Las únicas rectas del
-     sistema son las reglas de 1px y los divisores hairline. */
-  --radius-card: 1.5rem;
-  --radius-lg: 1rem;
+  /* Radios. Más contenidos que antes: el sistema es un plano, no una app. */
+  --radius-card: 1rem;
+  --radius-lg: 0.625rem;
   --radius-pill: 999px;
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -95,84 +96,72 @@
 
 /* ---------------------------------------------------------------------------
    TEMAS
-   Oscuro es el tema de la casa. El claro entra por preferencia del sistema o
+   Claro es el tema de la casa. El oscuro entra por preferencia del sistema o
    por el interruptor (`data-theme`), que siempre manda sobre el sistema.
-   El bloque claro va dos veces a propósito: una para el sistema y otra para la
-   elección explícita. CSS no tiene mixins y duplicarlo es más barato que
+   El bloque oscuro va dos veces a propósito: una para el sistema y otra para
+   la elección explícita. CSS no tiene mixins y duplicarlo es más barato que
    sostener una clase extra en <html>.
 --------------------------------------------------------------------------- */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   scroll-behavior: smooth;
+
+  --surface: var(--color-ivory);
+  --surface-2: var(--color-paper);
+  --surface-3: #e9e7dc;
+  --surface-4: #dedbcd;
+  --fg: var(--color-ink);
+  --line: color-mix(in srgb, var(--color-ink) 14%, transparent);
+  --line-strong: color-mix(in srgb, var(--color-ink) 28%, transparent);
+  --accent: var(--color-deep);
+
+  /* Semáforo sobre marfil: oscuros de imprenta. */
+  --alerta: #a4231c;
+  --aviso: #7d5100;
+  --ok: #1c6142;
+
+  --shadow-color: rgb(18 52 59 / 0.14);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --surface: var(--color-deep-900);
+    --surface-2: var(--color-deep-700);
+    --surface-3: var(--color-deep);
+    --surface-4: var(--color-ink);
+    --fg: var(--color-ivory);
+    --line: color-mix(in srgb, var(--color-ivory) 13%, transparent);
+    --line-strong: color-mix(in srgb, var(--color-ivory) 24%, transparent);
+    --accent: var(--color-lime);
+
+    --alerta: #ff8173;
+    --aviso: #f5b83d;
+    --ok: #5fd3a3;
+
+    --shadow-color: rgb(0 0 0 / 0.45);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
 
   --surface: var(--color-deep-900);
   --surface-2: var(--color-deep-700);
   --surface-3: var(--color-deep);
   --surface-4: var(--color-ink);
   --fg: var(--color-ivory);
-  --line: color-mix(in srgb, var(--color-ivory) 11%, transparent);
-  --line-strong: color-mix(in srgb, var(--color-ivory) 20%, transparent);
-  --glass: color-mix(in srgb, var(--color-deep) 42%, transparent);
-  --glass-strong: color-mix(in srgb, var(--color-deep-700) 70%, transparent);
+  --line: color-mix(in srgb, var(--color-ivory) 13%, transparent);
+  --line-strong: color-mix(in srgb, var(--color-ivory) 24%, transparent);
   --accent: var(--color-lime);
 
-  /* Semáforo sobre oscuro: los tres claros, el verde al menta para no
-     confundirse con el lima de marca. */
   --alerta: #ff8173;
   --aviso: #f5b83d;
   --ok: #5fd3a3;
 
-  /* La luz ambiental y las sombras también son del tema. */
-  --glow-opacity: 0.5;
   --shadow-color: rgb(0 0 0 / 0.45);
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    color-scheme: light;
-
-    --surface: var(--color-ivory);
-    --surface-2: var(--color-paper);
-    --surface-3: #eceadf;
-    --surface-4: #e3e0d3;
-    --fg: var(--color-ink);
-    --line: color-mix(in srgb, var(--color-ink) 12%, transparent);
-    --line-strong: color-mix(in srgb, var(--color-ink) 22%, transparent);
-    --glass: color-mix(in srgb, var(--color-paper) 62%, transparent);
-    --glass-strong: color-mix(in srgb, var(--color-paper) 82%, transparent);
-    --accent: var(--color-deep);
-
-    /* Sobre marfil el semáforo vuelve a los oscuros de imprenta. */
-    --alerta: #a4231c;
-    --aviso: #7d5100;
-    --ok: #1c6142;
-
-    --glow-opacity: 0.3;
-    --shadow-color: rgb(18 52 59 / 0.14);
-  }
-}
-
-:root[data-theme="light"] {
-  color-scheme: light;
-
-  --surface: var(--color-ivory);
-  --surface-2: var(--color-paper);
-  --surface-3: #eceadf;
-  --surface-4: #e3e0d3;
-  --fg: var(--color-ink);
-  --line: color-mix(in srgb, var(--color-ink) 12%, transparent);
-  --line-strong: color-mix(in srgb, var(--color-ink) 22%, transparent);
-  --glass: color-mix(in srgb, var(--color-paper) 62%, transparent);
-  --glass-strong: color-mix(in srgb, var(--color-paper) 82%, transparent);
-  --accent: var(--color-deep);
-
-  --alerta: #a4231c;
-  --aviso: #7d5100;
-  --ok: #1c6142;
-
-  --glow-opacity: 0.3;
-  --shadow-color: rgb(18 52 59 / 0.14);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -188,11 +177,35 @@ body {
   font-feature-settings: "ss01", "cv01";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  caret-color: var(--color-lime);
+  caret-color: var(--color-accent);
   /* El cambio de tema es una transición, no un parpadeo. */
   transition:
     background-color 0.4s var(--ease-out-quint),
     color 0.4s var(--ease-out-quint);
+}
+
+/* --- Superficie de declaración ---------------------------------------- */
+
+/* `inverse`: Auren Deep con marfil, EN LOS DOS TEMAS. Es la superficie de
+   marca (hero, bandas de capítulo, cierre), no una variante de tema. Re-mapea
+   los semánticos para sus descendientes, así los mismos componentes
+   (`text-fg/75`, `border-line`, `bg-surface-2`) funcionan dentro sin saber
+   dónde están. El acento de texto aquí sí es lima: va sobre oscuro. */
+@utility inverse {
+  --color-surface: var(--color-deep);
+  --color-surface-2: var(--color-deep-700);
+  --color-surface-3: var(--color-deep-900);
+  --color-surface-4: var(--color-ink);
+  --color-fg: var(--color-ivory);
+  --color-line: color-mix(in srgb, var(--color-ivory) 14%, transparent);
+  --color-line-strong: color-mix(in srgb, var(--color-ivory) 26%, transparent);
+  --color-glass: var(--color-deep-700);
+  --color-glass-strong: var(--color-deep-700);
+  --color-accent: var(--color-lime);
+  --shadow-color: rgb(0 0 0 / 0.45);
+  color-scheme: dark;
+  background: var(--color-surface);
+  color: var(--color-fg);
 }
 
 /* --- Utilidades del sistema ------------------------------------------- */
@@ -201,9 +214,30 @@ body {
 @utility label {
   font-size: 0.6875rem;
   line-height: 1;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   font-weight: 500;
+}
+
+/* Cota: la etiqueta técnica del sistema «Plano». Mono, con un tick a la
+   izquierda como en un plano acotado. Índices, metadatos y capítulos. */
+@utility cota {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+@utility cota-tick {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
+  border-left: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
 }
 
 @utility wordmark {
@@ -219,50 +253,43 @@ body {
   padding-inline: var(--spacing-gutter);
 }
 
-/* Capa gráfica sutil: retícula de análisis. Decorativa, nunca informativa. */
-@utility grid-layer {
+/* Papel técnico: retícula fina de 4rem. Solo en hero y aperturas. Decorativa,
+   nunca informativa. El color sale de `currentColor` a muy baja opacidad. */
+@utility paper-grid {
   background-image:
-    linear-gradient(to right, currentColor 1px, transparent 1px),
-    linear-gradient(to bottom, currentColor 1px, transparent 1px);
-  background-size: 5rem 5rem;
-  opacity: 0.05;
+    linear-gradient(to right, color-mix(in srgb, currentColor 9%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, currentColor 9%, transparent) 1px, transparent 1px);
+  background-size: 4rem 4rem;
 }
 
-/* Tarjeta glass: superficie translúcida con desenfoque y borde de luz. Es LA
-   tarjeta del sistema; no hay otra. Va siempre con `rounded-card`. */
-@utility glass {
-  background: var(--color-glass);
-  backdrop-filter: blur(18px) saturate(1.1);
-  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+/* Tarjeta: superficie plana con filo de 1px. Es LA tarjeta del sistema; no
+   hay otra. Va siempre con `rounded-card`. Sin desenfoque ni resplandor. */
+@utility card {
+  background: var(--color-surface-2);
   border: 1px solid var(--color-line);
 }
 
-/* Panel opaco: el hermano de `glass` para lo que FLOTA SOBRE EL CONTENIDO y
-   hay que leer — el menú desplegable en móvil y el panel del chat. El glass
-   deja pasar el 42% del fondo (62% en claro), y con texto corriendo por debajo
-   el resultado no se lee. Mismo filo, mismo radio, misma familia: solo cambia
-   el fondo por un escalón opaco, y sin `backdrop-filter`, que no pinta nada
-   detrás de algo opaco y sí cuesta GPU.
-
-   Cuál usar: si detrás hay una sección quieta, `glass`. Si detrás pasa
-   contenido haciendo scroll y encima va texto, `panel`. */
+/* Legado. `glass` y `panel` eran la tarjeta translúcida y su hermana opaca
+   del sistema anterior; los demos, el chat y la Radiografía las siguen
+   nombrando. Hoy son la misma tarjeta plana. */
+@utility glass {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+}
 @utility panel {
   background: var(--color-surface-2);
   border: 1px solid var(--color-line);
 }
 
-/* Blob de luz ambiental: el resplandor que respira detrás del contenido.
-   Máximo uno por sección, y solo en secciones ancla. */
-@utility glow {
-  border-radius: 999px;
-  filter: blur(70px);
-  opacity: var(--glow-opacity);
-}
-
-/* Sombra de pieza elevada (chips flotantes, menú desplegado). Sigue al tema:
-   negra sobre oscuro, azulada y mucho más suave sobre claro. */
+/* Sombra de pieza elevada (menú desplegado, chat). Sigue al tema. */
 @utility shadow-float {
   box-shadow: 0 1.5rem 3rem -1.25rem var(--shadow-color);
+}
+
+/* `glow` ya no existe como efecto; se conserva el nombre como no-op para
+   que una clase huérfana en un demo no rompa nada. */
+@utility glow {
+  display: none;
 }
 
 ::selection {
@@ -291,13 +318,10 @@ body {
     border: 2px solid var(--color-surface);
     border-radius: 999px;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--color-lime) 60%, transparent);
-  }
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-lime);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
 
@@ -305,65 +329,62 @@ body {
    MOVIMIENTO — lo que queda aquí es lo que no necesita JavaScript.
    Las animaciones de scroll viven en `components/motion.tsx` (Motion), porque
    `animation-timeline: view()` no existe en Firefox ni en Safari < 26 y ahí
-   simplemente no corrían. Aquí se quedan la entrada del hero y el fondo
-   ambiental: funcionan en todos los navegadores y sin bundle.
+   simplemente no corrían. Aquí se quedan la entrada del hero y el trazado de
+   los diagramas: funcionan en todos los navegadores y sin bundle.
    Nada se mueve si el sistema pide menos movimiento.
 --------------------------------------------------------------------------- */
 
-/* Entrada del hero: no depende del scroll, ocurre al cargar. */
+/* Entrada del hero: no depende del scroll, ocurre al cargar. Sin desenfoque:
+   el contenido sobre el pliegue se lee desde el primer fotograma. */
 @keyframes enter-up {
   from {
     opacity: 0;
-    transform: translateY(2.5rem);
-    filter: blur(12px);
+    transform: translateY(1.25rem);
   }
   to {
     opacity: 1;
     transform: none;
-    filter: blur(0);
   }
 }
 
-/* La luz ambiental respira: escala y opacidad, muy lento. */
-@keyframes breathe {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: calc(var(--glow-opacity) * 0.8);
-  }
+/* Trazado de un diagrama: cada path lleva `pathLength="1"`, así el dash
+   se expresa en fracciones y la misma regla sirve para cualquier longitud. */
+@keyframes draw {
   to {
-    transform: translate3d(1.5rem, -1rem, 0) scale(1.15);
-    opacity: calc(var(--glow-opacity) * 1.24);
+    stroke-dashoffset: 0;
   }
 }
 
-/* Deriva lenta del símbolo: solo traslación (el símbolo no se rota ni inclina,
-   regla de marca). Ida y vuelta, imperceptible, para que el fondo respire. */
-@keyframes drift {
+/* Los nodos aparecen cuando la línea llega a ellos. */
+@keyframes pop {
   from {
-    transform: translate3d(0, 0, 0);
+    opacity: 0;
+    transform: scale(0.6);
   }
   to {
-    transform: translate3d(-1.4rem, 1rem, 0);
+    opacity: 1;
+    transform: none;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Entrada del hero al cargar: el retardo lo pone --i en el marcado.
-     Es CSS y no Motion a propósito: el contenido sobre el pliegue no debería
-     depender de que cargue un bundle para hacerse visible. */
   .enter {
-    animation: enter-up 0.9s var(--ease-expo) both;
-    animation-delay: calc(var(--i, 0) * 90ms);
+    animation: enter-up 0.7s var(--ease-expo) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
   }
 
-  /* La deriva no depende del scroll: es un latido continuo del fondo. */
-  .drift {
-    animation: drift 16s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  .draw [data-draw] {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1.1s var(--ease-out-quint) forwards;
+    animation-delay: calc(var(--i, 0) * 120ms + 200ms);
   }
-
-  /* Los blobs de luz respiran, cada uno a su ritmo (delay inline). */
-  .breathe {
-    animation: breathe 14s ease-in-out infinite alternate;
+  .draw [data-pop] {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop 0.45s var(--ease-out-quint) forwards;
+    animation-delay: calc(var(--i, 0) * 120ms + 400ms);
   }
 }
 

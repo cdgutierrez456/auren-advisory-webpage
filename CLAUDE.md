@@ -7,11 +7,29 @@ Motion es la única añadida, y tiene una: las animaciones de scroll estaban en
 `animation-timeline: view()`, que no existe en Firefox ni en Safari < 26 — en
 medio parque de navegadores no se movía nada.
 
+**V2 (noviembre 2026):** rediseño completo bajo el sistema visual «Plano».
+El porqué de cada decisión —diagnóstico, direcciones descartadas, puntuación—
+está en `REDISENO-V2.md`; el diccionario visual, en `DESIGN.md`.
+
+## Qué es Auren (y qué dice el sitio)
+
+Firma de **transformación empresarial mediante tecnología**. No una empresa
+de IA, ni una fábrica de software, ni una agencia de automatización. La
+tecnología es el instrumento; la transformación es el propósito. Cuatro
+dimensiones siempre presentes: estrategia, procesos, tecnología,
+transformación. Filosofía: **Ver. Entender. Transformar.**
+
+El orden de lectura de toda página es: *problema que reconoce el cliente →
+qué hacemos → qué obtiene → cómo empezar*. La oferta se presenta por
+**necesidad** (cinco `solutions`) y los ocho `services` son el nivel «cómo lo
+entregamos». Nunca por catálogo de tecnologías.
+
 ## Comandos
 
 ```bash
 npm run dev      # desarrollo (turbopack)
 npm run build    # build de producción — correr antes de dar algo por terminado
+npm test         # 101 pruebas; el glob va entre comillas dobles para que corra también en Windows
 npm start
 ```
 
@@ -19,24 +37,35 @@ npm start
 
 | Necesito… | Toco… |
 |---|---|
-| Cambiar textos; añadir capacidad, servicio o principio | `src/content/site.ts` |
-| Color, tipografía, escala, ritmo, tema claro/oscuro | `src/app/globals.css` |
+| Cambiar textos; añadir solución, servicio, situación o principio | `src/content/site.ts` |
+| Color, tipografía, escala, ritmo, tema claro/oscuro, `inverse`, `card`, `cota` | `src/app/globals.css` |
+| Un diagrama o un glifo | `src/components/diagrams.tsx` |
+| Una lámina (ilustración de tarjeta) | `src/components/laminas.tsx` |
+| La tarjeta que se abre al pasar el mouse | `src/components/tiles.tsx` (`HoverTile`, `RevealCard`) |
+| Foto de una solución, un sector o el hero | campo `image` en `solutions`, `sectors` o `hero`; sin archivo, se usa la lámina |
 | El símbolo o el lockup | `src/components/logo.tsx` |
-| Botón, sección, encabezado, apertura de página, CTA | `src/components/ui.tsx` |
+| Botón, sección, encabezado, cota, apertura de página, CTA, lista numerada | `src/components/ui.tsx` |
+| El menú y el botón «Hablemos» | `nav` y `navCta` en `site.ts` → `src/components/nav.tsx` |
 | El interruptor de tema | `src/components/theme-toggle.tsx` |
-| Testimonios (y su marca de borrador) | `testimonials` en `src/content/site.ts` |
 | Una sección de la home | `src/components/sections/*.tsx` |
-| El método (Ver/Entender/Transformar) | `phases` y `method` en `site.ts` |
+| El hero (titular, bajada, CTA) | `hero` en `site.ts` → `sections/hero.tsx` |
+| Las cuatro dimensiones y la frase central | `dimensions` y `manifesto` en `site.ts` |
+| Las situaciones «¿Le suena?» | `problems` en `site.ts` (cada una apunta a una `solution`) |
+| Las cinco soluciones | `solutions` en `site.ts` → `src/app/[lang]/soluciones/page.tsx` |
+| El método (Ver/Entender/Transformar) | `phases` y `method` en `site.ts` → `components/method-stage.tsx` (escenario en perspectiva) |
+| Sectores, sus preguntas, oportunidades y demos | `sectors` en `site.ts` → `src/app/[lang]/sectores/page.tsx` |
 | La página de un servicio | `src/app/[lang]/servicios/[slug]/page.tsx` (plantilla única) |
-| Historia de la firma | `about` en `site.ts` → `src/app/[lang]/nosotros/page.tsx` |
+| Historia de la firma, socios, límites | `about` en `site.ts` → `src/app/[lang]/nosotros/page.tsx` |
+| Contacto: qué pasa después, compromisos | `contact` en `site.ts` → `src/app/[lang]/contacto/page.tsx` |
+| Validación y mensaje de WhatsApp | `src/lib/lead.ts` |
+| Testimonios (y su marca de borrador) | `testimonials` en `site.ts` |
 | El manual de marca público | `src/app/[lang]/marca/page.tsx` |
-| Validación y mensaje de contacto | `src/lib/lead.ts` |
 | Preguntas, ejes, bandas y textos de la Radiografía | `src/content/radiografia.ts` |
 | Cómo se puntúa la Radiografía | `src/lib/radiografia.ts` |
 | Título, descripción y canónica de una página | `pageMetadata()` en `src/lib/seo.ts` |
 | Datos estructurados (JSON-LD) de cualquier tipo | `src/lib/schema.tsx` |
 | Publicar un artículo; editar uno | `posts` en `src/content/recursos.ts` |
-| Sectores y preguntas frecuentes de la home | `sectors` y `homeFaqs` en `site.ts` |
+| Preguntas frecuentes (viven en /contacto) | `homeFaqs` en `site.ts` |
 | Pasos, industrias, métricas o preguntas de un servicio | la entrada en `services` |
 | La imagen que se ve al compartir | `src/app/[lang]/opengraph-image.tsx` (una por idioma) |
 | Número de WhatsApp, correo, dominio | `site` en `src/content/site.ts` |
@@ -49,21 +78,31 @@ npm start
 
 ### Rutas
 
-`/` · `/enfoque` · `/servicios` · `/servicios/[slug]` (8, prerenderizadas) ·
-`/recursos` · `/recursos/[slug]` · `/radiografia` · `/nosotros` · `/marca` ·
-`/demos/*` (en `noindex`, fuera del sitemap). Cada una existe también bajo
-`/en` (ver «Idiomas»).
+`/` · `/soluciones` · `/sectores` · `/nosotros` (incluye el método en
+`#metodo`) · `/contacto` · `/servicios/[slug]` (8, prerenderizadas) ·
+`/recursos` · `/recursos/[slug]` · `/radiografia` · `/marca` (manual interno,
+`noindex`, solo por URL) · `/demos/*` (en `noindex`, fuera del sitemap). Cada
+una existe también bajo `/en` (ver «Idiomas»).
+
+Redirecciones internas en `next.config.ts`: `/enfoque` → `/nosotros`,
+`/servicios` → `/soluciones`.
+
+**Menú:** Soluciones · Sectores · Nosotros · Recursos · **Hablemos**. La Radiografía y los demos no van en el menú a propósito: se
+enlazan donde convencen (hero, cierres, sectores, «Por qué creer», pie).
 
 La home es un resumen: cada bloque enlaza a su página completa. El contenido no
 se duplica — home y página interior leen del mismo array en `site.ts`.
 
+- **Añadir una solución**: una entrada en `solutions`. Sus `services` deben
+  existir y debe aparecer en `problems` al menos una vez (`npm test`). La
+  home, `/soluciones`, el pie y el bot la toman solos. Si necesita glifo
+  nuevo, se añade un `kind` en `SolutionGlyph`.
 - **Añadir un servicio**: una entrada en `services`. La página, el listado, el
   footer y `generateStaticParams` se actualizan solos. `next` debe apuntar a un
-  `slug` existente y el servicio debe aparecer en `phases[].services`.
-- **Anclajes de `/enfoque`**: se derivan de `phase.title` en minúscula
-  (`#ver`, `#entender`, `#transformar`). Las secciones llevan `scroll-mt-20`
+  `slug` existente, el servicio debe aparecer en `phases[].services` y, salvo
+  Care, en alguna `solution`.
+- **Anclajes**: `/nosotros#metodo`, `/soluciones#slug` y `/sectores#id`. Las secciones llevan `scroll-mt-20`
   para caer bajo la barra fija de 5rem — si cambia la altura del nav, cambia ahí.
-
 - **Publicar un artículo**: una entrada en `posts` (`src/content/recursos.ts`).
   La ruta, el listado, el sitemap, el JSON-LD de `Article`, las migas y los
   enlaces desde cada servicio salen solos. `services` y `related` deben existir.
@@ -76,29 +115,32 @@ el título de la home, sin canónica y sin imagen.
 
 - Todo el JSON-LD vive en `src/lib/schema.tsx`. La firma se declara **una sola
   vez** en `layout.tsx` con un `@id`; `Service`, `Article` y `FAQPage` la
-  referencian con ese id en vez de repetir el bloque. Repetirlo le daría al
-  buscador varias entidades parecidas en lugar de una con más señales.
+  referencian con ese id en vez de repetir el bloque.
 - Un `<title>` compuesto empieza por la búsqueda y termina por la marca: el
   buscador corta por la derecha. Máx. 75 caracteres con el sufijo del template.
+- En las páginas de servicio **la necesidad va antes que la marca**: el H1 es
+  `keyword` (lo que se busca) y `Auren Flow` es la cota. Nadie busca «Auren
+  Flow».
 - Nada marcado como `FAQPage` puede estar oculto: `FaqList` renderiza las
   respuestas abiertas a propósito, no en un acordeón.
 - Todo H1 dice a qué se dedica la página, no solo el eslogan. El patrón es
-  nombre o frase de marca + línea descriptiva dentro del mismo `<h1>`.
+  titular + línea descriptiva dentro del mismo `<h1>`.
 - La redirección entre `www` y el dominio desnudo la resuelve **Vercel**, no
-  `next.config.ts`. Poner la regla en los dos lados produce un bucle
-  (`ERR_TOO_MANY_REDIRECTS`) — ya pasó una vez. Antes de añadirla aquí hay que
-  confirmar hacia dónde redirige el hosting. Ver SEO.md.
+  `next.config.ts`. Poner la regla en los dos lados produce un bucle. Hoy
+  (7-nov-2026) producción sigue mandando el ápice a `www`, al revés de la
+  canónica: pendiente del propietario, ver SEO.md.
 
 `npm test` cubre esas invariantes: slugs únicos y seguros, `next` válido, toda
-fase referencia servicios existentes y todo servicio vive en alguna fase; y del
-lado SEO, que todo servicio traiga pasos, sectores, métricas y preguntas, que
-los títulos y descripciones quepan, que las preguntas tengan respuesta de
-verdad y que cada artículo pase de 900 palabras y enlace a servicios que
-existen.
+fase referencia servicios existentes, toda solución tiene servicios y
+situación, todo sector enlaza a demos existentes, el menú apunta a rutas
+reales, el hero y el contacto no prometen nada gratuito; y del lado SEO, que
+todo servicio traiga pasos, sectores, métricas y preguntas, que los títulos y
+descripciones quepan y que cada artículo pase de 900 palabras.
 
 **Imágenes**: el sitio no tiene ninguna todavía. El campo `image` es opcional en
 servicios, artículos y `about`; mientras no exista, `Figura` no renderiza nada.
-Las especificaciones, rutas y textos alternativos están en `IMAGENES.md`.
+Los diagramas propios ocupan su lugar sin que falte nada. Las especificaciones
+están en `IMAGENES.md`.
 
 ## Idiomas (español e inglés)
 
@@ -129,145 +171,107 @@ mismos en los dos idiomas.
   diccionario aparte que se desincronice.
 - **El bot no recibe el idioma**: contesta en el que le escriban. La
   bienvenida y las sugerencias en inglés arrancan la conversación en inglés.
-- La barra completa aparece desde `xl`: seis enlaces, contacto, idioma y tema
-  no caben en una fila más angosta. En el teléfono el selector va dentro del
+- La barra completa aparece desde `lg`: cuatro enlaces, «Hablemos», idioma y
+  tema no caben en una fila más angosta. En el teléfono el selector va dentro del
   menú.
 
 ## Reglas de marca (no son decorativas — vienen del brand brief)
 
 - **Nada de colores crudos en los componentes: solo tokens semánticos.**
-  `bg-surface`/`-2`/`-3`/`-4`, `text-fg` (en cinco peldaños: `/90 /75 /55 /40`),
-  `border-line`, `glass`, `text-accent`. El tema decide qué color crudo toma
-  cada papel; por eso un `bg-deep` o un `text-ivory` sueltos en una sección
-  rompen el tema claro. Excepción: `marca/page.tsx`, que exhibe la paleta
-  literal. Superficie elevada = `glass rounded-card`; si flota sobre contenido con
-  scroll y lleva texto, `panel rounded-card` (el mismo filo, opaco, para que
-  se lea). No hay una tercera.
-- **Oscuro y claro.** El sistema manda por defecto; `data-theme` en `<html>`
-  gana, lo escribe `theme-toggle.tsx` y un script en línea en `[lang]/layout.tsx` lo
-  aplica antes de pintar. **El diccionario completo está en `DESIGN.md`** —
-  leerlo antes de inventar una superficie, un radio o una opacidad.
+  `bg-surface`/`-2`/`-3`/`-4`, `text-fg` (en cinco peldaños), `border-line`,
+  `card`, `text-accent`. El tema decide qué color crudo toma cada papel.
+  Excepción: `marca/page.tsx`, que exhibe la paleta literal.
+- **Claro es el tema de la casa; oscuro es completo y opcional.** `data-theme`
+  en `<html>` gana; lo escribe `theme-toggle.tsx` y un script en línea en
+  `[lang]/layout.tsx` lo aplica antes de pintar. **El diccionario está en `DESIGN.md`.**
+- **`inverse` es la superficie de declaración** (Auren Deep en los dos temas):
+  hero, método y cierre. Máximo dos por página, nunca seguidas. Se obtiene con
+  `<Section tone="deep">`.
+- **Una sola tarjeta: `card`** (plana, filo de 1 px, `rounded-card`). Sin
+  `backdrop-filter`, sin resplandores. `glass`/`panel` son alias de legado;
+  `glow` es un no-op.
 - **`text-accent` existe porque lima nunca es texto sobre marfil**: en claro
-  vale Auren Deep. El lima de relleno (`bg-lime`, reglas, trazos) sí es el mismo
-  en los dos temas.
-- **El único color que no es marca vive en `/demos/*`**: el semáforo operativo
-  (`--color-alerta/aviso/ok`), con una calibración por tema y el verde en menta
-  sobre oscuro para no competir con el lima. Estado = color **más** palabra.
-- **Los testimonios con `borrador: true` son texto de ejemplo** y lo dicen en
-  pantalla. Quitar la marca exige nombre y cargo reales: `npm test` lo verifica.
-- **Lima (`#C8F169`) es acento, máx. ~10% de la composición.** Nunca como texto
-  sobre marfil: solo forma, regla, trazo o acento sobre fondo oscuro.
-- La base la construyen Auren Deep y Auren Black; el marfil aporta espacio.
-- Serif (`font-serif`) solo en frases estratégicas. Nunca en párrafos ni interfaz.
-- Nada de iconografía de IA: cerebros, circuitos, robots, hologramas, ojos,
-  bombillos. La marca es tecnológica por precisión, no por iconos.
-- El símbolo no se rota, no se inclina y no cambia de proporciones. Cualquier
-  aplicación nueva deriva de las coordenadas en `logo.tsx`. **El texto del
-  lockup se pone con `<Wordmark>`, nunca a mano**: la tarjeta de `/marca` lo
-  tenía copiado con el tracking cambiado (0.44em en vez de 0.46em), y era
-  justo la página que enseña cómo debe verse.
+  vale Auren Deep. El lima de relleno (`bg-lime`, reglas, el nodo final de un
+  diagrama) sí es el mismo en los dos temas.
+- **Lima (`#C8F169`) es acento, máx. ~10%.** Un botón `lime` por pantalla, y
+  sobre `inverse`. Nunca como texto sobre marfil.
+- **Cada recurso gráfico explica algo.** Diagramas de línea propios en
+  `diagrams.tsx`, `currentColor`, trazo 1–1,5 px. Nada de iconografía de IA:
+  cerebros, circuitos, robots, hologramas, ojos, bombillos.
+- **Las cotas (`.cota`, mono con tick) son la etiqueta del sistema.** Índices
+  de capítulo, metadatos, pasos. `.label` se conserva para lo que ya lo usaba.
+- Serif (`font-serif`) solo en frases estratégicas: la cita del manifiesto,
+  `<Em>` y las preguntas de sector/solución. Nunca en párrafos ni interfaz.
+- **El único color que no es marca vive en `/demos/*`**: el semáforo operativo.
+  Estado = color **más** palabra.
+- **Los testimonios con `borrador: true` son texto de ejemplo** y no se
+  muestran en la home. Quitar la marca exige nombre y cargo reales.
+- **Nada promete un servicio gratuito.** La conversión es «Hablemos de su
+  empresa» → `/contacto`, y `/contacto` dice qué pasa después. La Radiografía
+  es la alternativa de diez minutos. `npm test` lo verifica en hero y contacto.
+- El símbolo no se rota, no se inclina y no cambia de proporciones. **El texto
+  del lockup se pone con `<Wordmark>`, nunca a mano.**
 
 ## Convenciones de código
 
 - Server Components por defecto. `"use client"` solo donde hay estado real
-  (hoy: `contact-form.tsx`).
-- Nada de hex sueltos en JSX: usar los tokens (`bg-deep`, `text-lime`, …).
-  Excepción documentada: `logo.tsx`, que es la fuente de verdad del símbolo.
-- **Animación: Motion para el scroll, CSS para el resto.** `<Reveal>`,
-  `<RevealList>`/`<RevealItem>`, `<DrawRule>`, `<ParallaxY>` viven en
-  `components/motion.tsx` y son componentes cliente que reciben hijos ya
-  renderizados en el servidor — las secciones siguen siendo Server Components.
-  El hero (`.enter`) y el fondo (`.drift`, `.breathe`) se quedan en CSS: lo que
-  está sobre el pliegue no puede depender de que cargue un bundle para verse, y
-  hay un `<noscript>` en `layout.tsx` que lo garantiza.
+  (hoy: `contact-form.tsx`, `radiografia-form.tsx`, `chat-widget.tsx`,
+  `nav.tsx`, `theme-toggle.tsx`, `motion.tsx` y los demos).
+- Nada de hex sueltos en JSX. Excepciones documentadas: `logo.tsx` y
+  `opengraph-image.tsx` (renderiza fuera de Tailwind).
+- **Animación: CSS para lo que está sobre el pliegue, Motion para el scroll.**
+  `.enter` (hero) y `.draw` (diagramas) son CSS: no dependen de un bundle.
+  `<Reveal>`, `<RevealList>`/`<RevealItem>`, `<DrawRule>` viven en
+  `components/motion.tsx`; son componentes cliente que reciben hijos ya
+  renderizados en el servidor. El *reveal* es de 14 px y 0,5 s, sin desenfoque.
 - Comentarios `ponytail:` marcan simplificaciones deliberadas y su techo.
 
 ## Radiografía Auren
 
 Auto-diagnóstico de 12 preguntas en `/radiografia`. Es el lead magnet: regala
-criterio y termina invitando a la llamada de 20 minutos que abre el Auren
-Insight. **Nunca menciona precio.**
+criterio y termina invitando a la llamada que abre el Auren Insight. **Nunca
+menciona precio.**
 
 - **Sin persistencia, a propósito.** El resultado vive en el estado de React y
-  muere al cerrar la pestaña. No hay red, ni backend, ni dato guardado sin que
-  la persona lo entregue — la página lo promete («sin registro»), así que
-  añadir analítica o guardado rompe esa promesa, no solo el código.
+  muere al cerrar la pestaña. Añadir analítica o guardado rompe la promesa
+  «sin registro», no solo el código.
 - **Añadir o cambiar una pregunta**: una entrada en `questions`. El índice de
-  la opción ES su puntaje (0–3), por eso siempre son cuatro y van de menor a
-  mayor fuga. `axis` debe existir en `axes`.
-- **Los focos se ordenan por proporción** (`score / max`), no por puntos
-  crudos: hay ejes de dos preguntas (máx. 6) y de una (máx. 3), y el orden
-  crudo escondería siempre a los de una.
-- El puntaje parcial no se muestra: engañaría (pocas respondidas = puntaje
-  bajo = «base sólida»). Solo la barra de progreso, y el resultado al llegar a 12.
-
-`npm test` cubre el puntaje: bandas sin huecos en 0–36, respuestas corruptas
-descartadas, y que un eje de una pregunta pueda ganarle a uno de dos.
+  la opción ES su puntaje (0–3). `axis` debe existir en `axes`.
+- **Los focos se ordenan por proporción** (`score / max`), no por puntos crudos.
+- El puntaje parcial no se muestra.
 
 ## Contacto
 
 El formulario **no toca el servidor**: `src/lib/lead.ts` valida, arma el mensaje
-y devuelve un enlace `wa.me`; el cliente lo abre en una pestaña nueva. No hay
-backend, ni base de datos, ni lead que se pueda perder en silencio.
+y devuelve un enlace `wa.me`; el cliente lo abre en una pestaña nueva. Vive en
+`/contacto` junto a los canales directos y a «qué pasa después».
 
-- Cambiar el número o el correo → `site` en `src/content/site.ts`. `whatsapp`
-  va sin `+` ni espacios (formato que exige wa.me); `whatsappDisplay` es lo que
-  ve la persona.
+- Cambiar el número o el correo → `site` en `src/content/site.ts`.
 - Cambiar el texto que llega al chat → `composeMessage()`.
 - `lead.ts` importa `../content/site.ts` en relativo a propósito: también corre
   bajo el runner de Node, que no resuelve el alias `@/`.
 
-Verificado con `npm test`: campos vacíos no abren nada, y el enlace apunta al
-número correcto con el texto codificado.
-
 ## Asistente del chat
 
 Burbuja flotante en todas las páginas (`chat-widget.tsx`, montada en el
-layout). Habla con el servicio de `../bot-page` (FastAPI + Claude), que
-responde en streaming.
+layout). Habla con el servicio de `../bot-page` (FastAPI + Claude).
 
 - **El bot no tiene conocimiento propio.** Lee `bot-page/knowledge/auren.md`,
-  que genera `npm run build:kb` desde `site.ts`, `recursos.ts` y `demos.ts`.
-  Cambiar un texto del sitio y no correr `build:kb` deja al bot contestando lo
-  que la página ya no dice — y hay que reiniciar el servicio de Python después,
-  porque el archivo se lee al arrancar.
-- **Los testimonios `borrador` no llegan al bot.** El generador los filtra: son
-  texto de ejemplo, y un bot citándolos como reales es publicidad engañosa.
-- **El bot nunca da precios.** El sitio no publica ninguno y el prompt se lo
-  prohíbe explícitamente; ante la pregunta, remite al diagnóstico.
-- **Sin persistencia, igual que la Radiografía.** La conversación vive en el
-  estado de React: sobrevive a la navegación (el layout no se desmonta) y muere
-  al recargar. Nada de localStorage.
-- **El texto del bot se formatea, no se inyecta.** `src/lib/chat-format.ts`
-  convierte `**negrita**`, viñetas, listas numeradas, rutas y URLs en datos; el
-  widget los pinta como nodos React. Nada de `dangerouslySetInnerHTML`: eso es
-  salida de un modelo. Las rutas del sitio van por `<Link>`, así que navegar
-  desde el chat no recarga y la conversación sigue viva.
-- **Las raíces de ruta enlazables son una lista explícita** (`RAICES` en
-  `chat-format.ts`). Con un `/\w+/` suelto, un «24/7» se volvería un enlace
-  roto. Sección nueva en el sitio → se añade ahí, o el bot la escribirá como
-  texto muerto.
-- **El enlace lleva etiqueta, nunca la ruta cruda.** El bot escribe
-  `[Auren Insight](/servicios/auren-insight)` y el enlace queda dentro de la
-  frase; una ruta pelada en mitad de un párrafo le corta la lectura a
-  cualquiera. Si aun así manda una pelada, `ETIQUETAS` en `chat-format.ts` le
-  repone el nombre («/radiografia» → «Radiografía Auren»).
-- **Un destino que no existe pierde el enlace, no el texto.** El modelo puede
-  inventarse `/precios`; se pinta el texto sin enlazar, porque un 404 desde el
-  chat es peor que texto plano.
-- **«Nombre (Nombre)» se funde en un solo enlace.** Cuando el bot escribe
-  `**Auren Insight** (/servicios/auren-insight)`, el etiquetado automático
-  repone el nombre y el resultado se leía duplicado. `fusionarRedundancia()`
-  absorbe el paréntesis y deja un enlace único, que hereda la negrita
-  (`fuerte`). El artículo se queda FUERA: se subraya «formulario de contacto»,
-  no «el formulario de contacto».
+  que genera `npm run build:kb` desde `site.ts`, `recursos.ts` y `demos.ts`
+  (incluye soluciones, dimensiones y situaciones). Cambiar un texto del sitio
+  y no correr `build:kb` deja al bot contestando lo que la página ya no dice.
+- **Los testimonios `borrador` no llegan al bot.**
+- **El bot nunca da precios.**
+- **Sin persistencia.** La conversación vive en el estado de React.
+- **El texto del bot se formatea, no se inyecta** (`src/lib/chat-format.ts`).
+  Las raíces de ruta enlazables son una lista explícita (`RAICES`): sección
+  nueva en el sitio → se añade ahí (`/soluciones`, `/sectores` y `/contacto`
+  ya están).
 - `NEXT_PUBLIC_BOT_URL` apunta al servicio; sin ella asume `localhost:8000`.
-  Ver `.env.example`.
 
 ## Integrar servicios en el futuro
 
 No hay servidor hoy — el sitio es estático completo. Cuando haga falta uno
-(guardar los leads en un CRM, agendamiento, analítica), el patrón es: un módulo
-por servicio en `src/lib/`, con una función, un tipo de resultado explícito y el
-fallo tratado, nunca silenciado. Si el contacto pasa a tener backend, la
-validación de `lead.ts` se reutiliza en el servidor: es pura a propósito.
+(CRM, agendamiento, analítica), el patrón es: un módulo por servicio en
+`src/lib/`, con una función, un tipo de resultado explícito y el fallo
+tratado, nunca silenciado.

@@ -22,6 +22,10 @@ import {
   about,
   capabilities,
   contact,
+  dimensions,
+  problems,
+  solutions,
+  solutionBySlug,
   hero,
   homeFaqs,
   manifesto,
@@ -56,13 +60,44 @@ w(
     `Ciudad: ${site.city}, ${site.region}, Colombia`,
     `Correos de contacto: ${site.emails.join(" · ")}`,
     `WhatsApp: ${site.whatsappDisplay} (enlace: https://wa.me/${site.whatsapp})`,
-    `Formulario de contacto: https://${site.domain}/#contacto`,
+    `Página de contacto y formulario: https://${site.domain}/contacto`,
     `Autodiagnóstico gratuito «Radiografía Auren»: https://${site.domain}/radiografia (12 preguntas, 10 minutos, sin registro)`,
   ]),
 );
 
 w(`### Qué decimos de nosotros`);
-w(hero.lede, ``, `> ${manifesto.quote}`, ``, manifesto.body.join("\n\n"));
+w(hero.title, ``, hero.titleSub, ``, hero.lede, ``, `> ${manifesto.quote}`, ``, manifesto.body.join("\n\n"));
+
+w(`### Las cuatro dimensiones de la propuesta de valor`);
+w(dimensions.map((d) => `- **${d.title}** — ${d.body}`).join("\n"));
+
+// ── Soluciones (la oferta por necesidad; los servicios son cómo se entregan) ─
+w(`## Soluciones (organizadas por necesidad empresarial) — https://${site.domain}/soluciones`);
+w(
+  `Cuando alguien describe un problema, se le orienta primero a la solución que corresponde y después a los servicios que la ejecutan.`,
+);
+for (const sol of solutions) {
+  w(
+    `### ${sol.title} — https://${site.domain}/soluciones#${sol.slug}`,
+    `Pregunta que responde: ${sol.question}`,
+    ``,
+    sol.problem,
+    ``,
+    `**Síntomas:**`,
+    sol.symptoms.map((x) => `- ${x}`).join("\n"),
+    ``,
+    `**Qué hacemos:**`,
+    sol.work.map((x) => `- ${x}`).join("\n"),
+    ``,
+    `**Qué obtiene el cliente:**`,
+    sol.outcomes.map((x) => `- ${x}`).join("\n"),
+    ``,
+    `**Cómo empezar:** ${sol.start}`,
+    `**Servicios que la ejecutan:** ${sol.services.join(", ")}`,
+  );
+}
+w(`### Situaciones típicas y a qué solución llevan`);
+w(problems.map((pr) => `- «${pr.quote}» → ${solutionBySlug(pr.solution)?.title ?? pr.solution}. ${pr.hint}`).join("\n"));
 
 // ── Método ───────────────────────────────────────────────────────────────────
 w(`## El método: ${site.tagline}`);

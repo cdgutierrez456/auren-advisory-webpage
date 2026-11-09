@@ -27,7 +27,18 @@ export type Bloque =
  * propósito: con un `/\w+/` cualquiera, un «24/7» o un «y/o» se volverían
  * enlaces rotos. Si nace una sección nueva en el sitio, se añade aquí.
  */
-const RAICES = ["radiografia", "servicios", "demos", "recursos", "enfoque", "nosotros", "marca"];
+const RAICES = [
+  "soluciones",
+  "sectores",
+  "contacto",
+  "radiografia",
+  "servicios",
+  "demos",
+  "recursos",
+  "enfoque",
+  "nosotros",
+  "marca",
+];
 
 const RUTA = new RegExp(`^(?:/(?:${RAICES.join("|")})(?:/[a-z0-9-]+)*/?|/#[a-z-]+)$`);
 
@@ -50,6 +61,9 @@ const INLINE = new RegExp(
  */
 const ETIQUETAS: Record<string, string> = {
   "/": "la página principal",
+  "/soluciones": "las soluciones",
+  "/sectores": "los sectores",
+  "/contacto": "la página de contacto",
   "/radiografia": "Radiografía Auren",
   "/servicios": "los servicios",
   "/demos": "los demos",
@@ -63,6 +77,9 @@ const ETIQUETAS: Record<string, string> = {
 /** Las mismas, para cuando el bot contesta en inglés desde `/en`. */
 const LABELS: Record<string, string> = {
   "/": "the home page",
+  "/soluciones": "our solutions",
+  "/sectores": "the sectors",
+  "/contacto": "the contact page",
   "/radiografia": "Auren X-Ray",
   "/servicios": "our services",
   "/demos": "the demos",

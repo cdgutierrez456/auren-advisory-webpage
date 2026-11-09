@@ -1,19 +1,19 @@
 import Image from "next/image";
 import Link from "@/components/link";
-import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { Arrow } from "@/components/arrow";
-import { DrawRule, Reveal, RevealItem, RevealList } from "@/components/motion";
+import { Reveal, RevealItem, RevealList } from "@/components/motion";
 import type { Faq, Figure as FigureType } from "@/content/site";
 import { getLang, getT } from "@/lib/i18n-server";
 import { breadcrumb, JsonLd } from "@/lib/schema";
 
 /**
- * Primitivas compartidas. Todo lo que se repite en más de dos secciones vive
- * aquí; nada más. Sin variantes especulativas.
+ * Primitivas compartidas del sistema «Plano». Todo lo que se repite en más de
+ * dos secciones vive aquí; nada más. Sin variantes especulativas.
  *
- * Lenguaje: superficie oscura (la familia Auren Deep), tarjetas glass, esquinas
- * redondeadas y lima como resplandor de acento. Marfil para el texto. DESIGN.md
- * tiene la escala de valores y el presupuesto del lima.
+ * Lenguaje: marfil como superficie de lectura, Auren Deep (`inverse`) como
+ * superficie de declaración, tarjetas planas con filo de 1 px, cotas en mono
+ * y un solo acento. DESIGN.md tiene el diccionario completo.
  */
 
 // Vive aparte porque los componentes cliente la usan y este módulo lee el
@@ -27,18 +27,16 @@ export function Section({
   children,
 }: {
   id?: string;
+  /** ivory = base · paper = segundo escalón · deep = banda Auren Deep (inverse) · ink = tercer escalón */
   tone?: "ivory" | "paper" | "ink" | "deep";
   className?: string;
   children: ReactNode;
 }) {
-  // Los cuatro tonos son oscuros: escalones de la misma familia, de menor a
-  // mayor contraste contra el marfil. Los nombres se conservan para no tocar
-  // cada llamada; ninguno "significa" algo, solo dan ritmo a la página.
   const tones = {
     ivory: "bg-surface text-fg",
     paper: "bg-surface-2 text-fg",
-    ink: "bg-surface-4 text-fg",
-    deep: "bg-surface-3 text-fg",
+    ink: "bg-surface-3 text-fg",
+    deep: "inverse",
   } as const;
 
   return (
@@ -48,29 +46,47 @@ export function Section({
   );
 }
 
-/** Encabezado de sección: trazo lima que se dibuja + índice, etiqueta y regla. */
+/** Cota: etiqueta técnica con tick. Índices, capítulos, metadatos. */
+export function Cota({
+  children,
+  className = "",
+  tick = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  tick?: boolean;
+}) {
+  return (
+    <span className={`cota ${className}`}>
+      {tick ? <span aria-hidden className="cota-tick" /> : null}
+      {children}
+    </span>
+  );
+}
+
+/** Encabezado de sección: regla superior, cota de capítulo y titular. */
 export function SectionHead({
   index,
   label,
-  invert = false,
   /** Para encabezados dentro de una columna, donde el aire de sección sobra. */
   tight = false,
+  /** Texto corto a la derecha de la regla (opcional). */
+  aside,
   children,
 }: {
-  index: string;
+  index?: string;
   label: string;
+  /** @deprecated El color lo decide la superficie (`inverse`). Se acepta por compatibilidad. */
   invert?: boolean;
   tight?: boolean;
+  aside?: ReactNode;
   children?: ReactNode;
 }) {
   return (
-    <Reveal as="header" className={tight ? "mb-8" : "mb-14 md:mb-20"}>
-      <div className="flex items-baseline gap-5">
-        <DrawRule className="h-px w-10 shrink-0 translate-y-[-0.3em] bg-lime" />
-        <span className={`label ${invert ? "text-accent" : "text-fg/55"}`}>
-          {index} — {label}
-        </span>
-        <span className="h-px flex-1 bg-line" />
+    <Reveal as="header" className={tight ? "mb-8" : "mb-12 md:mb-16"}>
+      <div className="flex items-center justify-between gap-6 border-t border-line pt-4">
+        <span className="label text-fg/55">{label}</span>
+        {aside ? <span className="label hidden text-fg/40 sm:block">{aside}</span> : null}
       </div>
       {children ? <div className="mt-8 max-w-3xl">{children}</div> : null}
     </Reveal>
@@ -85,11 +101,11 @@ export function Headline({
   className?: string;
 }) {
   return (
-    <h2 className={`text-headline text-balance font-normal ${className}`}>{children}</h2>
+    <h2 className={`text-headline text-balance font-normal text-fg ${className}`}>{children}</h2>
   );
 }
 
-/** Tarjeta glass: superficie translúcida con desenfoque y borde de luz. */
+/** Tarjeta plana: la única superficie elevada del sistema. */
 export function Card({
   className = "",
   children,
@@ -97,9 +113,7 @@ export function Card({
   className?: string;
   children: ReactNode;
 }) {
-  return (
-    <div className={`glass rounded-card transition-all duration-500 ${className}`}>{children}</div>
-  );
+  return <div className={`card rounded-card ${className}`}>{children}</div>;
 }
 
 /**
@@ -120,33 +134,39 @@ export function Em({
 
 type ButtonProps = ComponentProps<typeof Link> & {
   variant?: "solid" | "outline" | "lime";
+  size?: "md" | "lg";
 };
 
-export function Button({ variant = "solid", className = "", ...props }: ButtonProps) {
+/**
+ * Botón. `solid` invierte la superficie (tinta sobre marfil, marfil sobre
+ * Deep); `lime` es el acento y va a lo sumo una vez por pantalla, preferible
+ * sobre `inverse`; `outline` es la acción secundaria.
+ */
+export function Button({ variant = "solid", size = "md", className = "", ...props }: ButtonProps) {
   const variants = {
-    // Acción primaria: relleno lima con resplandor al pasar el cursor.
-    solid:
-      "bg-lime text-ink hover:-translate-y-0.5 hover:shadow-[0_0_40px_-6px_var(--color-lime)]",
-    // Acción secundaria: fantasma sobre la superficie.
-    outline:
-      "border border-line-strong text-fg hover:-translate-y-0.5 hover:border-lime hover:text-accent",
-    lime: "bg-lime text-ink hover:-translate-y-0.5 hover:shadow-[0_0_40px_-6px_var(--color-lime)]",
+    solid: "bg-fg text-surface hover:opacity-90",
+    outline: "border border-line-strong text-fg hover:border-fg",
+    lime: "bg-lime text-ink hover:brightness-105",
+  } as const;
+  const sizes = {
+    md: "px-6 py-3.5 text-[0.75rem]",
+    lg: "px-7 py-4 text-[0.8125rem]",
   } as const;
 
   // La flecha que venga como hijo se mueve con el botón: un solo lugar la
   // anima en vez de repetir `group-hover:` en cada llamada.
-  const microinteraccion =
-    "transition-all duration-300 ease-out-quint active:translate-y-0 active:scale-[0.97] [&_svg]:transition-transform [&_svg]:duration-300 hover:[&_svg]:translate-x-0.5 hover:[&_svg]:-translate-y-0.5";
+  const micro =
+    "transition-all duration-300 ease-out-quint hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] [&_svg]:transition-transform [&_svg]:duration-300 hover:[&_svg]:translate-x-0.5 hover:[&_svg]:-translate-y-0.5";
 
   return (
     <Link
       {...props}
-      className={`label inline-flex items-center gap-3 rounded-pill px-7 py-4 ${microinteraccion} ${variants[variant]} ${className}`}
+      className={`inline-flex items-center gap-3 rounded-pill font-medium uppercase tracking-[0.18em] ${sizes[size]} ${micro} ${variants[variant]} ${className}`}
     />
   );
 }
 
-/** Apertura de página interior: eyebrow, título grande y bajada. */
+/** Apertura de página interior: cota, título grande y bajada sobre papel técnico. */
 export function PageHero({
   eyebrow,
   title,
@@ -162,16 +182,11 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className={`bg-surface ${pad ? "pt-32 md:pt-40" : "pt-12 md:pt-14"}`}>
-      <div className="shell flex flex-col gap-10 border-b border-line pb-14 md:pb-20">
-        <div className="flex items-center gap-4">
-          <span className="h-0.5 w-8 bg-lime" />
-          <span className="label text-fg/55">{eyebrow}</span>
-        </div>
-        <h1 className="text-display max-w-4xl text-balance font-normal text-fg">{title}</h1>
-        {lede ? (
-          <p className="text-lede max-w-2xl text-pretty text-fg/75">{lede}</p>
-        ) : null}
+    <section className={`relative bg-surface ${pad ? "pt-28 md:pt-36" : "pt-10 md:pt-12"}`}>
+      <div className="shell relative flex flex-col gap-7 border-b border-line pb-12 md:pb-16">
+        <span className="label text-fg/50">{eyebrow}</span>
+        <h1 className="text-display max-w-5xl text-balance font-normal text-fg">{title}</h1>
+        {lede ? <p className="text-lede max-w-2xl text-pretty text-fg/75">{lede}</p> : null}
         {children}
       </div>
     </section>
@@ -183,68 +198,57 @@ export async function CtaBand({
   title,
   lede,
   action,
+  secondary,
 }: {
   title: string;
   lede?: string;
   action?: { label: string; href: string };
+  secondary?: { label: string; href: string } | null;
 }) {
   const t = await getT();
-  action ??= { label: t("Agendar diagnóstico", "Book a diagnosis"), href: "/#contacto" };
+  action ??= { label: t("Iniciar una conversación", "Start a conversation"), href: "/contacto" };
+  if (secondary === undefined)
+    secondary = {
+      label: t(
+        "O la Radiografía Auren: 10 minutos, sin registro",
+        "Or the Auren X-Ray: 10 minutes, no sign-up",
+      ),
+      href: "/radiografia",
+    };
   return (
-    <section className="relative isolate overflow-hidden bg-surface-4 py-section text-fg">
-      <div
-        aria-hidden
-        className="glow breathe pointer-events-none absolute -top-24 right-[8%] h-72 w-72 bg-lime"
-      />
-      <div className="shell relative flex flex-col items-start gap-8">
-        <h2 className="text-headline max-w-3xl text-balance font-normal">{title}</h2>
-        {lede ? (
-          <p className="max-w-xl text-pretty leading-relaxed text-fg/60">{lede}</p>
-        ) : null}
-        <Button href={action.href} variant="lime" className="mt-2">
-          {action.label} <Arrow />
-        </Button>
+    <section className="inverse relative isolate overflow-hidden py-section">
+      <div aria-hidden className="paper-grid pointer-events-none absolute inset-0 text-fg [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
+      <div className="shell relative grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-end">
+        <div className="flex flex-col gap-6">
+          <h2 className="text-headline max-w-3xl text-balance font-normal">{title}</h2>
+          {lede ? <p className="max-w-xl text-pretty leading-relaxed text-fg/70">{lede}</p> : null}
+        </div>
+        <div className="flex flex-col items-start gap-5 md:items-end">
+          <Button href={action.href} variant="lime" size="lg">
+            {action.label} <Arrow />
+          </Button>
+          {secondary ? (
+            <Link
+              href={secondary.href}
+              className="text-sm text-fg/60 underline decoration-line-strong underline-offset-4 transition-colors hover:text-fg"
+            >
+              {secondary.label}
+            </Link>
+          ) : null}
+        </div>
       </div>
     </section>
   );
 }
-
 
 /**
  * Migas de pan: el enlace visible y el JSON-LD salen del mismo array, para que
  * no se puedan desincronizar. `trail` no incluye «Inicio»: se pone solo.
  */
 export async function Breadcrumbs({ trail }: { trail: readonly { name: string; path: string }[] }) {
-  const [lang, t] = await Promise.all([getLang(), getT()]);
-  const items = [{ name: t("Inicio", "Home"), path: "/" }, ...trail];
-  return (
-    <>
-      <JsonLd data={breadcrumb(trail, lang)} />
-      <nav aria-label={t("Ruta de navegación", "Breadcrumb")} className="shell pt-24 md:pt-28">
-        <ol className="label flex flex-wrap items-center gap-x-3 gap-y-2 text-fg/40">
-          {items.map((item, i) => {
-            const last = i === items.length - 1;
-            return (
-              <li key={item.path} className="flex items-center gap-3">
-                {last ? (
-                  <span aria-current="page" className="text-fg/75">
-                    {item.name}
-                  </span>
-                ) : (
-                  <>
-                    <Link href={item.path} className="transition-colors hover:text-fg">
-                      {item.name}
-                    </Link>
-                    <span aria-hidden className="h-px w-3 bg-line" />
-                  </>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
-    </>
-  );
+  // V2.2: la ruta ya no se pinta. En la cabecera competía con el título y no
+  // aportaba nada que el menú no diera. El dato estructurado se conserva.
+  return <JsonLd data={breadcrumb(trail, await getLang())} />;
 }
 
 /**
@@ -254,11 +258,11 @@ export async function Breadcrumbs({ trail }: { trail: readonly { name: string; p
  */
 export function FaqList({ faqs }: { faqs: readonly Faq[] }) {
   return (
-    <RevealList as="dl" className="grid gap-4 md:grid-cols-2">
+    <RevealList as="dl" className="grid gap-x-12 md:grid-cols-2">
       {faqs.map((f) => (
-        <RevealItem key={f.q} className="glass flex flex-col gap-4 rounded-card p-8 md:p-9">
+        <RevealItem key={f.q} className="flex flex-col gap-3 border-t border-line py-7">
           <dt className="text-lg leading-snug text-balance text-fg">{f.q}</dt>
-          <dd className="text-pretty text-sm leading-relaxed text-fg/75">{f.a}</dd>
+          <dd className="text-pretty text-sm leading-relaxed text-fg/70">{f.a}</dd>
         </RevealItem>
       ))}
     </RevealList>
@@ -284,8 +288,36 @@ export function Figura({ figure, priority = false }: { figure?: FigureType; prio
         className="h-auto w-full rounded-card border border-line object-cover"
       />
       {figure.caption ? (
-        <figcaption className="text-xs leading-relaxed text-fg/55">{figure.caption}</figcaption>
+        <figcaption className="cota text-fg/55">{figure.caption}</figcaption>
       ) : null}
     </figure>
+  );
+}
+
+/** Lista numerada en una tarjeta con divisores: pasos, incluye, principios. */
+export function NumberedList({
+  items,
+  className = "",
+}: {
+  items: readonly { title: string; body?: string }[];
+  className?: string;
+}) {
+  return (
+    <ol className={`card grid divide-y divide-line overflow-hidden rounded-card ${className}`}>
+      {items.map((item, j) => (
+        <li
+          key={item.title}
+          className="grid gap-3 px-6 py-6 md:grid-cols-[3.5rem_16rem_1fr] md:gap-8 md:px-8 md:py-7"
+        >
+          <span className="cota text-fg/45">{String(j + 1).padStart(2, "0")}</span>
+          <h3 className="text-lg leading-snug tracking-tight text-balance text-fg">{item.title}</h3>
+          {item.body ? (
+            <p className="max-w-2xl text-pretty text-sm leading-relaxed text-fg/70 md:text-base">
+              {item.body}
+            </p>
+          ) : null}
+        </li>
+      ))}
+    </ol>
   );
 }

@@ -1,140 +1,114 @@
 import type { CSSProperties } from "react";
-import { Arrow, Button, Em } from "@/components/ui";
-import { Ambient, ContourField } from "@/components/vertex-art";
+import Image from "next/image";
+import Link from "@/components/link";
+import { TransformDiagram } from "@/components/diagrams";
+import { Arrow, Button, Cota, Em } from "@/components/ui";
 import { getContent, getT } from "@/lib/i18n-server";
-import { DrawRule, ParallaxY } from "@/components/motion";
 
+const i = (n: number) => ({ "--i": n }) as CSSProperties;
+
+/**
+ * Hero. Poco texto: titular, una línea que dice qué es Auren, dos botones.
+ * A la derecha, la fotografía (si existe) con el diagrama de transformación
+ * encima como lámina; sin foto, el diagrama solo. Entrada en CSS (`.enter`):
+ * lo que está sobre el pliegue no depende de que cargue un bundle.
+ */
 export async function Hero() {
-  const [{ hero, site }, t] = await Promise.all([getContent(), getT()]);
-
-  /** Chips de prueba: las tres fases del método, no cifras inventadas. */
-  const proof = [
-    { phase: t("Fase 01 — Ver", "Phase 01 — See"), claim: t("Operación mapeada", "Operation mapped") },
-    {
-      phase: t("Fase 02 — Entender", "Phase 02 — Understand"),
-      claim: t("Costo de la fricción, en cifras", "Cost of friction, in figures"),
-    },
-    { phase: t("Fase 03 — Transformar", "Phase 03 — Transform"), claim: t("Impacto medido", "Impact measured") },
-  ];
-
-  const trust = [
-    t("Sin comisiones de proveedores", "No vendor commissions"),
-    t("Diagnóstico sin compromiso", "No-commitment diagnosis"),
-    "Manizales · Colombia",
-  ];
+  const [{ hero, phases, site }, t] = await Promise.all([getContent(), getT()]);
+  // La palabra que va en serif: «ver» es la filosofía de la firma.
+  const ver = t("ver", "see");
+  const [antes, despues] = hero.title.includes(` ${ver} `)
+    ? hero.title.split(` ${ver} `)
+    : [hero.title, ""];
 
   return (
-    <section className="relative isolate overflow-hidden bg-surface">
-      <Ambient />
-      {/* Telón: ecos del símbolo, a ritmo más lento que el contenido. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <ParallaxY className="absolute inset-0">
-          <div className="drift absolute -top-[20%] right-[-14%] h-[135%] w-[72%] text-accent/20 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]">
-            <ContourField className="h-full w-full" />
-          </div>
-        </ParallaxY>
-      </div>
-
-      {/* Chips de prueba flotando sobre el telón. Solo en pantallas amplias. */}
+    <section className="inverse relative isolate overflow-hidden">
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[4vw] top-[34%] z-10 hidden w-72 flex-col gap-4 lg:flex"
-      >
-        {proof.map((p, i) => (
-          <div
-            key={p.phase}
-            style={{ animationDelay: `${i * -4}s`, marginLeft: `${i * 2.2}rem` }}
-            className="glass drift shadow-float flex flex-col gap-1.5 rounded-card px-5 py-4"
-          >
-            <span className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-lime shadow-[0_0_12px_var(--color-lime)]" />
-              <span className="label text-fg/55">{p.phase}</span>
+        className="paper-grid pointer-events-none absolute inset-0 text-fg [mask-image:linear-gradient(to_bottom,black_30%,transparent_95%)]"
+      />
+
+      <div className="shell relative grid gap-10 pb-14 pt-12 md:min-h-[calc(100svh-5rem)] md:grid-cols-[1fr_1.05fr] md:items-center md:gap-12 md:pb-16 md:pt-12 lg:gap-16">
+        <div className="flex flex-col gap-7">
+          <div style={i(0)} className="enter">
+            <Cota className="text-accent">{hero.eyebrow}</Cota>
+          </div>
+
+          <h1 className="font-normal">
+            <span style={i(1)} className="enter text-display block max-w-2xl text-balance text-fg">
+              {despues ? (
+                <>
+                  {antes} <Em>{ver}</Em> {despues}
+                </>
+              ) : (
+                antes
+              )}
             </span>
-            <span className="text-sm text-fg/90">{p.claim}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="shell relative flex min-h-[92svh] flex-col justify-between gap-14 pb-14 pt-28 md:pt-36">
-        <div className="flex flex-col gap-10">
-          <div className="enter flex items-start justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <DrawRule className="h-px w-10 bg-lime" />
-              <span className="label text-fg/55">{hero.eyebrow}</span>
-            </div>
-            <span className="label hidden text-fg/40 sm:block">Manizales · Colombia</span>
-          </div>
-
-          <div className="flex flex-col gap-9">
-            {/* El eslogan manda visualmente, pero el H1 incluye la línea que dice
-                a qué se dedica la firma: sin ella, ni el buscador ni quien llega
-                de un enlace saben qué se vende. */}
-            <h1 className="font-normal">
-              <span className="text-mega block text-fg">
-                {hero.title.map((word, i) => (
-                  // Las tres palabras entran escalonadas: el eslogan se lee en
-                  // el orden en que se dice.
-                  <span key={word} style={{ "--i": i + 1 } as CSSProperties} className="enter block">
-                    {/* La última palabra en serif lima: la firma tipográfica. */}
-                    {i === hero.title.length - 1 ? (
-                      <Em className="text-accent">{word}</Em>
-                    ) : (
-                      word
-                    )}
-                  </span>
-                ))}
-              </span>
-              <span
-                style={{ "--i": 4 } as CSSProperties}
-                className="enter mt-8 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-fg/75 md:text-2xl"
-              >
-                {hero.titleSub}
-              </span>
-            </h1>
-
-            <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
-              <p
-                style={{ "--i": 5 } as CSSProperties}
-                className="enter text-lede max-w-2xl text-pretty text-fg/75"
-              >
-                {hero.lede}
-              </p>
-              <div style={{ "--i": 6 } as CSSProperties} className="enter flex flex-wrap gap-3">
-                <Button href={hero.primary.href}>
-                  {hero.primary.label} <Arrow />
-                </Button>
-                <Button href={hero.secondary.href} variant="outline">
-                  {hero.secondary.label}
-                </Button>
-              </div>
-            </div>
-
-            <div
-              style={{ "--i": 7 } as CSSProperties}
-              className="enter flex flex-wrap items-center gap-x-6 gap-y-2 pt-2"
+            <span
+              style={i(2)}
+              className="enter mt-5 block max-w-xl text-balance text-lg leading-snug text-fg/75 md:text-xl"
             >
-              {trust.map((item) => (
-                <span key={item} className="flex items-center gap-2.5">
-                  <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-lime" />
-                  <span className="text-xs text-fg/55">{item}</span>
-                </span>
-              ))}
-            </div>
+              {hero.titleSub}
+            </span>
+          </h1>
+
+          <div style={i(3)} className="enter flex flex-wrap items-center gap-3 pt-2">
+            <Button href={hero.primary.href} variant="lime" size="lg">
+              {hero.primary.label} <Arrow />
+            </Button>
+            <Button href={hero.secondary.href} variant="outline" size="lg">
+              {hero.secondary.label}
+            </Button>
           </div>
+
+          <Link
+            style={i(4)}
+            href={hero.tertiary.href}
+            className="enter w-fit text-sm text-fg/60 underline decoration-line-strong underline-offset-4 transition-colors hover:text-fg"
+          >
+            {hero.tertiary.label}
+          </Link>
         </div>
 
-        <dl className="grid gap-3 sm:grid-cols-3">
-          {hero.meta.map((m, i) => (
-            <div
-              key={m.k}
-              style={{ "--i": i + 8 } as CSSProperties}
-              className="enter glass flex flex-col gap-2.5 rounded-card px-6 py-6 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40"
-            >
-              <dt className="label text-accent/80">{m.k}</dt>
-              <dd className="text-sm text-fg/90">{m.v}</dd>
-            </div>
-          ))}
-        </dl>
+        {/* Lámina del hero: la fotografía con las tres fases encima. */}
+        <div style={i(2)} className="enter relative">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-line bg-surface-2 md:aspect-[5/4]">
+            {hero.image ? (
+              <Image
+                src={hero.image.src}
+                alt={hero.image.alt}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center p-6 md:p-10">
+                <TransformDiagram className="w-full text-fg/85" />
+              </div>
+            )}
+            {hero.image ? (
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-t from-deep-900/85 via-deep-900/10 to-transparent"
+              />
+            ) : null}
+            {/* Las tres fases, como cotas sobre la imagen. */}
+            <ol className="absolute inset-x-0 bottom-0 grid grid-cols-3 gap-px border-t border-line bg-line">
+              {phases.map((p, k) => (
+                <li
+                  key={p.index}
+                  style={i(5 + k)}
+                  className="enter flex flex-col gap-1.5 bg-deep-900/70 px-4 py-4 backdrop-blur-sm md:px-5"
+                >
+                  <span className="cota text-lime">{p.index}</span>
+                  <span className="text-base tracking-tight text-ivory md:text-lg">{p.title}</span>
+                  <span className="hidden text-xs leading-snug text-ivory/65 md:block">{p.claim}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
       </div>
 
       <span className="sr-only">{site.tagline}</span>

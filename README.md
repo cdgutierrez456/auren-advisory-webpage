@@ -10,8 +10,11 @@ npm run dev
 El chat del sitio necesita además el servicio de `../bot-page` corriendo.
 Después de cambiar textos en `src/content/`, `npm run build:kb` los pasa al bot.
 
-- `/` — presentación: enfoque, capacidades, arquitectura de servicios, contacto.
-- `/marca` — manual de identidad vivo (símbolo *El Vértice*, versiones, paleta, tipografía).
+- `/` — propuesta de valor, situaciones, soluciones, método, sectores, prueba y contacto.
+- `/soluciones` — las cinco soluciones por necesidad empresarial.
+- `/sectores` — problemas y oportunidades por tipo de organización, con sus demos.
+- `/contacto` — formulario (abre WhatsApp), canales directos y qué pasa después.
+- `/marca` — manual de identidad vivo (símbolo *El Vértice*, paleta, tipografía y el sistema «Plano»).
 - `/demos` — demos vendibles de cada servicio. `noindex`: se comparten por enlace, no por buscador.
 
 ## Demos
@@ -56,3 +59,4 @@ npm test        # formulario, servicios, días hábiles, semáforos y modos de v
 ```
 
 Convenciones, reglas de marca y cómo integrar servicios nuevos: **`CLAUDE.md`**.
+Diccionario visual: **`DESIGN.md`**. Diagnóstico, concepto y evaluación del rediseño V2: **`REDISENO-V2.md`**.

@@ -9,6 +9,7 @@ export type { Post, Section } from "../recursos.ts";
 export const posts: readonly Post[] = [
   {
     slug: "senales-de-que-su-empresa-necesita-automatizacion",
+    image: { src: "/images/recursos/automatizacion.jpg", alt: "A workstation with data being copied by hand between two screens and a spreadsheet", width: 1680, height: 944 },
     title: "Seven signs your company is ready to automate its processes",
     seoTitle: "How to tell if your company needs automation",
     description:
@@ -116,6 +117,7 @@ export const posts: readonly Post[] = [
   },
   {
     slug: "que-es-la-transformacion-digital-para-pymes",
+    image: { src: "/images/recursos/transformacion-digital.jpg", alt: "An operator beside a machine in a mid-sized company's workshop", width: 1680, height: 944 },
     title: "What digital transformation means for SMEs (and what it doesn't)",
     seoTitle: "What digital transformation means for SMEs",
     description:
@@ -206,6 +208,7 @@ export const posts: readonly Post[] = [
   },
   {
     slug: "software-a-la-medida-o-saas",
+    image: { src: "/images/recursos/software-a-la-medida.jpg", alt: "Two laptops with different tools in a meeting room", width: 1680, height: 944 },
     title: "Custom software or SaaS: how to decide without regrets",
     seoTitle: "Custom software vs. SaaS: how to decide",
     description:
