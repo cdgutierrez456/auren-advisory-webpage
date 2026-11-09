@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Arrow, Breadcrumbs, CtaBand, Figura, Headline, PageHero, Section, SectionHead } from "@/components/ui";
-import { about, site } from "@/content/site";
+import Image from "next/image";
+import { MethodStage } from "@/components/method-stage";
+import { Breadcrumbs, CtaBand, Headline, PageHero, Section, SectionHead } from "@/components/ui";
+import { about, method, phases } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 import { Reveal, RevealItem, RevealList } from "@/components/motion";
 
 export const metadata: Metadata = pageMetadata(
-  "Consultora de transformación digital en Manizales",
-  "Auren Advisory nació en Manizales en 2026, de la sociedad entre dos emprendedores que veían empresas capaces atrapadas en procesos manuales.",
+  "Quiénes somos y cómo trabajamos",
+  "Auren Advisory nació en Manizales en 2026. Dos socios, un método en tres movimientos —ver, entender, transformar— y tres límites que no negociamos.",
   "/nosotros",
 );
 
 /**
- * Nosotros, en tres pantallas: de dónde venimos, quién responde y qué no
- * hacemos. Lo demás (disciplinas, territorio, manual de marca) va compacto.
+ * Nosotros, en cuatro pantallas: quiénes somos, cómo trabajamos (el método
+ * como escenario en perspectiva), quién responde y lo que no hacemos. Antes
+ * el método tenía página propia (/enfoque); ahora vive aquí, porque es la
+ * identidad de la firma, no un anexo.
  */
 export default function NosotrosPage() {
   return (
@@ -22,34 +25,50 @@ export default function NosotrosPage() {
 
       <PageHero
         eyebrow="Nosotros"
-        title={
-          <>
-            <span className="block">{about.title}</span>
-            <span className="mt-5 block max-w-3xl text-balance text-lg leading-snug tracking-tight text-fg/75 md:text-xl">
-              {about.headline}
-            </span>
-          </>
-        }
-        lede={about.lede}
-      />
-
-      {/* Origen: un párrafo y los hechos. */}
-      <Section tone="paper">
-        <div className="grid gap-10 md:grid-cols-[1fr_1.2fr] md:gap-16">
-          <Reveal as="dl" className="grid gap-2 self-start">
+        title={about.title}
+        lede={about.origin[0]}
+      >
+        {about.image ? (
+          <div className="relative mt-2 aspect-[16/7] overflow-hidden rounded-card border border-line">
+            <Image
+              src={about.image.src}
+              alt={about.image.alt}
+              fill
+              priority
+              sizes="(max-width: 1440px) 100vw, 1440px"
+              className="object-cover"
+            />
+            <dl className="absolute inset-x-0 bottom-0 grid grid-cols-2 gap-px border-t border-ivory/15 bg-ivory/15 sm:grid-cols-4">
+              {about.facts.map((f) => (
+                <div key={f.k} className="flex flex-col gap-1 bg-deep-900/70 px-5 py-4 backdrop-blur-sm">
+                  <dt className="label text-ivory/55">{f.k}</dt>
+                  <dd className="text-sm text-ivory">{f.v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ) : (
+          <dl className="grid gap-2 sm:grid-cols-4">
             {about.facts.map((f) => (
               <div key={f.k} className="card flex flex-col gap-1 rounded-card px-5 py-4">
                 <dt className="label text-fg/45">{f.k}</dt>
                 <dd className="text-sm text-fg/90">{f.v}</dd>
               </div>
             ))}
-          </Reveal>
-          <Reveal className="flex flex-col gap-6">
-            <p className="text-pretty text-lg leading-relaxed text-fg/85">{about.origin[0]}</p>
-            <p className="text-pretty leading-relaxed text-fg/70">{about.origin[2]}</p>
-            <Figura figure={about.photo} />
-          </Reveal>
-        </div>
+          </dl>
+        )}
+      </PageHero>
+
+      {/* Cómo trabajamos: el método en escena. */}
+      <Section id="metodo" tone="deep" className="scroll-mt-20">
+        <SectionHead label="Cómo trabajamos" aside="Pase el mouse sobre cada paso">
+          <Headline>{method.title}</Headline>
+          <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-fg/70">
+            Mirar antes de opinar, entender antes de proponer, medir antes de celebrar. Si al
+            entender el problema resulta que no hace falta tecnología, se lo decimos.
+          </p>
+        </SectionHead>
+        <MethodStage phases={phases} />
       </Section>
 
       {/* Quién responde. */}
@@ -71,40 +90,24 @@ export default function NosotrosPage() {
             </RevealItem>
           ))}
         </RevealList>
-
-        <RevealList as="ol" className="mt-4 grid gap-px overflow-hidden rounded-card border border-line bg-line md:grid-cols-3">
-          {about.disciplines.map((d) => (
-            <RevealItem as="li" key={d.index} className="flex flex-col gap-3 bg-surface-2 p-7">
-              <span className="cota text-fg/45">{d.index}</span>
-              <h3 className="text-subhead text-fg">{d.title}</h3>
-              <p className="text-pretty text-sm leading-relaxed text-fg/65">{d.body}</p>
-            </RevealItem>
-          ))}
-        </RevealList>
+        <Reveal className="mt-6 max-w-3xl">
+          <p className="text-pretty leading-relaxed text-fg/70">{about.origin[2]}</p>
+        </Reveal>
       </Section>
 
       {/* Lo que no hacemos. */}
-      <Section tone="deep">
+      <Section tone="paper">
         <SectionHead label="Lo que no hacemos">
           <Headline>Tres límites que filtran mejor que cualquier promesa.</Headline>
         </SectionHead>
         <RevealList as="ul" className="grid gap-4 md:grid-cols-3">
           {about.boundaries.map((b, i) => (
-            <RevealItem as="li" key={b} className="flex flex-col gap-4 border-t border-line pt-6">
-              <span className="cota text-accent">{String(i + 1).padStart(2, "0")}</span>
+            <RevealItem as="li" key={b} className="flex flex-col gap-4 border-t border-line-strong pt-6">
+              <span className="cota text-fg/45">{String(i + 1).padStart(2, "0")}</span>
               <p className="text-pretty text-lg leading-snug text-fg/90">{b}</p>
             </RevealItem>
           ))}
         </RevealList>
-        <Reveal className="mt-12 flex flex-col gap-3 border-t border-line pt-8 md:flex-row md:items-baseline md:justify-between">
-          <p className="max-w-2xl text-pretty text-sm leading-relaxed text-fg/65">{about.region.body}</p>
-          <Link
-            href="/marca"
-            className="label flex shrink-0 items-center gap-3 text-fg/60 transition-colors hover:text-fg"
-          >
-            Sistema de identidad de {site.name} <Arrow />
-          </Link>
-        </Reveal>
       </Section>
 
       <CtaBand

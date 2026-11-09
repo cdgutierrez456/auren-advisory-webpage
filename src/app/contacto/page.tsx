@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
 import { Arrow, Breadcrumbs, Card, Cota, FaqList, Headline, PageHero, Section, SectionHead } from "@/components/ui";
@@ -56,6 +57,17 @@ export default function Contacto() {
           </Reveal>
 
           <div className="flex flex-col gap-4">
+            {contact.image ? (
+              <Reveal className="relative aspect-[16/9] overflow-hidden rounded-card border border-line">
+                <Image
+                  src={contact.image.src}
+                  alt={contact.image.alt}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover"
+                />
+              </Reveal>
+            ) : null}
             <Reveal delay={0.06} className="card flex flex-col gap-6 rounded-card p-7 md:p-8">
               <Cota className="text-fg/55">Directo</Cota>
               <a

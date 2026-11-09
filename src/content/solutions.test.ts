@@ -102,7 +102,7 @@ test("el hero dice a qué se dedica la firma y no promete servicios gratuitos", 
 });
 
 test("el menú apunta a rutas del sitio y el botón va a /contacto", () => {
-  const rutas = new Set(["/soluciones", "/enfoque", "/sectores", "/nosotros", "/recursos", "/servicios", "/contacto", "/radiografia"]);
+  const rutas = new Set(["/soluciones", "/sectores", "/nosotros", "/recursos", "/contacto", "/radiografia"]);
   for (const item of nav) assert.ok(rutas.has(item.href), `${item.href} no es una ruta conocida`);
   assert.equal(navCta.href, "/contacto");
 });

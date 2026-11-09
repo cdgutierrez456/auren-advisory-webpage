@@ -5,7 +5,6 @@ import { nav, services, site, solutions } from "@/content/site";
 const herramientas = [
   { label: "Radiografía Auren", href: "/radiografia" },
   { label: "Demos", href: "/demos" },
-  { label: "Sistema de identidad", href: "/marca" },
   { label: "Contacto", href: "/contacto" },
 ];
 

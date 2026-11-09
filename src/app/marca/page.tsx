@@ -5,11 +5,16 @@ import { SolutionGlyph, TransformDiagram } from "@/components/diagrams";
 import { Button, Cota, Section, SectionHead } from "@/components/ui";
 import { site } from "@/content/site";
 
-export const metadata: Metadata = pageMetadata(
-  "Sistema de identidad",
-  "Manual vivo de la marca Auren Advisory: símbolo El Vértice, versiones, paleta y tipografía.",
-  "/marca",
-);
+// Manual interno: fuera del menú, del pie, del sitemap y del buscador. Se
+// llega por URL. V2.3.
+export const metadata: Metadata = {
+  ...pageMetadata(
+    "Sistema de identidad",
+    "Manual vivo de la marca Auren Advisory: símbolo El Vértice, versiones, paleta, tipografía y el sistema gráfico «Plano».",
+    "/marca",
+  ),
+  robots: { index: false, follow: false },
+};
 
 const palette = [
   { name: "Auren Ivory", hex: "#F2F1EA", role: "Superficie de lectura" },

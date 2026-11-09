@@ -33,7 +33,6 @@ export const site = {
  */
 export const nav = [
   { label: "Soluciones", href: "/soluciones" },
-  { label: "Cómo trabajamos", href: "/enfoque" },
   { label: "Sectores", href: "/sectores" },
   { label: "Nosotros", href: "/nosotros" },
   { label: "Recursos", href: "/recursos" },
@@ -61,7 +60,7 @@ export const hero = {
     "Transformación empresarial mediante tecnología: estrategia, procesos, automatización, datos e inteligencia aplicada.",
   lede: "Entendemos cómo funciona su negocio, identificamos las oportunidades que no está viendo y las convertimos en soluciones que lo transforman. La tecnología es nuestro instrumento; el resultado es una empresa que opera mejor.",
   primary: { label: "Hablemos de su empresa", href: "/contacto" },
-  secondary: { label: "Cómo trabajamos", href: "/enfoque" },
+  secondary: { label: "Cómo trabajamos", href: "/nosotros#metodo" },
   /** Alternativa de diez minutos para quien todavía no quiere hablar con nadie. */
   tertiary: {
     label: "O haga la Radiografía: 12 preguntas, 10 minutos, sin registro",
@@ -368,11 +367,14 @@ export type Phase = {
   output: string;
   /** Slugs de `services` que ejecutan esta fase. */
   services: readonly string[];
+  /** Fotografía del paso, para el escenario del método. */
+  image?: Figure;
 };
 
 export const phases: readonly Phase[] = [
   {
     index: "01",
+    image: { src: "/images/metodo/ver.jpg", alt: "Consultora recorre la planta junto al jefe de operaciones", width: 1088, height: 1456 },
     title: "Ver",
     claim: "Observamos la realidad de la empresa.",
     detail:
@@ -393,6 +395,7 @@ export const phases: readonly Phase[] = [
   },
   {
     index: "02",
+    image: { src: "/images/metodo/entender.jpg", alt: "Manos sobre un mapa de procesos dibujado en papel", width: 1088, height: 1456 },
     title: "Entender",
     claim: "Interpretamos causas, no síntomas.",
     detail:
@@ -413,6 +416,7 @@ export const phases: readonly Phase[] = [
   },
   {
     index: "03",
+    image: { src: "/images/metodo/transformar.jpg", alt: "Equipo usa la nueva herramienta con acompañamiento en su puesto", width: 1088, height: 1456 },
     title: "Transformar",
     claim: "Diseñamos, implementamos y medimos.",
     detail:
@@ -1459,6 +1463,13 @@ export const about = {
    * Especificaciones en IMAGENES.md; mientras no exista, no se renderiza.
    */
   photo: undefined as Figure | undefined,
+  /** Imagen de ambiente de la página Nosotros (no son los socios). */
+  image: {
+    src: "/images/nosotros.jpg",
+    alt: "Mesa de trabajo frente a un ventanal con las montañas de Manizales al amanecer",
+    width: 1536,
+    height: 1024,
+  } as Figure | undefined,
 
   region: {
     title: "Por qué Manizales importa en esto",
@@ -1488,6 +1499,13 @@ export const principles: readonly Principle[] = [
  */
 export const contact = {
   title: "Hablemos de su empresa.",
+  /** Imagen de la página de contacto. */
+  image: {
+    src: "/images/contacto.jpg",
+    alt: "Dos personas conversan de pie junto a una ventana alta",
+    width: 1456,
+    height: 1088,
+  } as Figure | undefined,
   lede: "Cuéntenos qué está pasando en su operación. En una primera conversación entendemos su situación y le decimos con franqueza si hay caso, por dónde conviene empezar y qué tendría sentido medir.",
   /** Qué pasa después de escribir. */
   steps: [

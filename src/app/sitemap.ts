@@ -12,9 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = `https://${site.domain}`;
   return [
     { url: base, priority: 1 },
-    ...["/soluciones", "/servicios", "/enfoque", "/sectores", "/recursos", "/radiografia", "/nosotros", "/contacto", "/marca"].map((p) => ({
+    ...["/soluciones", "/sectores", "/recursos", "/radiografia", "/nosotros", "/contacto"].map((p) => ({
       url: base + p,
-      priority: p === "/marca" ? 0.4 : 0.8,
+      priority: 0.8,
     })),
     ...services.map((s) => ({
       url: `${base}/servicios/${s.slug}`,

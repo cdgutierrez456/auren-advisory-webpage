@@ -52,7 +52,7 @@ npm start
 | Las cuatro dimensiones y la frase central | `dimensions` y `manifesto` en `site.ts` |
 | Las situaciones «¿Le suena?» | `problems` en `site.ts` (cada una apunta a una `solution`) |
 | Las cinco soluciones | `solutions` en `site.ts` → `src/app/soluciones/page.tsx` |
-| El método (Ver/Entender/Transformar) | `phases` y `method` en `site.ts` |
+| El método (Ver/Entender/Transformar) | `phases` y `method` en `site.ts` → `components/method-stage.tsx` (escenario en perspectiva) |
 | Sectores, sus preguntas, oportunidades y demos | `sectors` en `site.ts` → `src/app/sectores/page.tsx` |
 | La página de un servicio | `src/app/servicios/[slug]/page.tsx` (plantilla única) |
 | Historia de la firma, socios, límites | `about` en `site.ts` → `src/app/nosotros/page.tsx` |
@@ -75,13 +75,15 @@ npm start
 
 ### Rutas
 
-`/` · `/soluciones` · `/enfoque` · `/sectores` · `/nosotros` · `/contacto` ·
-`/servicios` · `/servicios/[slug]` (8, prerenderizadas) · `/recursos` ·
-`/recursos/[slug]` · `/radiografia` · `/marca` · `/demos/*` (en `noindex`,
-fuera del sitemap)
+`/` · `/soluciones` · `/sectores` · `/nosotros` (incluye el método en
+`#metodo`) · `/contacto` · `/servicios/[slug]` (8, prerenderizadas) ·
+`/recursos` · `/recursos/[slug]` · `/radiografia` · `/marca` (manual interno,
+`noindex`, solo por URL) · `/demos/*` (en `noindex`, fuera del sitemap).
 
-**Menú:** Soluciones · Cómo trabajamos · Sectores · Nosotros · Recursos ·
-**Hablemos**. La Radiografía y los demos no van en el menú a propósito: se
+Redirecciones internas en `next.config.ts`: `/enfoque` → `/nosotros`,
+`/servicios` → `/soluciones`.
+
+**Menú:** Soluciones · Sectores · Nosotros · Recursos · **Hablemos**. La Radiografía y los demos no van en el menú a propósito: se
 enlazan donde convencen (hero, cierres, sectores, «Por qué creer», pie).
 
 La home es un resumen: cada bloque enlaza a su página completa. El contenido no
@@ -95,9 +97,7 @@ se duplica — home y página interior leen del mismo array en `site.ts`.
   footer y `generateStaticParams` se actualizan solos. `next` debe apuntar a un
   `slug` existente, el servicio debe aparecer en `phases[].services` y, salvo
   Care, en alguna `solution`.
-- **Anclajes de `/enfoque`**: se derivan de `phase.title` en minúscula
-  (`#ver`, `#entender`, `#transformar`). `/soluciones#slug` y
-  `/sectores#id` siguen el mismo patrón. Las secciones llevan `scroll-mt-20`
+- **Anclajes**: `/nosotros#metodo`, `/soluciones#slug` y `/sectores#id`. Las secciones llevan `scroll-mt-20`
   para caer bajo la barra fija de 5rem — si cambia la altura del nav, cambia ahí.
 - **Publicar un artículo**: una entrada en `posts` (`src/content/recursos.ts`).
   La ruta, el listado, el sitemap, el JSON-LD de `Article`, las migas y los

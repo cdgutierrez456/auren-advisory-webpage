@@ -536,6 +536,22 @@ estrictamente necesario».
 - **Home**: «Sin casos que mostrar todavía» → «Piezas que funcionan, personas
   que responden».
 
+### 4.10 Iteración V2.3 — el método en escena y menos páginas
+
+- **Cómo trabajamos se fusiona en Nosotros.** `/enfoque` redirige a
+  `/nosotros` (301 en `next.config.ts`); el menú queda en cuatro entradas
+  más «Hablemos».
+- **El método es un escenario en perspectiva** (`components/method-stage.tsx`):
+  tres paneles con fotografía, inclinados como hojas de un plano; al pasar el
+  mouse el paso se endereza, viene al frente y despliega su texto con
+  animación; los otros dos retroceden. Los tres se quedan en el mismo sitio.
+  Se usa en la home y en `/nosotros#metodo`.
+- **Fuera del sitio público**: el índice `/servicios` (redirige a
+  `/soluciones`; las ocho páginas de servicio siguen vivas) y el manual
+  `/marca` (sin menú, sin pie, sin sitemap, `noindex`; sigue por URL).
+- **Cinco fotografías más** (los tres pasos, Nosotros y Contacto), generadas y
+  exportadas desde Canva como las anteriores.
+
 ### 4.7 Archivos modificados
 
 Nuevos: `src/components/diagrams.tsx`, `src/components/sections/que-hacemos.tsx`,

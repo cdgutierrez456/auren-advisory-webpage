@@ -16,6 +16,11 @@ están enlazadas en `src/content/site.ts`. Nombres y contenido:
 | `sectores/transporte.jpg` | Patio de camiones al amanecer (vertical) |
 | `sectores/servicios.jpg` | Recepción de clínica (vertical) |
 | `sectores/publico.jpg` | Ventanilla de atención al ciudadano (vertical) |
+| `metodo/ver.jpg` | Consultora recorre la planta con el jefe de operaciones (vertical) |
+| `metodo/entender.jpg` | Manos sobre un mapa de procesos en papel (vertical) |
+| `metodo/transformar.jpg` | Equipo usa la nueva herramienta con acompañamiento (vertical) |
+| `nosotros.jpg` | Mesa de trabajo frente a las montañas de Manizales |
+| `contacto.jpg` | Dos personas conversan junto a una ventana |
 
 Para reemplazar una foto basta con sobrescribir el archivo con el mismo nombre
 y medidas. Si se quita el campo `image` de una entrada, la tarjeta vuelve a su

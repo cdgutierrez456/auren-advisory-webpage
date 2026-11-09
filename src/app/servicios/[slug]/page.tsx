@@ -56,7 +56,7 @@ export default async function ServicioDetalle({ params }: Params) {
 
       <Breadcrumbs
         trail={[
-          { name: "Servicios", path: "/servicios" },
+          { name: "Soluciones", path: "/soluciones" },
           { name: service.name, path: `/servicios/${service.slug}` },
         ]}
       />

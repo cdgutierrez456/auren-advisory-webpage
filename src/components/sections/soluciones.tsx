@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Lamina } from "@/components/laminas";
 import { HoverTile } from "@/components/tiles";
 import { Arrow, Button, Headline, Section, SectionHead } from "@/components/ui";
@@ -46,24 +45,6 @@ export function Soluciones() {
             </HoverTile>
           </RevealItem>
         ))}
-        {/* Celda de cierre: el camino hacia los servicios. */}
-        <RevealItem as="li">
-          <Link
-            href="/servicios"
-            className="card group flex h-full min-h-[14rem] flex-col justify-between gap-6 rounded-card p-7 transition-colors duration-500 hover:bg-surface-3"
-          >
-            <span className="cota text-fg/55">Cómo lo entregamos</span>
-            <div className="flex flex-col gap-3">
-              <p className="text-subhead text-balance text-fg">Ocho servicios, un solo método.</p>
-              <p className="text-sm text-fg/65">
-                Del diagnóstico al soporte continuo, con alcance y entregable definidos.
-              </p>
-            </div>
-            <span className="cota flex items-center gap-2.5 text-fg/60 transition-colors group-hover:text-fg">
-              Ver los servicios <Arrow />
-            </span>
-          </Link>
-        </RevealItem>
       </RevealList>
 
       <div className="mt-10">
