@@ -46,6 +46,8 @@ export const hero = {
   eyebrow: "Transformación empresarial mediante tecnología",
   /** Titular. Promesa + acción, con eco del método («ver»). */
   title: "Su empresa puede funcionar mejor. Empecemos por ver dónde.",
+  /** Fotografía del hero. Si falta, el hero muestra el diagrama de transformación. */
+  image: undefined as Figure | undefined,
   /**
    * Segunda línea del H1: dice a qué se dedica la firma, para el buscador y
    * para quien llega de un enlace. Es la definición del brief, literal.
@@ -157,6 +159,10 @@ export type Solution = {
   title: string;
   /** Versión corta para menús y tarjetas. */
   short: string;
+  /** Lo que se lee en la tarjeta antes de abrirla: seis palabras o menos. */
+  tagline: string;
+  /** Fotografía de la solución. Si falta, la tarjeta usa su lámina dibujada. */
+  image?: Figure;
   /** La pregunta del cliente que esta solución responde. */
   question: string;
   /** El problema empresarial, en su vocabulario. */
@@ -182,6 +188,7 @@ export const solutions: readonly Solution[] = [
     slug: "estrategia",
     title: "Estrategia y diagnóstico de transformación",
     short: "Estrategia y diagnóstico",
+    tagline: "Dónde empezar, con evidencia",
     question: "¿Dónde está la oportunidad y por dónde empezar?",
     problem:
       "La mayoría de las empresas sabe que algo no funciona, pero la conversación se queda en percepciones: «comercial va lento», «se pierde información entre bodega y facturación». Sin un diagnóstico con cifras, cualquier inversión en tecnología es una apuesta, y las apuestas se pierden más de lo que se ganan.",
@@ -212,6 +219,7 @@ export const solutions: readonly Solution[] = [
     slug: "automatizacion",
     title: "Automatización e inteligencia artificial",
     short: "Automatización e IA",
+    tagline: "Dejar de hacer a mano lo repetitivo",
     question: "¿Cómo dejamos de hacer a mano lo que no agrega valor?",
     problem:
       "Todo lo que hoy se mueve por correo, por chat o copiando de un sistema a otro es tiempo pagado que no produce nada. Y cada traspaso manual es un lugar donde el dato se equivoca, la aprobación se demora y nadie sabe en qué va una solicitud sin preguntar.",
@@ -242,6 +250,7 @@ export const solutions: readonly Solution[] = [
     slug: "datos",
     title: "Datos e inteligencia de negocio",
     short: "Datos e inteligencia de negocio",
+    tagline: "Una sola versión de la verdad",
     question: "¿Cómo decidimos con cifras en las que todos confían?",
     problem:
       "La información existe —en el ERP, en el CRM, en hojas de cálculo, en correos— pero no se puede consultar a tiempo ni dos áreas la calculan igual. El resultado es que la gerencia decide con el dato viejo o con el que presentó quien habló más fuerte.",
@@ -272,6 +281,7 @@ export const solutions: readonly Solution[] = [
     slug: "soluciones-digitales",
     title: "Soluciones digitales a la medida",
     short: "Soluciones digitales",
+    tagline: "Software hecho para su proceso",
     question: "¿Qué hacemos cuando ningún software del mercado encaja?",
     problem:
       "A veces la herramienta que su operación necesita no se vende. Entonces la empresa paga licencias por funciones que nadie usa o, peor, deforma su proceso para caber en un producto ajeno. Cuando el proceso es justamente su ventaja competitiva, eso cuesta más que construir.",
@@ -302,6 +312,7 @@ export const solutions: readonly Solution[] = [
     slug: "sistemas-inteligentes",
     title: "Sistemas inteligentes y tecnologías conectadas",
     short: "Sistemas inteligentes",
+    tagline: "Lo que pasa en planta, en datos",
     question: "¿Cómo convertimos lo que pasa en planta, patio o sala en datos?",
     problem:
       "En la operación física hay información que nadie captura: el manómetro que alguien lee tres veces al día, la placa que el portero anota en un cuaderno, el display de la báscula que se copia a una planilla. Las cámaras y los equipos ya están ahí; lo que falta es procesar lo que ven.",
@@ -1504,6 +1515,10 @@ export type Sector = {
   title: string;
   /** El dolor típico del sector, en su lenguaje. */
   body: string;
+  /** Lo que se lee en la tarjeta antes de abrirla: seis palabras o menos. */
+  tagline: string;
+  /** Fotografía del sector. Si falta, la tarjeta usa su lámina dibujada. */
+  image?: Figure;
   /** La pregunta con la que abrimos la conversación en ese sector. */
   question: string;
   /** Procesos concretos donde entramos. */
@@ -1519,6 +1534,7 @@ export const sectors: readonly Sector[] = [
   {
     id: "manufactura",
     title: "Manufactura y agroindustria",
+    tagline: "Planta, calidad y costo por lote",
     body: "Plantas donde el ERP se usa a medias, la programación real vive en una hoja de cálculo y el control de calidad depende del criterio de cada turno. El costo se esconde en la merma, el reproceso y las horas de alguien cuadrando cifras de noche.",
     question: "¿Cuántas veces al día alguien copia a mano el número de una báscula, un contador o un manómetro?",
     cases: [
@@ -1539,6 +1555,7 @@ export const sectors: readonly Sector[] = [
   {
     id: "transporte",
     title: "Transporte y logística",
+    tagline: "Flota, preoperacional y cumplimiento",
     body: "Operaciones con alta exigencia normativa sostenidas en papel: preoperacionales que nadie lee, vencimientos de SOAT y tecnomecánica que se descubren tarde y liquidaciones que se arman a mano viaje por viaje.",
     question: "¿Sabría decir ahora mismo cuántos vehículos suyos están rodando con un documento vencido?",
     cases: [
@@ -1559,6 +1576,7 @@ export const sectors: readonly Sector[] = [
   {
     id: "servicios",
     title: "Servicios, salud y comercio",
+    tagline: "Citas, cartera y atención sin fricción",
     body: "Empresas donde el margen se pierde en los traspasos: información que se pide dos veces, aprobaciones que se persiguen por chat y cartera que se descubre vencida cuando ya no hay con quién hablar.",
     question: "¿Cuántas veces le pide la misma información al mismo cliente o paciente?",
     cases: [
@@ -1579,6 +1597,7 @@ export const sectors: readonly Sector[] = [
   {
     id: "publico",
     title: "Entidades públicas",
+    tagline: "Términos, radicados y trazabilidad",
     body: "Donde la fricción no cuesta solo tiempo: un término vencido tiene consecuencia disciplinaria. El control suele estar en un Excel que una sola persona entiende y que nadie revisa los viernes.",
     question: "¿Cuántos radicados suyos no tienen hoy un responsable con nombre?",
     cases: [

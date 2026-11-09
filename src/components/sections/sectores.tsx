@@ -1,40 +1,42 @@
-import Link from "next/link";
+import { Lamina, type LaminaKind } from "@/components/laminas";
+import { HoverTile } from "@/components/tiles";
 import { Arrow, Button, Headline, Section, SectionHead } from "@/components/ui";
 import { sectors } from "@/content/site";
 import { RevealItem, RevealList } from "@/components/motion";
 
 /**
- * Sectores, en resumen. Un gerente de transporte no se reconoce en
- * «automatización de procesos»; se reconoce en «preoperacional en papel».
- * El desarrollo (oportunidades y demos) vive en /sectores.
+ * Sectores como tarjetas visuales. Lo visible: el sector y una línea en su
+ * vocabulario; al pasar el mouse, las oportunidades. El detalle y los demos
+ * viven en /sectores.
  */
 export function Sectores() {
   return (
-    <Section id="sectores" tone="paper">
-      <SectionHead index="05" label="Sectores">
-        <Headline>Dónde trabajamos, y con qué se encuentra uno ahí.</Headline>
-        <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-fg/65">
-          El método es el mismo en todos; la fricción no. Cuatro entornos donde más hemos visto
-          repetirse los mismos costos escondidos.
-        </p>
+    <Section id="sectores" tone="ivory">
+      <SectionHead index="04" label="Sectores" aside="El mismo método, fricciones distintas">
+        <Headline>Dónde trabajamos.</Headline>
       </SectionHead>
 
-      <RevealList as="ul" className="grid gap-4 md:grid-cols-2">
+      <RevealList as="ul" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {sectors.map((sector) => (
           <RevealItem as="li" key={sector.id}>
-            <Link
+            <HoverTile
               href={`/sectores#${sector.id}`}
-              className="card group flex h-full flex-col gap-6 rounded-card p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:p-9"
+              title={sector.title}
+              tagline={sector.tagline}
+              image={sector.image}
+              visual={<Lamina kind={sector.id as LaminaKind} />}
+              cta="Ver sector y demos"
+              ratio="aspect-[3/4]"
             >
-              <div className="flex items-start justify-between gap-6">
-                <h3 className="text-subhead text-balance text-fg">{sector.title}</h3>
-                <Arrow className="mt-2 shrink-0 text-fg/40 transition-colors group-hover:text-fg" />
-              </div>
-              <p className="text-pretty text-sm leading-relaxed text-fg/70">{sector.body}</p>
-              <p className="mt-auto border-t border-line pt-5 font-serif text-xl italic leading-snug text-fg/85">
-                {sector.question}
-              </p>
-            </Link>
+              <ul className="flex flex-col gap-1.5">
+                {sector.opportunities.slice(0, 3).map((o) => (
+                  <li key={o} className="flex gap-2.5">
+                    <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-lime" />
+                    {o}
+                  </li>
+                ))}
+              </ul>
+            </HoverTile>
           </RevealItem>
         ))}
       </RevealList>

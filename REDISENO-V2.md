@@ -489,6 +489,31 @@ npm run build:kb   # requiere ../bot-page; regenera el conocimiento del bot
 5. **No se hizo push ni despliegue.** La rama `redesign/auren-v2` está solo en
    local; `main` y `radiografia-v2` siguen como estaban.
 
+### 4.8 Iteración V2.1 — menos texto, más imagen, interacción
+
+Tras la revisión en local del propietario («demasiado texto, sin imágenes,
+sin animaciones, todavía no es clara»), la home cambió de lógica: **muestra
+poco y abre lo demás bajo demanda.**
+
+- **Tarjetas interactivas** (`components/tiles.tsx`): imagen o lámina, nombre
+  y una línea de seis palabras; al pasar el mouse (o tocar, en móvil) sube el
+  panel con la explicación y el enlace. `HoverTile` para soluciones y
+  sectores; `RevealCard` para dimensiones y fases, que se despliegan en sitio.
+- **Láminas dibujadas** (`components/laminas.tsx`): nueve escenas de línea
+  sobre Auren Deep (lente, cadena, convergencia, marco, señal; planta, patio,
+  clínica, ventanilla) para las tarjetas sin fotografía.
+- **Home en ocho bloques y la mitad de texto**: hero (titular, una línea, dos
+  botones, lámina con las tres fases), qué hacemos (una frase + cuatro
+  tarjetas), soluciones (cinco tarjetas visuales), método (tres tarjetas con
+  la línea que se dibuja), sectores (cuatro tarjetas), ¿le suena?, por qué
+  creer (una fila) y cierre. Las preguntas frecuentes pasaron a `/contacto`
+  con su JSON-LD.
+- **Fotografías**: se generaron cuatro (hero, estrategia, automatización,
+  datos) en Canva; las seis restantes no se generaron por falta de crédito.
+  El código acepta `image` en hero, soluciones y sectores; mientras no exista
+  el archivo, usa la lámina. Pendiente: descargar las cuatro a
+  `public/images/` y enlazarlas.
+
 ### 4.7 Archivos modificados
 
 Nuevos: `src/components/diagrams.tsx`, `src/components/sections/que-hacemos.tsx`,

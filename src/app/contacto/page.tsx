@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
-import { Arrow, Breadcrumbs, Card, Cota, PageHero, Section } from "@/components/ui";
-import { about, contact, site } from "@/content/site";
+import { Arrow, Breadcrumbs, Card, Cota, FaqList, Headline, PageHero, Section, SectionHead } from "@/components/ui";
+import { about, contact, homeFaqs, site } from "@/content/site";
+import { faqPage, JsonLd } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { Reveal } from "@/components/motion";
 
@@ -21,6 +22,9 @@ export const metadata: Metadata = pageMetadata(
 export default function Contacto() {
   return (
     <>
+      {/* Las preguntas están visibles abajo; el JSON-LD solo se las declara
+          al buscador. Nunca marcar aquí algo que no esté en la página. */}
+      <JsonLd data={faqPage(homeFaqs)} />
       <Breadcrumbs trail={[{ name: "Contacto", path: "/contacto" }]} />
 
       <PageHero
@@ -114,6 +118,15 @@ export default function Contacto() {
             </Reveal>
           </div>
         </div>
+      </Section>
+
+      {/* Lo que nos preguntan antes de escribir. Viven aquí, no en la home,
+          para que la portada muestre poco y esto se lea completo. */}
+      <Section tone="ivory">
+        <SectionHead index="01" label="Antes de escribir">
+          <Headline>Lo que nos preguntan antes de la primera reunión.</Headline>
+        </SectionHead>
+        <FaqList faqs={homeFaqs} />
       </Section>
     </>
   );

@@ -40,6 +40,9 @@ npm start
 | Cambiar textos; añadir solución, servicio, situación o principio | `src/content/site.ts` |
 | Color, tipografía, escala, ritmo, tema claro/oscuro, `inverse`, `card`, `cota` | `src/app/globals.css` |
 | Un diagrama o un glifo | `src/components/diagrams.tsx` |
+| Una lámina (ilustración de tarjeta) | `src/components/laminas.tsx` |
+| La tarjeta que se abre al pasar el mouse | `src/components/tiles.tsx` (`HoverTile`, `RevealCard`) |
+| Foto de una solución, un sector o el hero | campo `image` en `solutions`, `sectors` o `hero`; sin archivo, se usa la lámina |
 | El símbolo o el lockup | `src/components/logo.tsx` |
 | Botón, sección, encabezado, cota, apertura de página, CTA, lista numerada | `src/components/ui.tsx` |
 | El menú y el botón «Hablemos» | `nav` y `navCta` en `site.ts` → `src/components/nav.tsx` |
@@ -62,7 +65,7 @@ npm start
 | Título, descripción y canónica de una página | `pageMetadata()` en `src/lib/seo.ts` |
 | Datos estructurados (JSON-LD) de cualquier tipo | `src/lib/schema.tsx` |
 | Publicar un artículo; editar uno | `posts` en `src/content/recursos.ts` |
-| Preguntas frecuentes de la home | `homeFaqs` en `site.ts` |
+| Preguntas frecuentes (viven en /contacto) | `homeFaqs` en `site.ts` |
 | Pasos, industrias, métricas o preguntas de un servicio | la entrada en `services` |
 | La imagen que se ve al compartir | `src/app/opengraph-image.tsx` |
 | Número de WhatsApp, correo, dominio | `site` en `src/content/site.ts` |
