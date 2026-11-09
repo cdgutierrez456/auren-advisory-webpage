@@ -7,6 +7,7 @@ import {
   Button,
   Cota,
   CtaBand,
+  Figura,
   PageHero,
   Section,
 } from "@/components/ui";
@@ -74,7 +75,11 @@ export default function Soluciones() {
               <Cota className="text-fg/55">
                 {String(k + 1).padStart(2, "0")} / {String(solutions.length).padStart(2, "0")}
               </Cota>
-              <SolutionGlyph kind={s.glyph} className="w-40 text-fg/85" />
+              {s.image ? (
+                <Figura figure={s.image} />
+              ) : (
+                <SolutionGlyph kind={s.glyph} className="w-40 text-fg/85" />
+              )}
               <h2 className="text-headline text-balance text-fg">{s.title}</h2>
               <p className="font-serif text-2xl italic leading-snug text-balance text-fg/85">
                 {s.question}
