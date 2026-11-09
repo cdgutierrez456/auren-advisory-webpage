@@ -19,7 +19,7 @@ export const site = {
     "Consultoría en transformación empresarial, automatización e inteligencia artificial en Colombia. Diagnosticamos su operación antes de recomendar tecnología.",
   /** Versión larga, para pie de página y schema. */
   descriptionLong:
-    "Firma de transformación empresarial con base en Manizales. Observamos cómo funciona su empresa, medimos el costo de la fricción y solo entonces decidimos qué tecnología —automatización, datos, inteligencia artificial o software a medida— tiene sentido.",
+    "Firma de transformación empresarial con base en Manizales. Observa cómo funciona cada empresa, mide el costo de la fricción y solo entonces decide qué tecnología (automatización, datos, inteligencia artificial o software a medida) tiene sentido.",
   city: "Manizales",
   region: "Caldas",
   /** Coordenadas del centro de Manizales. Solo para el JSON-LD de negocio local. */
@@ -39,12 +39,12 @@ export const nav = [
 ] as const;
 
 /** El botón del menú. Es la conversión principal del sitio. */
-export const navCta = { label: "Hablemos", href: "/contacto" } as const;
+export const navCta = { label: "Contacto", href: "/contacto" } as const;
 
 export const hero = {
   eyebrow: "Transformación empresarial mediante tecnología",
   /** Titular. Promesa + acción, con eco del método («ver»). */
-  title: "Su empresa puede funcionar mejor. Empecemos por ver dónde.",
+  title: "Su empresa puede funcionar mejor. El primer paso es ver dónde.",
   /** Fotografía del hero. Si falta, el hero muestra el diagrama de transformación. */
   image: {
     src: "/images/hero.jpg",
@@ -58,12 +58,12 @@ export const hero = {
    */
   titleSub:
     "Transformación empresarial mediante tecnología: estrategia, procesos, automatización, datos e inteligencia aplicada.",
-  lede: "Entendemos cómo funciona su negocio, identificamos las oportunidades que no está viendo y las convertimos en soluciones que lo transforman. La tecnología es nuestro instrumento; el resultado es una empresa que opera mejor.",
-  primary: { label: "Hablemos de su empresa", href: "/contacto" },
+  lede: "Auren entiende cómo funciona cada negocio, identifica las oportunidades que no se están viendo y las convierte en soluciones que lo transforman. La tecnología es el instrumento; el resultado es una empresa que opera mejor.",
+  primary: { label: "Iniciar una conversación", href: "/contacto" },
   secondary: { label: "Cómo trabajamos", href: "/nosotros#metodo" },
   /** Alternativa de diez minutos para quien todavía no quiere hablar con nadie. */
   tertiary: {
-    label: "O haga la Radiografía: 12 preguntas, 10 minutos, sin registro",
+    label: "También puede hacer la Radiografía: 12 preguntas, 10 minutos, sin registro",
     href: "/radiografia",
   },
 } as const;
@@ -75,8 +75,8 @@ export const hero = {
 export const manifesto = {
   quote: "No vendemos tecnología por vender tecnología.",
   body: [
-    "Entendemos su negocio, identificamos oportunidades y desarrollamos soluciones que lo transforman. Lo que construimos —una automatización, un modelo, un tablero, un sistema a la medida— es la consecuencia de haber entendido primero cómo funciona la empresa y hacia dónde debe evolucionar.",
-    "Por eso trabajamos en cuatro dimensiones a la vez: la estrategia que dice hacia dónde, los procesos que dicen cómo, la tecnología que lo hace posible y el acompañamiento que convierte la solución en una mejora real y medida.",
+    "Cada solución que se construye, sea una automatización, un modelo, un tablero o un sistema a la medida, es consecuencia de haber entendido primero cómo funciona la empresa y hacia dónde debe evolucionar.",
+    "Por eso el trabajo abarca cuatro dimensiones a la vez: la estrategia que define hacia dónde, los procesos que definen cómo, la tecnología que lo hace posible y el acompañamiento que convierte la solución en una mejora real y medida.",
   ],
 } as const;
 
@@ -145,7 +145,7 @@ export const problems: readonly Problem[] = [
   {
     quote: "Nos ofrecieron inteligencia artificial y no sabemos si la necesitamos.",
     solution: "estrategia",
-    hint: "Le decimos con franqueza si hay caso, y qué conviene ordenar antes.",
+    hint: "Una evaluación franca de si hay caso y de qué conviene ordenar antes.",
   },
 ];
 
@@ -215,7 +215,7 @@ export const solutions: readonly Solution[] = [
       "Un caso de inversión defendible ante junta o socios",
     ],
     start:
-      "Una conversación de treinta minutos para entender su situación. De ahí sale si conviene un diagnóstico, qué alcance tendría y cuánto tardaría.",
+      "Una conversación inicial de treinta minutos para entender la situación. De ella se concluye si conviene un diagnóstico, con qué alcance y en cuánto tiempo.",
     technologies: ["Análisis de procesos", "Modelado de costos", "Arquitectura de solución", "Evaluación comprar / construir"],
     services: ["auren-insight", "auren-blueprint"],
     glyph: "lente",
@@ -247,7 +247,7 @@ export const solutions: readonly Solution[] = [
       "Menos errores, y los que ocurren se detectan a tiempo",
     ],
     start:
-      "Empezamos por un solo flujo: el que más horas consume. Sirve para validar el enfoque con su gente antes de comprometer más presupuesto.",
+      "Se empieza por un solo flujo, el que más horas consume. Permite validar el enfoque con el equipo antes de comprometer más presupuesto.",
     technologies: ["Integración de sistemas", "Flujos de trabajo", "Modelos de lenguaje", "Extracción documental", "Asistentes internos"],
     services: ["auren-flow"],
     glyph: "cadena",
@@ -260,7 +260,7 @@ export const solutions: readonly Solution[] = [
     image: { src: "/images/soluciones/datos.jpg", alt: "Tablero de indicadores proyectado en una sala de reuniones", width: 1456, height: 1088 },
     question: "¿Cómo decidimos con cifras en las que todos confían?",
     problem:
-      "La información existe —en el ERP, en el CRM, en hojas de cálculo, en correos— pero no se puede consultar a tiempo ni dos áreas la calculan igual. El resultado es que la gerencia decide con el dato viejo o con el que presentó quien habló más fuerte.",
+      "La información existe, repartida entre el ERP, el CRM, hojas de cálculo y correos, pero no se puede consultar a tiempo ni dos áreas la calculan igual. El resultado es que la gerencia decide con el dato más antiguo o con el que mejor se defendió en la reunión.",
     symptoms: [
       "Cada área reporta números distintos para lo mismo",
       "Consolidar un informe toma días de trabajo manual",
@@ -279,7 +279,7 @@ export const solutions: readonly Solution[] = [
       "La base técnica que cualquier proyecto de inteligencia artificial necesita",
     ],
     start:
-      "Empezamos por un dominio —ventas, producción, cartera— y un puñado de indicadores. El primer tablero útil valida que las definiciones quedaron bien.",
+      "Se empieza por un dominio (ventas, producción o cartera) y un conjunto corto de indicadores. El primer tablero útil valida que las definiciones quedaron bien.",
     technologies: ["Integración de datos", "Modelado", "Tableros de gestión", "Analítica", "Calidad del dato"],
     services: ["auren-data"],
     glyph: "convergencia",
@@ -300,7 +300,7 @@ export const solutions: readonly Solution[] = [
       "Un sistema que sí existe, pero que nadie terminó de implementar",
     ],
     work: [
-      "Validamos primero si conviene comprar: si existe algo que resuelve el noventa por ciento, lo decimos",
+      "Se valida primero si conviene comprar: si existe una herramienta que resuelve el noventa por ciento, esa es la recomendación",
       "Definimos el alcance mínimo que ya sirve en producción",
       "Diseñamos las pantallas con las personas que van a usarlas ocho horas al día",
       "Construimos por incrementos, integramos con lo que ya tiene y lo llevamos a producción con su equipo",
@@ -311,7 +311,7 @@ export const solutions: readonly Solution[] = [
       "Costo operativo previsible, sin licencias por usuario",
     ],
     start:
-      "Una sesión para entender el proceso y revisar juntos el mercado. Si hay que construir, salimos con el alcance de la primera versión útil.",
+      "Una sesión para entender el proceso y revisar el mercado. Si hay que construir, de ahí sale el alcance de la primera versión útil.",
     technologies: ["Plataformas web", "Aplicaciones móviles y de campo", "Portales de cliente y proveedor", "Integración con ERP y CRM"],
     services: ["auren-studio", "auren-transform"],
     glyph: "marco",
@@ -343,7 +343,7 @@ export const solutions: readonly Solution[] = [
       "Retrofit sin cambiar equipos ni parar producción",
     ],
     start:
-      "Una evaluación de viabilidad con material que usted ya tiene toma días, no meses. Puede probar hoy mismo los demos de lectura por cámara en su navegador.",
+      "Una evaluación de viabilidad con material que usted ya tiene toma días, no meses. Los demos de lectura por cámara pueden probarse hoy mismo en el navegador.",
     technologies: ["Visión artificial", "Internet de las cosas", "Sistemas embebidos", "Monitoreo en tiempo real", "Lectura de instrumentos"],
     services: ["auren-vision"],
     glyph: "senal",
@@ -424,7 +424,7 @@ export const phases: readonly Phase[] = [
     question: "¿Qué construimos, en qué orden y cómo sabremos que sirvió?",
     body: [
       "Recién aquí aparece la tecnología, y aparece elegida: a veces es automatización, a veces un modelo, a veces integrar dos sistemas que ya tiene, y a veces simplemente eliminar un paso que no hacía falta.",
-      "Entregamos por incrementos que funcionan por separado, acompañamos al equipo que va a usarlos y medimos contra la métrica que se acordó antes de empezar. Si el número no se movió, lo decimos.",
+      "Se entrega por incrementos que funcionan por separado, se acompaña al equipo que va a usarlos y se mide contra la métrica acordada antes de empezar. Si el número no se movió, se informa y se ajusta.",
     ],
     points: [
       "Diseño de solución y arquitectura",
@@ -594,7 +594,7 @@ export const services: readonly Service[] = [
     kind: "Diagnóstico",
     summary:
       "Radiografía de la operación: dónde se pierde tiempo, dinero y control, con evidencia y cifras.",
-    lede: "El punto de partida de todo. Entramos a la operación, la observamos como es —no como está documentada— y le entregamos una lectura honesta de dónde está la oportunidad real.",
+    lede: "El punto de partida de todo. Se entra a la operación, se observa tal como es y no como está documentada, y se entrega una lectura honesta de dónde está la oportunidad real.",
     body: [
       "La mayoría de las empresas sabe que algo no funciona, pero la conversación se queda en percepciones: «el área comercial va lenta», «se pierde información entre bodega y facturación». Insight convierte esas percepciones en hechos medidos.",
       "Recorremos los procesos con las personas que los ejecutan, revisamos los sistemas que ya existen y cuantificamos el costo de la fricción. Al final usted sabe qué duele, cuánto cuesta y qué se puede resolver primero.",
@@ -615,7 +615,7 @@ export const services: readonly Service[] = [
     outcome: [
       "Un informe con evidencia, no con opiniones",
       "Una lista priorizada de oportunidades por impacto y esfuerzo",
-      "Claridad para decidir si invertir —o no— en tecnología",
+      "Claridad para decidir si invertir o no en tecnología",
     ],
     keyword: "Diagnóstico de procesos empresariales",
     headline: "Diagnóstico de procesos y operaciones, con evidencia y cifras",
@@ -680,11 +680,11 @@ export const services: readonly Service[] = [
       },
       {
         q: "¿Y si el diagnóstico concluye que no necesito tecnología?",
-        a: "Se lo decimos y ese es el entregable. No vendemos licencias ni recibimos comisión de ningún proveedor, así que no tenemos incentivo para recomendar una compra. Cambiar un procedimiento o eliminar un paso es un resultado válido y bastante frecuente.",
+        a: "Esa conclusión es el entregable. Auren no vende licencias ni recibe comisión de ningún proveedor, de modo que no hay incentivo para recomendar una compra. Cambiar un procedimiento o eliminar un paso es un resultado válido y frecuente.",
       },
       {
         q: "¿Quedo obligado a contratar la implementación con ustedes?",
-        a: "No. El informe y la priorización son suyos, y están escritos para que cualquier equipo —el interno o un tercero— pueda ejecutarlos. La continuidad se decide después, con los hallazgos sobre la mesa.",
+        a: "No. El informe y la priorización son suyos, y están escritos para que cualquier equipo, el interno o un tercero, pueda ejecutarlos. La continuidad se decide después, con los hallazgos sobre la mesa.",
       },
     ],
     deliverable: "Informe Auren Insight",
@@ -839,7 +839,7 @@ export const services: readonly Service[] = [
       },
       {
         title: "Medición y siguiente incremento",
-        body: "Comparamos contra la línea base acordada. Si el número se movió, seguimos con la fase siguiente; si no se movió, lo decimos y ajustamos antes de invertir más.",
+        body: "Comparamos contra la línea base acordada. Si el número se movió, se continúa con la fase siguiente; si no se movió, se informa y se ajusta antes de invertir más.",
       },
     ],
     industries: [
@@ -952,7 +952,7 @@ export const services: readonly Service[] = [
       },
       {
         sector: "Empresas que quieren aplicar inteligencia artificial",
-        body: "Ningún modelo compensa datos inconsistentes. Esta es la base técnica que hace viable —o descarta a tiempo— cualquier proyecto de IA.",
+        body: "Ningún modelo compensa datos inconsistentes. Esta es la base técnica que hace viable, o descarta a tiempo, cualquier proyecto de IA.",
       },
     ],
     measures: [
@@ -976,7 +976,7 @@ export const services: readonly Service[] = [
       },
       {
         q: "¿Cuánto tarda tener el primer tablero funcionando?",
-        a: "El alcance completo va de cuatro a diez semanas según cuántas fuentes haya. El primer tablero útil —un dominio, un puñado de indicadores— suele estar operando bastante antes, y es el que valida que las definiciones quedaron bien.",
+        a: "El alcance completo va de cuatro a diez semanas según cuántas fuentes haya. El primer tablero útil (un dominio, pocos indicadores) suele estar operando bastante antes, y es el que valida que las definiciones quedaron bien.",
       },
       {
         q: "¿Quién mantiene esto después?",
@@ -1071,7 +1071,7 @@ export const services: readonly Service[] = [
       },
       {
         q: "¿Sirve si mis sistemas son viejos y no tienen integración?",
-        a: "Casi siempre hay camino: exportaciones programadas, bases intermedias o automatización sobre la interfaz existente. Cuando de verdad no lo hay, lo decimos antes de cobrar el descubrimiento.",
+        a: "Casi siempre hay camino: exportaciones programadas, bases intermedias o automatización sobre la interfaz existente. Cuando realmente no lo hay, se informa antes de cobrar el descubrimiento.",
       },
       {
         q: "¿Cuánto cuesta mantener una automatización?",
@@ -1162,7 +1162,7 @@ export const services: readonly Service[] = [
     faqs: [
       {
         q: "¿Necesito comprar cámaras nuevas?",
-        a: "En la mayoría de los casos no. Se empieza evaluando lo instalado; a veces basta con reubicar una cámara o mejorar la iluminación, que es mucho más barato que renovar el parque. Si hace falta hardware, lo decimos con la evaluación de viabilidad en la mano.",
+        a: "En la mayoría de los casos no. Se empieza evaluando lo instalado; a veces basta con reubicar una cámara o mejorar la iluminación, que es mucho más barato que renovar el parque. Si hace falta hardware, se indica con la evaluación de viabilidad en la mano.",
       },
       {
         q: "¿Qué tan preciso es comparado con una persona?",
@@ -1193,7 +1193,7 @@ export const services: readonly Service[] = [
       "Desarrollo de producto interno cuando la solución correcta no existe en el mercado.",
     lede: "A veces la herramienta que su operación necesita no se vende. Studio la construye: software hecho para su proceso exacto, sin pagar por funciones que nunca va a usar ni deformar la operación para caber en un producto ajeno.",
     body: [
-      "Construir a la medida no siempre es la respuesta correcta, y lo decimos cuando no lo es. Si existe una herramienta del mercado que resuelve el 90%, conviene comprarla.",
+      "Construir a la medida no siempre es la respuesta correcta, y cuando no lo es, la recomendación es comprar. Si existe una herramienta del mercado que resuelve el 90%, conviene comprarla.",
       "Cuando sí tiene sentido, entregamos software que su equipo puede mantener: código documentado, decisiones explicadas y sin dependencias que lo aten a nosotros.",
     ],
     signals: [
@@ -1219,7 +1219,7 @@ export const services: readonly Service[] = [
     steps: [
       {
         title: "Validación de la decisión",
-        body: "Primero revisamos el mercado. Si existe una herramienta que resuelve el noventa por ciento, conviene comprarla y se lo decimos, aunque eso signifique un proyecto más pequeño para nosotros.",
+        body: "Primero revisamos el mercado. Si existe una herramienta que resuelve el noventa por ciento, conviene comprarla y así se recomienda, aunque signifique un proyecto más pequeño para Auren.",
       },
       {
         title: "Alcance mínimo útil",
@@ -1403,7 +1403,7 @@ export const about = {
   origin: [
     "Facturas que se digitan dos veces. Inventarios que se cuadran a las once de la noche. Reportes que existen porque alguien los arma cada lunes copiando celdas. No eran empresas mal gestionadas: eran empresas buenas cargando procesos que nadie había vuelto a revisar en años.",
     "Al mismo tiempo veíamos la reacción contraria y igual de costosa: comprar una herramienta cara para un problema que nadie había diagnosticado, y dejarla sin usar a los seis meses. Entre no hacer nada y comprar por moda faltaba alguien que primero mirara.",
-    "Auren existe para ocupar ese lugar. Entramos a ver cómo funciona realmente la empresa, entendemos qué está costando esa fricción y solo entonces decidimos qué tecnología —o qué simplificación sin tecnología— tiene sentido.",
+    "Auren existe para ocupar ese lugar: ver cómo funciona realmente la empresa, entender qué está costando esa fricción y solo entonces decidir qué tecnología, o qué simplificación sin tecnología, tiene sentido.",
   ],
 
   /** El enfoque: tres tipos de conocimiento que rara vez se combinan. */
@@ -1481,7 +1481,7 @@ export type Principle = { title: string; body: string };
 export const principles: readonly Principle[] = [
   {
     title: "El diagnóstico va primero",
-    body: "No proponemos tecnología antes de entender el proceso. Si el problema no la necesita, lo decimos.",
+    body: "No se propone tecnología antes de entender el proceso. Si el problema no la requiere, la recomendación es no comprarla.",
   },
   {
     title: "El impacto se mide",
@@ -1498,7 +1498,7 @@ export const principles: readonly Principle[] = [
  * qué pasa después de escribir, que es lo que nadie cuenta.
  */
 export const contact = {
-  title: "Hablemos de su empresa.",
+  title: "Iniciar una conversación.",
   /** Imagen de la página de contacto. */
   image: {
     src: "/images/contacto.jpg",
@@ -1506,25 +1506,25 @@ export const contact = {
     width: 1456,
     height: 1088,
   } as Figure | undefined,
-  lede: "Cuéntenos qué está pasando en su operación. En una primera conversación entendemos su situación y le decimos con franqueza si hay caso, por dónde conviene empezar y qué tendría sentido medir.",
+  lede: "Una primera conversación permite entender la situación de la empresa y determinar con franqueza si hay caso, por dónde conviene empezar y qué tendría sentido medir.",
   /** Qué pasa después de escribir. */
   steps: [
     {
-      title: "Nos escribe",
-      body: "Por el formulario, por WhatsApp o por correo. Dos líneas sobre el proceso o el área que le preocupa bastan.",
+      title: "Primer contacto",
+      body: "Por el formulario, por WhatsApp o por correo. Bastan dos líneas sobre el proceso o el área que preocupa.",
     },
     {
-      title: "Conversamos treinta minutos",
-      body: "Una llamada para entender su empresa, qué intentó antes y qué espera. Sin presentación de ventas: preguntas.",
+      title: "Conversación de treinta minutos",
+      body: "Una llamada para entender la empresa, qué se intentó antes y qué se espera. Sin presentación comercial: preguntas.",
     },
     {
-      title: "Le decimos qué haríamos",
-      body: "Si hay caso, proponemos un alcance concreto y acotado. Si el problema se resuelve sin nosotros o sin tecnología, también se lo decimos.",
+      title: "Propuesta de alcance",
+      body: "Si hay caso, se propone un alcance concreto y acotado. Si el problema se resuelve sin Auren o sin tecnología, también se informa.",
     },
   ],
   /** Compromisos que sí podemos hacer antes de conocer la empresa. */
   promises: [
-    "Respondemos en un día hábil",
+    "Respuesta en un día hábil",
     "Sin comisiones de proveedores de software",
     "Presencial en el Eje Cafetero, remoto en el resto del país",
   ],
@@ -1659,7 +1659,7 @@ export const sectors: readonly Sector[] = [
 export const homeFaqs: readonly Faq[] = [
   {
     q: "¿Qué hace exactamente una firma de transformación empresarial?",
-    a: "Analiza cómo opera realmente una empresa, identifica dónde se pierde tiempo, dinero y control, y convierte eso en un plan de cambio ejecutable. En nuestro caso incluye implementar lo que se decidió —automatización, datos, software a medida o visión artificial— y medir si funcionó. No es solo un informe con recomendaciones.",
+    a: "Analiza cómo opera realmente una empresa, identifica dónde se pierde tiempo, dinero y control, y convierte eso en un plan de cambio ejecutable. En el caso de Auren incluye implementar lo que se decidió (automatización, datos, software a medida o visión artificial) y medir si funcionó. No es solo un informe con recomendaciones.",
   },
   {
     q: "¿Cómo sé si mi empresa necesita automatizar procesos?",
@@ -1675,7 +1675,7 @@ export const homeFaqs: readonly Faq[] = [
   },
   {
     q: "¿Necesito inteligencia artificial en mi empresa?",
-    a: "Probablemente no todavía, y decirlo es parte de nuestro trabajo. La IA rinde sobre datos ordenados y procesos estables; aplicada sobre información inconsistente produce respuestas convincentes y equivocadas. Primero se ordena el dato y se simplifica el proceso. Cuando el caso lo justifica, la aplicamos y lo medimos.",
+    a: "Probablemente no todavía, y señalarlo es parte del trabajo. La IA rinde sobre datos ordenados y procesos estables; aplicada sobre información inconsistente produce respuestas convincentes y equivocadas. Primero se ordena el dato y se simplifica el proceso. Cuando el caso lo justifica, la aplicamos y lo medimos.",
   },
   {
     q: "¿Atienden fuera de Manizales y del Eje Cafetero?",

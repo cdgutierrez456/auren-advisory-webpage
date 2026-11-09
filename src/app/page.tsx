@@ -25,8 +25,8 @@ export default function Home() {
       <Confianza />
       <Testimonios />
       <CtaBand
-        title="Empecemos por ver dónde puede funcionar mejor su empresa."
-        lede="Una primera conversación de treinta minutos. Si hay caso, le decimos por dónde empezar; si no lo hay, también."
+        title="El primer paso es ver dónde puede funcionar mejor su empresa."
+        lede="Una primera conversación de treinta minutos. Si hay caso, se define por dónde empezar; si no lo hay, también se dice con claridad."
       />
     </>
   );

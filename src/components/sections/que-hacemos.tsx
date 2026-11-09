@@ -16,7 +16,7 @@ export function QueHacemos() {
       <Reveal as="blockquote" className="max-w-4xl">
         <p className="font-serif text-quote text-balance text-fg">{manifesto.quote}</p>
         <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-fg/70">
-          Entendemos su negocio, identificamos oportunidades y desarrollamos soluciones que lo
+          Auren entiende el negocio, identifica oportunidades y desarrolla soluciones que lo
           transforman.
         </p>
       </Reveal>

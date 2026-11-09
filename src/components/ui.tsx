@@ -191,8 +191,8 @@ export function PageHero({
 export function CtaBand({
   title,
   lede,
-  action = { label: "Hablemos de su empresa", href: "/contacto" },
-  secondary = { label: "O haga la Radiografía: 10 minutos, sin registro", href: "/radiografia" },
+  action = { label: "Iniciar una conversación", href: "/contacto" },
+  secondary = { label: "O la Radiografía Auren: 10 minutos, sin registro", href: "/radiografia" },
 }: {
   title: string;
   lede?: string;

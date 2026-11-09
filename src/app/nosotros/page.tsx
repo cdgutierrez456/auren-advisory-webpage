@@ -8,7 +8,7 @@ import { Reveal, RevealItem, RevealList } from "@/components/motion";
 
 export const metadata: Metadata = pageMetadata(
   "Quiénes somos y cómo trabajamos",
-  "Auren Advisory nació en Manizales en 2026. Dos socios, un método en tres movimientos —ver, entender, transformar— y tres límites que no negociamos.",
+  "Auren Advisory nació en Manizales en 2026. Dos socios, un método en tres movimientos (ver, entender, transformar) y tres límites que no se negocian.",
   "/nosotros",
 );
 
@@ -65,7 +65,7 @@ export default function NosotrosPage() {
           <Headline>{method.title}</Headline>
           <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-fg/70">
             Mirar antes de opinar, entender antes de proponer, medir antes de celebrar. Si al
-            entender el problema resulta que no hace falta tecnología, se lo decimos.
+            entender el problema resulta que no hace falta tecnología, el diagnóstico lo indicará.
           </p>
         </SectionHead>
         <MethodStage phases={phases} />
@@ -111,8 +111,8 @@ export default function NosotrosPage() {
       </Section>
 
       <CtaBand
-        title="Empecemos por ver cómo funciona su empresa hoy."
-        lede="Una primera conversación de treinta minutos. Salimos de ella con una lectura honesta de dónde hay oportunidad real."
+        title="El primer paso es ver cómo funciona la empresa hoy."
+        lede="Una primera conversación de treinta minutos, de la que sale una lectura honesta de dónde hay oportunidad real."
       />
     </>
   );

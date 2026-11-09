@@ -21,6 +21,11 @@ están enlazadas en `src/content/site.ts`. Nombres y contenido:
 | `metodo/transformar.jpg` | Equipo usa la nueva herramienta con acompañamiento (vertical) |
 | `nosotros.jpg` | Mesa de trabajo frente a las montañas de Manizales |
 | `contacto.jpg` | Dos personas conversan junto a una ventana |
+| `recursos/automatizacion.jpg` | Puesto de trabajo con datos copiándose a mano (16:9) |
+| `recursos/transformacion-digital.jpg` | Taller de una empresa mediana (16:9) |
+| `recursos/software-a-la-medida.jpg` | Dos portátiles con herramientas distintas (16:9) |
+| `recursos/radiografia.jpg` | Gerente responde un cuestionario en una tableta (16:9) |
+| `recursos/demos.jpg` | Portátil con un tablero en una bodega (16:9) |
 
 Para reemplazar una foto basta con sobrescribir el archivo con el mismo nombre
 y medidas. Si se quita el campo `image` de una entrada, la tarjeta vuelve a su

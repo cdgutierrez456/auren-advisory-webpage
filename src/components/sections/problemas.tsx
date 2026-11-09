@@ -10,11 +10,10 @@ import { RevealItem, RevealList } from "@/components/motion";
 export function Problemas() {
   return (
     <Section id="problemas" tone="paper">
-      <SectionHead label="¿Le suena?">
-        <Headline>Las situaciones con las que más nos buscan.</Headline>
+      <SectionHead label="Situaciones frecuentes">
+        <Headline>Las situaciones que con más frecuencia motivan una consulta.</Headline>
         <p className="mt-6 max-w-xl text-pretty leading-relaxed text-fg/65">
-          Si reconoce una, hay por dónde empezar. Cada frase enlaza con la solución que la
-          resuelve.
+          Cada una enlaza con la solución que la resuelve.
         </p>
       </SectionHead>
 

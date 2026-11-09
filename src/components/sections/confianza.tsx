@@ -11,7 +11,7 @@ import { RevealItem, RevealList } from "@/components/motion";
 export function Confianza() {
   return (
     <Section id="confianza" tone="paper">
-      <SectionHead label="Compruébelo">
+      <SectionHead label="Elementos de juicio">
         <Headline>Piezas que funcionan, personas que responden.</Headline>
       </SectionHead>
 

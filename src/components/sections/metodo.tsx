@@ -19,7 +19,7 @@ export function Metodo() {
 
       <div className="mt-10 flex flex-wrap items-center justify-between gap-6">
         <p className="max-w-md text-pretty text-sm leading-relaxed text-fg/60">
-          Si al entender el problema resulta que no hace falta tecnología, se lo decimos.
+          Si al entender el problema resulta que no hace falta tecnología, el diagnóstico lo indicará.
         </p>
         <Link
           href="/nosotros"

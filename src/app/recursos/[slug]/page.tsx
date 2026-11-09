@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Mark } from "@/components/logo";
-import {
-  Arrow,
-  Breadcrumbs,
-  CtaBand,
-  FaqList,
-  Figura,
-  Headline,
-  PageHero,
-  Section,
-  SectionHead,
-} from "@/components/ui";
+import { Logo } from "@/components/logo";
+import { Arrow, Breadcrumbs, CtaBand, Section } from "@/components/ui";
 import { fechaLarga, postBySlug, posts } from "@/content/recursos";
-import { serviceBySlug } from "@/content/site";
+import { serviceBySlug, site } from "@/content/site";
 import { articleSchema, faqPage, JsonLd } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
-import { RevealItem, RevealList } from "@/components/motion";
+import { Reveal } from "@/components/motion";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -36,6 +27,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   );
 }
 
+/**
+ * Un artículo se lee como la página de un documento: una hoja centrada sobre
+ * el fondo, con membrete, portada con la fotografía, cuerpo a ancho de
+ * lectura, secciones numeradas y un cierre con las preguntas y los servicios
+ * relacionados. Lo demás de la pantalla queda en silencio.
+ */
 export default async function Articulo({ params }: Params) {
   const post = postBySlug((await params).slug);
   if (!post) notFound();
@@ -47,7 +44,6 @@ export default async function Articulo({ params }: Params) {
     <>
       <JsonLd data={articleSchema(post)} />
       <JsonLd data={faqPage(post.faqs)} />
-
       <Breadcrumbs
         trail={[
           { name: "Recursos", path: "/recursos" },
@@ -55,131 +51,122 @@ export default async function Articulo({ params }: Params) {
         ]}
       />
 
-      <PageHero eyebrow="Recursos" pad={false} title={post.title} lede={post.lede}>
-        <dl className="mt-4 flex flex-wrap gap-x-12 gap-y-6 border-t border-line pt-6">
-          <div className="flex flex-col gap-2">
-            <dt className="label text-fg/40">Publicado</dt>
-            <dd className="text-sm text-fg/90">
-              <time dateTime={post.published}>{fechaLarga(post.published)}</time>
-            </dd>
-          </div>
-          {post.updated ? (
-            <div className="flex flex-col gap-2">
-              <dt className="label text-fg/40">Actualizado</dt>
-              <dd className="text-sm text-fg/90">
-                <time dateTime={post.updated}>{fechaLarga(post.updated)}</time>
-              </dd>
+      <Section tone="ink" className="!pt-28 md:!pt-32">
+        <Reveal as="article" className="card mx-auto max-w-4xl overflow-hidden rounded-card shadow-float">
+          {/* Membrete */}
+          <header className="flex items-center justify-between gap-6 border-b border-line px-8 py-5 md:px-14">
+            <Logo size={26} tone="tema" />
+            <span className="label text-fg/45">
+              Recursos · {fechaLarga(post.published)}
+            </span>
+          </header>
+
+          {/* Portada */}
+          {post.image ? (
+            <div className="relative aspect-[16/7] border-b border-line">
+              <Image
+                src={post.image.src}
+                alt={post.image.alt}
+                fill
+                priority
+                sizes="(max-width: 896px) 100vw, 896px"
+                className="object-cover"
+              />
             </div>
           ) : null}
-          <div className="flex flex-col gap-2">
-            <dt className="label text-fg/40">Lectura</dt>
-            <dd className="text-sm text-fg/90">{post.minutes} minutos</dd>
-          </div>
-        </dl>
-      </PageHero>
 
-      <Section tone="paper">
-        <div className="grid gap-16 lg:grid-cols-[minmax(0,44rem)_1fr] lg:gap-24">
-          {/* La columna del artículo. Ancho de lectura, no de pantalla. */}
-          <article className="flex flex-col gap-14">
-            <Figura figure={post.image} priority />
-            {post.sections.map((section) => (
-              <section key={section.heading} className="flex flex-col gap-5">
-                <h2 className="text-2xl leading-snug text-balance tracking-tight text-fg md:text-3xl">
-                  {section.heading}
-                </h2>
-                {section.body.map((p) => (
-                  <p key={p} className="text-pretty leading-relaxed text-fg/75">
-                    {p}
-                  </p>
-                ))}
-                {section.list ? (
-                  <ul className="mt-2 flex flex-col gap-3 border-l border-lime pl-7">
-                    {section.list.map((item) => (
-                      <li key={item} className="text-pretty leading-relaxed text-fg/75">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </section>
-            ))}
-          </article>
+          <div className="px-8 py-12 md:px-14 md:py-16">
+            <div className="mx-auto flex max-w-2xl flex-col gap-6">
+              <span className="label text-fg/50">Guía · {post.minutes} min de lectura</span>
+              <h1 className="text-headline text-balance text-fg">{post.title}</h1>
+              <p className="text-pretty text-lg leading-relaxed text-fg/80">{post.lede}</p>
+            </div>
 
-          {/* Los servicios que resuelven lo que el artículo describe. */}
-          <aside className="flex flex-col gap-6 self-start lg:sticky lg:top-28">
-            <span className="label text-fg/40">Con esto trabajamos</span>
-            <ul className="flex flex-col gap-3">
-              {servicios.map((s) => (
-                <li key={s.slug}>
-                  <Link
-                    href={`/servicios/${s.slug}`}
-                    className="card group flex flex-col gap-3 rounded-card px-6 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40"
-                  >
-                    <span className="flex items-center gap-3">
-                      <Mark size={16} className="shrink-0 opacity-40" />
-                      <span className="wordmark text-xs uppercase text-fg">{s.name}</span>
-                    </span>
-                    <span className="text-pretty text-sm leading-relaxed text-fg/55">
-                      {s.summary}
-                    </span>
-                    <span className="label flex items-center gap-2.5 text-fg/40 transition-colors group-hover:text-accent">
-                      Ver servicio <Arrow />
-                    </span>
-                  </Link>
-                </li>
+            {/* Cuerpo */}
+            <div className="mx-auto mt-14 flex max-w-2xl flex-col gap-12">
+              {post.sections.map((section) => (
+                <section key={section.heading} className="flex flex-col gap-4">
+                  <h2 className="border-t border-line pt-6 text-balance text-2xl leading-snug tracking-tight text-fg">
+                    {section.heading}
+                  </h2>
+                  {section.body.map((p) => (
+                    <p key={p} className="text-pretty leading-relaxed text-fg/80">
+                      {p}
+                    </p>
+                  ))}
+                  {section.list ? (
+                    <ul className="mt-2 flex flex-col gap-2.5 rounded-lg bg-surface-3 px-6 py-5">
+                      {section.list.map((item) => (
+                        <li key={item} className="flex gap-3 text-pretty text-sm leading-relaxed text-fg/80">
+                          <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-fg/40" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </section>
               ))}
-            </ul>
-            <p className="border-t border-line pt-6 text-pretty text-sm leading-relaxed text-fg/55">
-              ¿Prefiere una estimación antes de hablar con alguien? La{" "}
-              <Link href="/radiografia" className="text-fg underline underline-offset-4">
-                Radiografía Auren
-              </Link>{" "}
-              son doce preguntas, diez minutos y sin registro.
+
+              {/* Preguntas, dentro del documento */}
+              <section className="flex flex-col gap-6 border-t border-line pt-8">
+                <span className="label text-fg/50">Preguntas frecuentes</span>
+                <dl className="flex flex-col gap-6">
+                  {post.faqs.map((f) => (
+                    <div key={f.q} className="flex flex-col gap-2">
+                      <dt className="text-lg leading-snug text-balance text-fg">{f.q}</dt>
+                      <dd className="text-pretty text-sm leading-relaxed text-fg/75">{f.a}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            </div>
+          </div>
+
+          {/* Pie del documento: con qué se trabaja y qué más leer */}
+          <footer className="grid gap-8 border-t border-line bg-surface-3 px-8 py-8 md:grid-cols-2 md:px-14">
+            <div className="flex flex-col gap-3">
+              <span className="label text-fg/50">Servicios relacionados</span>
+              <ul className="flex flex-wrap gap-2">
+                {servicios.map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      href={`/servicios/${s.slug}`}
+                      className="inline-flex items-center gap-2 rounded-pill border border-line-strong px-4 py-2 text-xs text-fg/80 transition-colors hover:border-fg hover:text-fg"
+                    >
+                      {s.keyword} <Arrow />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {relacionados.length ? (
+              <div className="flex flex-col gap-3">
+                <span className="label text-fg/50">Seguir leyendo</span>
+                <ul className="flex flex-col gap-2">
+                  {relacionados.map((r) => (
+                    <li key={r.slug}>
+                      <Link
+                        href={`/recursos/${r.slug}`}
+                        className="group flex items-baseline justify-between gap-4 text-sm text-fg transition-colors hover:text-accent"
+                      >
+                        {r.title}
+                        <Arrow className="shrink-0 text-fg/40 group-hover:text-accent" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            <p className="text-xs text-fg/45 md:col-span-2">
+              {site.name} · {site.city}, Colombia · {post.updated ? `Actualizado el ${fechaLarga(post.updated)}` : `Publicado el ${fechaLarga(post.published)}`}
             </p>
-          </aside>
-        </div>
+          </footer>
+        </Reveal>
       </Section>
-
-      <Section tone="ink">
-        <SectionHead index="01" label="Preguntas frecuentes" invert>
-          <Headline>Preguntas frecuentes sobre {post.keyword}.</Headline>
-        </SectionHead>
-        <FaqList faqs={post.faqs} />
-      </Section>
-
-      {relacionados.length ? (
-        <Section tone="ivory">
-          <SectionHead index="02" label="Seguir leyendo">
-            <Headline className="text-fg">Seguir leyendo.</Headline>
-          </SectionHead>
-          <RevealList as="ul" className="grid gap-4 md:grid-cols-2">
-            {relacionados.map((r) => (
-              <RevealItem as="li" key={r.slug}>
-                <Link
-                  href={`/recursos/${r.slug}`}
-                  className="card group flex h-full flex-col gap-4 rounded-card p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:p-10"
-                >
-                  <span className="label text-fg/40">{r.minutes} min de lectura</span>
-                  <h3 className="text-xl leading-snug text-balance tracking-tight text-fg">
-                    {r.title}
-                  </h3>
-                  <p className="text-pretty text-sm leading-relaxed text-fg/55">
-                    {r.description}
-                  </p>
-                  <span className="label mt-auto flex items-center gap-3 pt-4 text-fg/40 transition-colors group-hover:text-fg">
-                    Leer <Arrow />
-                  </span>
-                </Link>
-              </RevealItem>
-            ))}
-          </RevealList>
-        </Section>
-      ) : null}
 
       <CtaBand
-        title="Si algo de esto le suena a su operación, hablemos."
-        lede="Veinte minutos para contarnos qué está pasando. Si hay caso lo decimos, y si no lo hay también."
+        title="Si algo de esto describe la operación, el siguiente paso es una conversación."
+        lede="Veinte minutos para entender qué está pasando. Si hay caso se define por dónde empezar, y si no lo hay también se dice."
       />
     </>
   );

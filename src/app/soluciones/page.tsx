@@ -87,7 +87,7 @@ export default function Soluciones() {
                   <span className="label text-fg/50">Cómo empezar</span>
                   <p className="text-pretty text-sm leading-relaxed text-fg/75">{s.start}</p>
                   <Button href="/contacto" variant="solid" className="w-fit">
-                    Hablemos de esto <Arrow />
+                    Iniciar una conversación <Arrow />
                   </Button>
                 </div>
               </Reveal>
@@ -158,8 +158,8 @@ export default function Soluciones() {
       ))}
 
       <CtaBand
-        title="¿No sabe cuál es la suya? Esa es la primera conversación."
-        lede="Treinta minutos para entender su situación y decirle por dónde empezar."
+        title="Si no está claro cuál corresponde, esa es la primera conversación."
+        lede="Treinta minutos para entender la situación y definir por dónde empezar."
       />
     </>
   );

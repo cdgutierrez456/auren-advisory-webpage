@@ -89,7 +89,7 @@ export default function Sectores() {
 
                 {demos.length ? (
                   <Reveal className="flex flex-col gap-4">
-                    <span className="label text-fg/50">Pruébelo ahora</span>
+                    <span className="label text-fg/50">Demos disponibles</span>
                     <ul className="card grid divide-y divide-line overflow-hidden rounded-card">
                       {demos.map((d) => (
                         <li key={d.slug}>
@@ -119,7 +119,7 @@ export default function Sectores() {
 
       <CtaBand
         title="¿Su sector no está aquí? El método es el mismo."
-        lede="Cuéntenos qué hace su organización y dónde se le va el tiempo."
+        lede="Una conversación sobre qué hace la organización y dónde se va el tiempo basta para saber si tiene sentido continuar."
       />
     </>
   );

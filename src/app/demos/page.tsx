@@ -72,7 +72,7 @@ export default function Demos() {
       <section className="py-12">
         <p className="max-w-2xl text-pretty text-sm leading-relaxed text-fg/55">
           Los tres demos de cámara comparten el mismo motor. Añadir un modo
-          nuevo —conteo de piezas, nivel en tanque, detección de EPP— cuesta
+          nuevo (conteo de piezas, nivel en tanque, detección de EPP) cuesta
           uno o dos días porque el shell de cámara, los permisos y el manejo de
           errores ya están construidos.
         </p>

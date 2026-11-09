@@ -552,6 +552,22 @@ estrictamente necesario».
 - **Cinco fotografías más** (los tres pasos, Nosotros y Contacto), generadas y
   exportadas desde Canva como las anteriores.
 
+### 4.11 Iteración V2.4 — Recursos como galería y redacción formal
+
+- **Recursos es una galería**: cinco tarjetas con fotografía (las tres guías,
+  la Radiografía y los demos); cada tarjeta completa lleva a su destino.
+- **Cada guía se lee como la página de un documento**: hoja centrada con
+  membrete, portada fotográfica, cuerpo a ancho de lectura, preguntas dentro
+  del documento y pie con servicios relacionados y lecturas.
+- **Redacción**: tono formal e impersonal en todo el sitio. Desaparecen los
+  guiones largos como separador (se reemplazan por comas o paréntesis), las
+  frases coloquiales («se lo decimos», «hablemos», «cuéntenos», «empecemos»)
+  y los imperativos de las guías («empiece», «escriba», «pida»), que pasan a
+  construcciones impersonales («conviene empezar», «se escribe»). El botón
+  del menú vuelve a llamarse «Contacto»; la acción principal es «Iniciar una
+  conversación».
+- **Cinco fotografías más** (tres guías, Radiografía y demos), 1680×944.
+
 ### 4.7 Archivos modificados
 
 Nuevos: `src/components/diagrams.tsx`, `src/components/sections/que-hacemos.tsx`,

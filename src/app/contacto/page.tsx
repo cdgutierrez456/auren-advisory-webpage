@@ -10,7 +10,7 @@ import { Reveal } from "@/components/motion";
 
 export const metadata: Metadata = pageMetadata(
   "Contacto",
-  "Hablemos de su empresa: formulario, WhatsApp y correo directo de los socios. Respondemos en un día hábil. Manizales y todo Colombia.",
+  "Formulario, WhatsApp y correo directo de los socios de Auren Advisory. Respuesta en un día hábil. Manizales y todo Colombia.",
   "/contacto",
 );
 
@@ -46,10 +46,10 @@ export default function Contacto() {
           <Reveal>
             <Card className="p-7 md:p-10">
               <div className="mb-8 flex flex-col gap-2">
-                <Cota className="text-fg/55">Escríbanos</Cota>
+                <Cota className="text-fg/55">Formulario</Cota>
                 <p className="text-pretty text-sm leading-relaxed text-fg/65">
-                  El formulario arma el mensaje y abre WhatsApp. No guardamos nada en ningún
-                  servidor: el mensaje sale de su teléfono o su computador.
+                  El formulario arma el mensaje y abre WhatsApp. Nada se guarda en ningún
+                  servidor: el mensaje sale del teléfono o del computador de quien escribe.
                 </p>
               </div>
               <ContactForm />
