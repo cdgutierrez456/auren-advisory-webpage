@@ -10,7 +10,7 @@ import { DrawRule, RevealItem, RevealList } from "@/components/motion";
 export function Metodo() {
   return (
     <Section id="metodo" tone="deep">
-      <SectionHead index="03" label={method.eyebrow} aside="Ver · Entender · Transformar">
+      <SectionHead label="Cómo trabajamos">
         <Headline>{method.title}</Headline>
       </SectionHead>
 

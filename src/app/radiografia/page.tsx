@@ -18,7 +18,6 @@ export default function Radiografia() {
 
       <PageHero
         eyebrow={radiografia.eyebrow}
-        pad={false}
         title={radiografia.title}
         lede={radiografia.lede}
       >

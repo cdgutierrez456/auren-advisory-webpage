@@ -11,7 +11,7 @@ import { Reveal, RevealItem, RevealList } from "@/components/motion";
 export function QueHacemos() {
   return (
     <Section id="que-hacemos" tone="ivory">
-      <SectionHead index="01" label="Qué hacemos" aside="Cuatro dimensiones, una sola forma de trabajar" />
+      <SectionHead label="Qué hacemos" />
 
       <Reveal as="blockquote" className="max-w-4xl">
         <p className="font-serif text-quote text-balance text-fg">{manifesto.quote}</p>

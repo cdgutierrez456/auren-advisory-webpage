@@ -12,7 +12,7 @@ import { RevealItem, RevealList } from "@/components/motion";
 export function Sectores() {
   return (
     <Section id="sectores" tone="ivory">
-      <SectionHead index="04" label="Sectores" aside="El mismo método, fricciones distintas">
+      <SectionHead label="Sectores">
         <Headline>Dónde trabajamos.</Headline>
       </SectionHead>
 

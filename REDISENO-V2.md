@@ -514,6 +514,28 @@ poco y abre lo demás bajo demanda.**
   el archivo, usa la lámina. Pendiente: descargar las cuatro a
   `public/images/` y enlazarlas.
 
+### 4.9 Iteración V2.2 — páginas interiores al mismo nivel que la home
+
+Segunda revisión del propietario: «solo quedó mejor la principal; el resto
+sigue con demasiado texto; no se entiende el paso entre secciones; quiero lo
+estrictamente necesario».
+
+- **Cabeceras limpias.** Las migas de pan ya no se pintan (se conserva su
+  JSON-LD); la etiqueta de página es un rótulo sencillo; desaparecen los
+  ticks de las cotas y la numeración «01 —» de los encabezados de sección.
+- **Soluciones y Sectores**: un bloque por entrada con foto, pregunta, qué
+  obtiene y cómo empezar. El detalle (síntomas, qué hacemos, servicios) va
+  plegado en un `<details>` nativo.
+- **Cómo trabajamos**: cada fase en una pantalla (palabra, pregunta, qué
+  hacemos, con qué termina, servicios); el razonamiento largo, plegado.
+- **Nosotros**: tres pantallas (origen y hechos, quién responde, lo que no
+  hacemos).
+- **Servicios**: de ocho secciones a cinco; «con qué se queda», «qué incluye»
+  y «cómo se demuestra» en una sola banda; «qué sigue» y lecturas al pie de
+  las preguntas. El contenido SEO se mantiene completo.
+- **Home**: «Sin casos que mostrar todavía» → «Piezas que funcionan, personas
+  que responden».
+
 ### 4.7 Archivos modificados
 
 Nuevos: `src/components/diagrams.tsx`, `src/components/sections/que-hacemos.tsx`,

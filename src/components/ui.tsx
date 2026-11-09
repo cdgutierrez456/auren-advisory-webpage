@@ -44,7 +44,7 @@ export function Section({
 export function Cota({
   children,
   className = "",
-  tick = true,
+  tick = false,
 }: {
   children: ReactNode;
   className?: string;
@@ -68,7 +68,7 @@ export function SectionHead({
   aside,
   children,
 }: {
-  index: string;
+  index?: string;
   label: string;
   /** @deprecated El color lo decide la superficie (`inverse`). Se acepta por compatibilidad. */
   invert?: boolean;
@@ -78,11 +78,9 @@ export function SectionHead({
 }) {
   return (
     <Reveal as="header" className={tight ? "mb-8" : "mb-12 md:mb-16"}>
-      <div className="flex items-center justify-between gap-6 border-t border-line-strong pt-4">
-        <Cota className="text-fg/70">
-          {index} — {label}
-        </Cota>
-        {aside ? <span className="cota text-fg/45">{aside}</span> : null}
+      <div className="flex items-center justify-between gap-6 border-t border-line pt-4">
+        <span className="label text-fg/55">{label}</span>
+        {aside ? <span className="label hidden text-fg/40 sm:block">{aside}</span> : null}
       </div>
       {children ? <div className="mt-8 max-w-3xl">{children}</div> : null}
     </Reveal>
@@ -178,10 +176,9 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className={`relative bg-surface ${pad ? "pt-32 md:pt-40" : "pt-10 md:pt-12"}`}>
-      <div aria-hidden className="paper-grid pointer-events-none absolute inset-0 text-fg [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
-      <div className="shell relative flex flex-col gap-8 border-b border-line-strong pb-14 md:pb-20">
-        <Cota className="text-fg/70">{eyebrow}</Cota>
+    <section className={`relative bg-surface ${pad ? "pt-28 md:pt-36" : "pt-10 md:pt-12"}`}>
+      <div className="shell relative flex flex-col gap-7 border-b border-line pb-12 md:pb-16">
+        <span className="label text-fg/50">{eyebrow}</span>
         <h1 className="text-display max-w-5xl text-balance font-normal text-fg">{title}</h1>
         {lede ? <p className="text-lede max-w-2xl text-pretty text-fg/75">{lede}</p> : null}
         {children}
@@ -207,7 +204,6 @@ export function CtaBand({
       <div aria-hidden className="paper-grid pointer-events-none absolute inset-0 text-fg [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
       <div className="shell relative grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-end">
         <div className="flex flex-col gap-6">
-          <Cota className="text-accent">Ver · Entender · Transformar</Cota>
           <h2 className="text-headline max-w-3xl text-balance font-normal">{title}</h2>
           {lede ? <p className="max-w-xl text-pretty leading-relaxed text-fg/70">{lede}</p> : null}
         </div>
@@ -250,35 +246,9 @@ export function Arrow({ className = "" }: { className?: string }) {
  * no se puedan desincronizar. `trail` no incluye «Inicio»: se pone solo.
  */
 export function Breadcrumbs({ trail }: { trail: readonly { name: string; path: string }[] }) {
-  const items = [{ name: "Inicio", path: "/" }, ...trail];
-  return (
-    <>
-      <JsonLd data={breadcrumb(trail)} />
-      <nav aria-label="Ruta de navegación" className="shell pt-24 md:pt-28">
-        <ol className="cota flex flex-wrap items-center gap-x-3 gap-y-2 text-fg/45">
-          {items.map((item, j) => {
-            const last = j === items.length - 1;
-            return (
-              <li key={item.path} className="flex items-center gap-3">
-                {last ? (
-                  <span aria-current="page" className="text-fg/75">
-                    {item.name}
-                  </span>
-                ) : (
-                  <>
-                    <Link href={item.path} className="transition-colors hover:text-fg">
-                      {item.name}
-                    </Link>
-                    <span aria-hidden className="h-px w-3 bg-line-strong" />
-                  </>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
-    </>
-  );
+  // V2.2: la ruta ya no se pinta. En la cabecera competía con el título y no
+  // aportaba nada que el menú no diera. El dato estructurado se conserva.
+  return <JsonLd data={breadcrumb(trail)} />;
 }
 
 /**
@@ -289,13 +259,10 @@ export function Breadcrumbs({ trail }: { trail: readonly { name: string; path: s
 export function FaqList({ faqs }: { faqs: readonly Faq[] }) {
   return (
     <RevealList as="dl" className="grid gap-x-12 md:grid-cols-2">
-      {faqs.map((f, j) => (
+      {faqs.map((f) => (
         <RevealItem key={f.q} className="flex flex-col gap-3 border-t border-line py-7">
-          <dt className="flex gap-4 text-lg leading-snug text-balance text-fg">
-            <span className="cota mt-1.5 shrink-0 text-fg/45">{String(j + 1).padStart(2, "0")}</span>
-            {f.q}
-          </dt>
-          <dd className="pl-[calc(2ch+1rem)] text-pretty text-sm leading-relaxed text-fg/70">{f.a}</dd>
+          <dt className="text-lg leading-snug text-balance text-fg">{f.q}</dt>
+          <dd className="text-pretty text-sm leading-relaxed text-fg/70">{f.a}</dd>
         </RevealItem>
       ))}
     </RevealList>

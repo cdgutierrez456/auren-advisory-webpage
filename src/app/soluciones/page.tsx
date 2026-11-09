@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SolutionGlyph } from "@/components/diagrams";
-import {
-  Arrow,
-  Breadcrumbs,
-  Button,
-  Cota,
-  CtaBand,
-  Figura,
-  PageHero,
-  Section,
-} from "@/components/ui";
+import { Lamina } from "@/components/laminas";
+import { Arrow, Breadcrumbs, Button, CtaBand, Figura, PageHero, Section } from "@/components/ui";
 import { serviceBySlug, solutions } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
-import { Reveal, RevealItem, RevealList } from "@/components/motion";
+import { Reveal } from "@/components/motion";
 
 export const metadata: Metadata = pageMetadata(
   "Soluciones de transformación empresarial",
@@ -22,9 +13,9 @@ export const metadata: Metadata = pageMetadata(
 );
 
 /**
- * Las cinco soluciones, por necesidad empresarial. Cada bloque responde en
- * este orden: qué problema resuelve, qué hacemos, qué obtiene, cómo empezar.
- * Los servicios (`/servicios/*`) son el nivel «cómo lo entregamos».
+ * Las cinco soluciones. Cada una en un bloque corto: imagen, la pregunta que
+ * responde, qué obtiene y cómo empezar. El detalle (síntomas, qué hacemos,
+ * servicios) está plegado: se abre solo si alguien lo quiere leer.
  */
 export default function Soluciones() {
   return (
@@ -33,33 +24,22 @@ export default function Soluciones() {
 
       <PageHero
         eyebrow="Soluciones"
-        pad={false}
-        title={
-          <>
-            <span className="block">Cinco formas de hacer que su empresa funcione mejor.</span>
-            <span className="mt-6 block max-w-3xl text-balance text-lg leading-snug tracking-tight text-fg/75 md:text-xl">
-              Soluciones de transformación empresarial organizadas por necesidad: estrategia,
-              automatización e inteligencia artificial, software a la medida, datos y sistemas
-              inteligentes.
-            </span>
-          </>
-        }
-        lede="No hace falta saber qué tecnología necesita para empezar. Basta con reconocer la situación. Cada solución explica qué problema resuelve, qué hacemos, qué obtiene y cómo se inicia la conversación."
+        title="Cinco formas de hacer que su empresa funcione mejor."
+        lede="Organizadas por lo que necesita, no por la tecnología que usamos. Reconozca la situación y empecemos por ahí."
       >
-        {/* Índice: se ve de una la oferta completa y se salta a la que toca. */}
-        <RevealList as="ol" className="grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
+        <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
           {solutions.map((s, k) => (
-            <RevealItem as="li" key={s.slug}>
+            <li key={s.slug}>
               <a
                 href={`#${s.slug}`}
-                className="group flex h-full flex-col gap-3 bg-surface-2 px-5 py-5 transition-colors hover:bg-surface-3"
+                className="card flex h-full items-start gap-3 rounded-card px-4 py-4 text-sm leading-snug text-fg transition-colors hover:bg-surface-3"
               >
-                <Cota className="text-fg/45">{String(k + 1).padStart(2, "0")}</Cota>
-                <span className="text-sm leading-snug text-fg">{s.short}</span>
+                <span className="cota mt-0.5 text-fg/45">{String(k + 1).padStart(2, "0")}</span>
+                {s.short}
               </a>
-            </RevealItem>
+            </li>
           ))}
-        </RevealList>
+        </ol>
       </PageHero>
 
       {solutions.map((s, k) => (
@@ -69,104 +49,117 @@ export default function Soluciones() {
           tone={k % 2 === 0 ? "ivory" : "paper"}
           className="scroll-mt-20 border-b border-line"
         >
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
-            {/* Columna fija: nombre, pregunta y glifo */}
-            <div className="flex flex-col gap-7 self-start lg:sticky lg:top-28">
-              <Cota className="text-fg/55">
-                {String(k + 1).padStart(2, "0")} / {String(solutions.length).padStart(2, "0")}
-              </Cota>
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+            <Reveal className="relative aspect-[4/3] overflow-hidden rounded-card border border-line lg:sticky lg:top-28 lg:self-start">
               {s.image ? (
                 <Figura figure={s.image} />
               ) : (
-                <SolutionGlyph kind={s.glyph} className="w-40 text-fg/85" />
+                <div className="absolute inset-0">
+                  <Lamina kind={s.glyph} />
+                </div>
               )}
-              <h2 className="text-headline text-balance text-fg">{s.title}</h2>
-              <p className="font-serif text-2xl italic leading-snug text-balance text-fg/85">
-                {s.question}
-              </p>
-              <div className="flex flex-col gap-3 border-t border-line pt-6">
-                <Cota className="text-fg/45">Lo entregamos con</Cota>
-                <ul className="flex flex-wrap gap-2">
-                  {s.services.map((slug) => {
-                    const service = serviceBySlug(slug);
-                    if (!service) return null;
-                    return (
-                      <li key={slug}>
-                        <Link
-                          href={`/servicios/${slug}`}
-                          className="inline-flex items-center gap-2 rounded-pill border border-line-strong px-4 py-2 text-xs text-fg/80 transition-colors hover:border-fg hover:text-fg"
-                        >
-                          {service.name} <Arrow />
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
+            </Reveal>
 
-            {/* Columna de contenido: problema → qué hacemos → qué obtiene → cómo empezar */}
-            <div className="flex flex-col gap-12">
-              <Reveal className="flex flex-col gap-5">
-                <Cota className="text-fg/55">El problema</Cota>
-                <p className="text-pretty text-lg leading-relaxed text-fg/85">{s.problem}</p>
-                <ul className="grid gap-2 sm:grid-cols-2">
-                  {s.symptoms.map((x) => (
-                    <li key={x} className="card flex gap-3 rounded-lg px-4 py-3 text-sm text-fg/80">
-                      <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-line-strong" />
-                      {x}
-                    </li>
-                  ))}
-                </ul>
+            <div className="flex flex-col gap-8">
+              <Reveal className="flex flex-col gap-4">
+                <span className="label text-fg/50">
+                  {String(k + 1).padStart(2, "0")} · {s.short}
+                </span>
+                <h2 className="text-headline text-balance text-fg">{s.title}</h2>
+                <p className="font-serif text-2xl italic leading-snug text-balance text-fg/85">
+                  {s.question}
+                </p>
               </Reveal>
 
-              <Reveal className="flex flex-col gap-5">
-                <Cota className="text-fg/55">Qué hacemos</Cota>
-                <ol className="card grid divide-y divide-line overflow-hidden rounded-card">
-                  {s.work.map((w, j) => (
-                    <li key={w} className="flex gap-5 px-5 py-4 md:px-6">
-                      <span className="cota mt-1 text-fg/45">{String(j + 1).padStart(2, "0")}</span>
-                      <span className="text-pretty text-sm leading-relaxed text-fg/85 md:text-base">{w}</span>
-                    </li>
-                  ))}
-                </ol>
-              </Reveal>
-
-              <div className="grid gap-10 md:grid-cols-2">
-                <Reveal className="flex flex-col gap-5">
-                  <Cota className="text-fg/55">Qué obtiene</Cota>
-                  <ul className="flex flex-col gap-4">
+              <Reveal className="grid gap-8 sm:grid-cols-2">
+                <div className="flex flex-col gap-4">
+                  <span className="label text-fg/50">Qué obtiene</span>
+                  <ul className="flex flex-col gap-3">
                     {s.outcomes.map((o) => (
-                      <li key={o} className="flex gap-4 text-pretty leading-snug text-fg/90">
+                      <li key={o} className="flex gap-3 text-pretty leading-snug text-fg/90">
                         <span aria-hidden className="mt-2.5 h-0.5 w-4 shrink-0 bg-lime" />
                         {o}
                       </li>
                     ))}
                   </ul>
-                </Reveal>
-                <Reveal delay={0.08} className="flex flex-col gap-5">
-                  <Cota className="text-fg/55">Cómo empezar</Cota>
-                  <p className="text-pretty text-sm leading-relaxed text-fg/80 md:text-base">{s.start}</p>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <span className="label text-fg/50">Cómo empezar</span>
+                  <p className="text-pretty text-sm leading-relaxed text-fg/75">{s.start}</p>
                   <Button href="/contacto" variant="solid" className="w-fit">
                     Hablemos de esto <Arrow />
                   </Button>
-                </Reveal>
-              </div>
+                </div>
+              </Reveal>
 
-              <div className="flex flex-col gap-3 border-t border-line pt-6">
-                <Cota className="text-fg/45">Tecnologías que suelen intervenir</Cota>
-                <p className="text-pretty text-sm leading-relaxed text-fg/60">
-                  {s.technologies.join(" · ")}
-                </p>
-              </div>
+              {/* El detalle, plegado: quien quiere saber exactamente qué hacemos
+                  lo abre; quien no, sigue de largo. */}
+              <Reveal>
+                <details className="group card rounded-card">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-sm text-fg [&::-webkit-details-marker]:hidden">
+                    Qué hacemos exactamente y con qué servicios
+                    <span
+                      aria-hidden
+                      className="flex size-7 shrink-0 items-center justify-center rounded-pill border border-line text-fg/60 transition-transform duration-300 group-open:rotate-45"
+                    >
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                        <path d="M5 0v10M0 5h10" stroke="currentColor" strokeWidth="1.4" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <div className="grid gap-8 border-t border-line px-6 py-6 sm:grid-cols-2">
+                    <div className="flex flex-col gap-3">
+                      <span className="label text-fg/50">Lo reconoce si</span>
+                      <ul className="flex flex-col gap-2">
+                        {s.symptoms.map((x) => (
+                          <li key={x} className="flex gap-3 text-sm leading-relaxed text-fg/75">
+                            <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-line-strong" />
+                            {x}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <span className="label text-fg/50">Qué hacemos</span>
+                      <ol className="flex flex-col gap-2">
+                        {s.work.map((w, j) => (
+                          <li key={w} className="flex gap-3 text-sm leading-relaxed text-fg/75">
+                            <span className="cota mt-1 shrink-0 text-fg/45">{String(j + 1).padStart(2, "0")}</span>
+                            {w}
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                    <div className="flex flex-col gap-3 sm:col-span-2">
+                      <span className="label text-fg/50">Lo entregamos con</span>
+                      <ul className="flex flex-wrap gap-2">
+                        {s.services.map((slug) => {
+                          const service = serviceBySlug(slug);
+                          if (!service) return null;
+                          return (
+                            <li key={slug}>
+                              <Link
+                                href={`/servicios/${slug}`}
+                                className="inline-flex items-center gap-2 rounded-pill border border-line-strong px-4 py-2 text-xs text-fg/80 transition-colors hover:border-fg hover:text-fg"
+                              >
+                                {service.name} <Arrow />
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </details>
+              </Reveal>
             </div>
           </div>
         </Section>
       ))}
 
       <CtaBand
-        title="¿No sabe cuál es la suya? Esa es exactamente la primera conversación."
-        lede="Treinta minutos para entender su situación. Salimos de ahí con la solución que corresponde, o con la noticia de que el problema se resuelve sin nosotros."
+        title="¿No sabe cuál es la suya? Esa es la primera conversación."
+        lede="Treinta minutos para entender su situación y decirle por dónde empezar."
       />
     </>
   );

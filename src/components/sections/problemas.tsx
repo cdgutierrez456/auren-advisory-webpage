@@ -10,7 +10,7 @@ import { RevealItem, RevealList } from "@/components/motion";
 export function Problemas() {
   return (
     <Section id="problemas" tone="paper">
-      <SectionHead index="02" label="¿Le suena?">
+      <SectionHead label="¿Le suena?">
         <Headline>Las situaciones con las que más nos buscan.</Headline>
         <p className="mt-6 max-w-xl text-pretty leading-relaxed text-fg/65">
           Si reconoce una, hay por dónde empezar. Cada frase enlaza con la solución que la

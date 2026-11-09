@@ -11,8 +11,8 @@ import { RevealItem, RevealList } from "@/components/motion";
 export function Confianza() {
   return (
     <Section id="confianza" tone="paper">
-      <SectionHead index="05" label="Por qué creer" aside="Fundada en 2026 · Manizales">
-        <Headline>Sin casos que mostrar todavía. Con cosas que puede probar hoy.</Headline>
+      <SectionHead label="Compruébelo">
+        <Headline>Piezas que funcionan, personas que responden.</Headline>
       </SectionHead>
 
       <RevealList className="grid gap-4 lg:grid-cols-3">

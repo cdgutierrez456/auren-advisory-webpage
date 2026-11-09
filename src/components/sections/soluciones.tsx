@@ -13,7 +13,7 @@ import { RevealItem, RevealList } from "@/components/motion";
 export function Soluciones() {
   return (
     <Section id="soluciones" tone="paper">
-      <SectionHead index="02" label="Soluciones" aside="Pase el mouse para abrir cada una">
+      <SectionHead label="Soluciones" aside="Pase el mouse sobre cada tarjeta">
         <Headline>Lo que su empresa necesita, no la tecnología que usamos.</Headline>
       </SectionHead>
 

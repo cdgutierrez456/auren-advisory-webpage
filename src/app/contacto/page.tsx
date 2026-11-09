@@ -29,7 +29,6 @@ export default function Contacto() {
 
       <PageHero
         eyebrow="Contacto"
-        pad={false}
         title={
           <>
             <span className="block">{contact.title}</span>

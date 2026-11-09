@@ -17,7 +17,6 @@ export default function Recursos() {
 
       <PageHero
         eyebrow="Recursos"
-        pad={false}
         title={
           <>
             <span className="block">Criterio, antes de la cotización.</span>

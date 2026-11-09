@@ -27,7 +27,6 @@ export default function Servicios() {
 
       <PageHero
         eyebrow="Servicios · cómo lo entregamos"
-        pad={false}
         title={
           <>
             <span className="block">Ocho servicios. Un solo método.</span>
