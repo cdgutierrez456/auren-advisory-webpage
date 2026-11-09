@@ -47,13 +47,13 @@ const etiqueta = (as: Etiqueta) =>
   motion[as] as React.ComponentType<HTMLMotionProps<"div">>;
 
 const SUBIR = {
-  oculto: { opacity: 0, y: 28, filter: "blur(10px)" },
-  visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+  oculto: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0 },
 };
 
 /** La misma curva que el resto del sistema (`--ease-expo`). */
 const EASE = [0.16, 1, 0.3, 1] as const;
-const TRANSICION = { duration: 0.75, ease: EASE };
+const TRANSICION = { duration: 0.5, ease: EASE };
 
 /** Se dispara una vez: volver a subir no vuelve a animar, que marea. */
 const VISTA = { once: true, amount: 0.15 } as const;

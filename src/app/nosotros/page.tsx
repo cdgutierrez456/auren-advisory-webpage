@@ -46,7 +46,7 @@ export default function NosotrosPage() {
             <SectionHead index="01" label="Origen" tight />
             <dl className="grid gap-3">
               {about.facts.map((f) => (
-                <div key={f.k} className="glass flex flex-col gap-1.5 rounded-card px-6 py-5">
+                <div key={f.k} className="card flex flex-col gap-1.5 rounded-card px-6 py-5">
                   <dt className="label text-fg/40">{f.k}</dt>
                   <dd className="text-pretty text-sm text-fg/90">{f.v}</dd>
                 </div>
@@ -66,7 +66,7 @@ export default function NosotrosPage() {
                 esta es la pieza de confianza: quién responde del trabajo. */}
             <ul className="mt-2 grid gap-4 sm:grid-cols-2">
               {about.founders.map((f) => (
-                <li key={f.email} className="glass flex flex-col gap-2 rounded-card px-6 py-5">
+                <li key={f.email} className="card flex flex-col gap-2 rounded-card px-6 py-5">
                   <p className="text-pretty text-base text-fg">{f.name}</p>
                   <p className="text-pretty text-sm leading-relaxed text-fg/55">{f.role}</p>
                   <a
@@ -95,7 +95,7 @@ export default function NosotrosPage() {
             <RevealItem
               as="li"
               key={d.index}
-              className="glass flex flex-col gap-6 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-10 md:pb-14"
+              className="card flex flex-col gap-6 rounded-card p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:p-10 md:pb-14"
             >
               <span className="font-mono text-xs tracking-widest text-accent">{d.index}</span>
               <h3 className="text-subhead">
@@ -132,7 +132,7 @@ export default function NosotrosPage() {
             <SectionHead index="04" label="Lo que no hacemos" tight />
             <ul className="flex flex-col gap-3">
               {about.boundaries.map((b) => (
-                <li key={b} className="glass flex gap-5 rounded-card px-6 py-5">
+                <li key={b} className="card flex gap-5 rounded-card px-6 py-5">
                   <span aria-hidden className="mt-2.5 h-0.5 w-5 shrink-0 bg-lime" />
                   <p className="text-pretty text-sm leading-relaxed text-fg/75">{b}</p>
                 </li>
@@ -142,7 +142,7 @@ export default function NosotrosPage() {
 
           <div className="flex flex-col">
             <SectionHead index="05" label="Territorio" tight />
-            <div className="glass flex flex-col gap-6 rounded-card p-8 md:p-11">
+            <div className="card flex flex-col gap-6 rounded-card p-8 md:p-11">
               <Mark size={30} className="opacity-40" />
               <h3 className="text-balance text-2xl leading-tight tracking-tight text-fg">
                 {about.region.title}
@@ -157,7 +157,7 @@ export default function NosotrosPage() {
       <Section tone="ivory" className="!py-20">
         <Link
           href="/marca"
-          className="glass group flex flex-col justify-between gap-8 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:flex-row md:items-center md:p-11"
+          className="card group flex flex-col justify-between gap-8 rounded-card p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:flex-row md:items-center md:p-11"
         >
           <div className="flex flex-col gap-3">
             <span className="label text-fg/40 transition-colors duration-500 group-hover:text-accent">

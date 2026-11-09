@@ -5,7 +5,7 @@ import { Arrow } from "@/components/ui";
 import { validateLead, whatsappUrl } from "@/lib/lead";
 
 const field =
-  "w-full border-b bg-transparent py-4 text-fg outline-none transition-colors placeholder:text-fg/30 focus:border-lime";
+  "w-full border-b bg-transparent py-4 text-fg outline-none transition-colors placeholder:text-fg/30 focus:border-fg";
 
 export function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -72,7 +72,7 @@ export function ContactForm() {
       <div className="flex flex-wrap items-center gap-6">
         <button
           type="submit"
-          className="label inline-flex items-center gap-3 rounded-pill bg-lime px-8 py-4.5 text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-6px_var(--color-lime)] active:translate-y-0 active:scale-[0.97]"
+          className="inline-flex items-center gap-3 rounded-pill bg-fg px-7 py-4 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-surface transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] [&_svg]:transition-transform hover:[&_svg]:translate-x-0.5 hover:[&_svg]:-translate-y-0.5"
         >
           Enviar por WhatsApp <Arrow />
         </button>
@@ -86,7 +86,7 @@ export function ContactForm() {
 
 function Legend({ text, error }: { text: string; error?: string }) {
   return (
-    <span className="label text-fg/45">
+    <span className="cota text-fg/55">
       {text}
       {error ? <span className="ml-3 normal-case tracking-normal text-accent">{error}</span> : null}
     </span>

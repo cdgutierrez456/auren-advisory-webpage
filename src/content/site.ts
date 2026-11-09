@@ -26,43 +26,311 @@ export const site = {
   geo: { lat: 5.0689, lng: -75.5174 },
 } as const;
 
+/**
+ * Menú principal: secciones del sitio, no herramientas. La Radiografía y los
+ * demos salieron de aquí a propósito: convencen más donde aparecen en
+ * contexto (cierres, sectores, pie) que como ítems sueltos de navegación.
+ */
 export const nav = [
-  { label: "Enfoque", href: "/enfoque" },
-  { label: "Servicios", href: "/servicios" },
+  { label: "Soluciones", href: "/soluciones" },
+  { label: "Cómo trabajamos", href: "/enfoque" },
+  { label: "Sectores", href: "/sectores" },
   { label: "Nosotros", href: "/nosotros" },
-  { label: "Radiografía", href: "/radiografia" },
-  { label: "Demos", href: "/demos" },
   { label: "Recursos", href: "/recursos" },
 ] as const;
 
+/** El botón del menú. Es la conversión principal del sitio. */
+export const navCta = { label: "Hablemos", href: "/contacto" } as const;
+
 export const hero = {
-  eyebrow: "Transformación empresarial",
-  title: ["Ver.", "Entender.", "Transformar."],
+  eyebrow: "Transformación empresarial mediante tecnología",
+  /** Titular. Promesa + acción, con eco del método («ver»). */
+  title: "Su empresa puede funcionar mejor. Empecemos por ver dónde.",
   /**
-   * Segunda línea del H1. El eslogan solo no le dice al buscador —ni a quien
-   * llega de un enlace— a qué se dedica la firma; esto sí, y sin tocar la
-   * jerarquía visual del bloque de tres palabras.
+   * Segunda línea del H1: dice a qué se dedica la firma, para el buscador y
+   * para quien llega de un enlace. Es la definición del brief, literal.
    */
   titleSub:
-    "Consultoría en transformación empresarial, automatización e inteligencia artificial para empresas en Colombia.",
-  lede: "Ayudamos a las organizaciones a identificar oportunidades reales y convertirlas en soluciones a medida. Primero observamos cómo funciona la empresa. La tecnología viene después.",
-  primary: { label: "Agendar diagnóstico", href: "/#contacto" },
+    "Transformación empresarial mediante tecnología: estrategia, procesos, automatización, datos e inteligencia aplicada.",
+  lede: "Entendemos cómo funciona su negocio, identificamos las oportunidades que no está viendo y las convertimos en soluciones que lo transforman. La tecnología es nuestro instrumento; el resultado es una empresa que opera mejor.",
+  primary: { label: "Hablemos de su empresa", href: "/contacto" },
   secondary: { label: "Cómo trabajamos", href: "/enfoque" },
-  meta: [
-    { k: "Industria", v: "Manufactura y operaciones" },
-    { k: "Servicios", v: "Compañías de servicios" },
-    { k: "Tecnología", v: "Producto y plataformas" },
+  /** Alternativa de diez minutos para quien todavía no quiere hablar con nadie. */
+  tertiary: {
+    label: "O haga la Radiografía: 12 preguntas, 10 minutos, sin registro",
+    href: "/radiografia",
+  },
+} as const;
+
+/**
+ * El mensaje central, tal como lo define la firma. La serif va en la cita;
+ * el cuerpo la explica sin volver a nombrar tecnologías.
+ */
+export const manifesto = {
+  quote: "No vendemos tecnología por vender tecnología.",
+  body: [
+    "Entendemos su negocio, identificamos oportunidades y desarrollamos soluciones que lo transforman. Lo que construimos —una automatización, un modelo, un tablero, un sistema a la medida— es la consecuencia de haber entendido primero cómo funciona la empresa y hacia dónde debe evolucionar.",
+    "Por eso trabajamos en cuatro dimensiones a la vez: la estrategia que dice hacia dónde, los procesos que dicen cómo, la tecnología que lo hace posible y el acompañamiento que convierte la solución en una mejora real y medida.",
   ],
 } as const;
 
-export const manifesto = {
-  quote:
-    "Auren no es una empresa que vende inteligencia artificial. Es la empresa que sabe cuándo, dónde y cómo usarla.",
-  body: [
-    "La mayoría de los proyectos de tecnología fracasan antes de escribir una línea de código: se compra una herramienta para un problema que nadie diagnosticó.",
-    "Nuestro trabajo empieza en el lado contrario. Entramos a la operación, medimos la fricción real y solo entonces recomendamos —o descartamos— tecnología.",
-  ],
-} as const;
+/**
+ * Las cuatro dimensiones de la propuesta de valor. Van juntas en una sola
+ * franja, no como cuatro secciones: son una forma de trabajar, no un menú.
+ */
+export type Dimension = { index: string; title: string; body: string };
+
+export const dimensions: readonly Dimension[] = [
+  {
+    index: "01",
+    title: "Estrategia",
+    body: "Comprender el negocio, diagnosticar necesidades, identificar oportunidades y definir hacia dónde debe evolucionar la organización.",
+  },
+  {
+    index: "02",
+    title: "Procesos",
+    body: "Analizar, rediseñar y optimizar la manera en que funciona la empresa antes de ponerle tecnología encima.",
+  },
+  {
+    index: "03",
+    title: "Tecnología",
+    body: "Diseñar e implementar la solución que el problema pide: automatización, inteligencia artificial, datos, software, visión artificial o sistemas conectados.",
+  },
+  {
+    index: "04",
+    title: "Transformación",
+    body: "Acompañar la implementación, la adopción y la medición para que la oportunidad identificada se convierta en una mejora real.",
+  },
+];
+
+/**
+ * Situaciones en la voz del cliente. Son la puerta de entrada: nadie llega
+ * buscando «Auren Flow», llega reconociéndose en una de estas frases. Cada
+ * una enruta a la solución que la resuelve. `solution` apunta a `solutions`.
+ */
+export type Problem = { quote: string; solution: string; hint: string };
+
+export const problems: readonly Problem[] = [
+  {
+    quote: "Sabemos que algo no funciona, pero no sabemos qué ni cuánto nos cuesta.",
+    solution: "estrategia",
+    hint: "Diagnóstico con evidencia y cifras, y un plan por dónde empezar.",
+  },
+  {
+    quote: "Tenemos personas copiando datos de un sistema a otro y aprobaciones que se persiguen por WhatsApp.",
+    solution: "automatizacion",
+    hint: "Flujos automatizados entre sistemas y áreas, con trazabilidad.",
+  },
+  {
+    quote: "Cada área presenta cifras distintas del mismo mes y la reunión se va en discutir cuál es la buena.",
+    solution: "datos",
+    hint: "Una sola versión de la verdad y tableros para decidir.",
+  },
+  {
+    quote: "Ningún software del mercado encaja: terminamos adaptando la operación a la herramienta.",
+    solution: "soluciones-digitales",
+    hint: "Software hecho para su proceso exacto, con el código en sus manos.",
+  },
+  {
+    quote: "Lo que pasa en planta, en el patio o en la portería se anota a mano, cuando se anota.",
+    solution: "sistemas-inteligentes",
+    hint: "Cámaras, sensores y equipos existentes convertidos en datos.",
+  },
+  {
+    quote: "Nos ofrecieron inteligencia artificial y no sabemos si la necesitamos.",
+    solution: "estrategia",
+    hint: "Le decimos con franqueza si hay caso, y qué conviene ordenar antes.",
+  },
+];
+
+/**
+ * Las cinco soluciones: la oferta organizada por necesidad empresarial.
+ *
+ * Es el nivel que lee un gerente. Los ocho `services` son el nivel «cómo lo
+ * entregamos»: cada solución enlaza a los servicios que la ejecutan. Añadir
+ * una solución exige que todos sus `services` existan (`npm test` lo
+ * verifica) y que aparezca en `problems` al menos una vez.
+ */
+export type Solution = {
+  slug: string;
+  /** Nombre de la necesidad, no de la tecnología. */
+  title: string;
+  /** Versión corta para menús y tarjetas. */
+  short: string;
+  /** La pregunta del cliente que esta solución responde. */
+  question: string;
+  /** El problema empresarial, en su vocabulario. */
+  problem: string;
+  /** Síntomas reconocibles. */
+  symptoms: readonly string[];
+  /** Qué hacemos para resolverlo. */
+  work: readonly string[];
+  /** Qué obtiene el cliente. */
+  outcomes: readonly string[];
+  /** Cómo se inicia la conversación. */
+  start: string;
+  /** Tecnologías que suelen intervenir. Se muestran como nota, no como oferta. */
+  technologies: readonly string[];
+  /** Slugs de `services` que la ejecutan. */
+  services: readonly string[];
+  /** Forma del diagrama que la ilustra. */
+  glyph: "lente" | "cadena" | "convergencia" | "marco" | "senal";
+};
+
+export const solutions: readonly Solution[] = [
+  {
+    slug: "estrategia",
+    title: "Estrategia y diagnóstico de transformación",
+    short: "Estrategia y diagnóstico",
+    question: "¿Dónde está la oportunidad y por dónde empezar?",
+    problem:
+      "La mayoría de las empresas sabe que algo no funciona, pero la conversación se queda en percepciones: «comercial va lento», «se pierde información entre bodega y facturación». Sin un diagnóstico con cifras, cualquier inversión en tecnología es una apuesta, y las apuestas se pierden más de lo que se ganan.",
+    symptoms: [
+      "Sospecha reprocesos, pero no puede dimensionarlos",
+      "Le han ofrecido software o inteligencia artificial y no sabe si lo necesita",
+      "Hay varias iniciativas compitiendo por el mismo presupuesto",
+      "Va a invertir y quiere decidir con evidencia, no con una demo",
+    ],
+    work: [
+      "Recorremos la operación con quienes la ejecutan, en su puesto y con sus herramientas",
+      "Cuantificamos la fricción: horas, reprocesos, riesgos y costo de oportunidad",
+      "Identificamos las oportunidades y las ordenamos por impacto y esfuerzo",
+      "Diseñamos la hoja de ruta: qué se hace, en qué orden, con qué tecnología y con qué métrica",
+    ],
+    outcomes: [
+      "Un diagnóstico con evidencia, no con opiniones",
+      "Un plan por fases que su equipo puede ejecutar, con o sin nosotros",
+      "Un caso de inversión defendible ante junta o socios",
+    ],
+    start:
+      "Una conversación de treinta minutos para entender su situación. De ahí sale si conviene un diagnóstico, qué alcance tendría y cuánto tardaría.",
+    technologies: ["Análisis de procesos", "Modelado de costos", "Arquitectura de solución", "Evaluación comprar / construir"],
+    services: ["auren-insight", "auren-blueprint"],
+    glyph: "lente",
+  },
+  {
+    slug: "automatizacion",
+    title: "Automatización e inteligencia artificial",
+    short: "Automatización e IA",
+    question: "¿Cómo dejamos de hacer a mano lo que no agrega valor?",
+    problem:
+      "Todo lo que hoy se mueve por correo, por chat o copiando de un sistema a otro es tiempo pagado que no produce nada. Y cada traspaso manual es un lugar donde el dato se equivoca, la aprobación se demora y nadie sabe en qué va una solicitud sin preguntar.",
+    symptoms: [
+      "Personas dedicadas a digitar o a copiar información entre sistemas",
+      "Aprobaciones que se persiguen por correo o WhatsApp",
+      "Informes que alguien arma a mano cada semana",
+      "Documentos, facturas o formularios que hay que leer y transcribir",
+    ],
+    work: [
+      "Simplificamos el flujo antes de automatizarlo: el mayor ahorro está en los pasos que se eliminan",
+      "Conectamos los sistemas que ya usa para que los datos viajen solos",
+      "Aplicamos inteligencia artificial donde rinde: clasificación, extracción de documentos, asistentes internos y predicción",
+      "Dejamos reglas de excepción, alertas y trazabilidad de cada caso",
+    ],
+    outcomes: [
+      "Horas del equipo devueltas a trabajo que sí agrega valor",
+      "Visibilidad de en qué punto está cada solicitud",
+      "Menos errores, y los que ocurren se detectan a tiempo",
+    ],
+    start:
+      "Empezamos por un solo flujo: el que más horas consume. Sirve para validar el enfoque con su gente antes de comprometer más presupuesto.",
+    technologies: ["Integración de sistemas", "Flujos de trabajo", "Modelos de lenguaje", "Extracción documental", "Asistentes internos"],
+    services: ["auren-flow"],
+    glyph: "cadena",
+  },
+  {
+    slug: "datos",
+    title: "Datos e inteligencia de negocio",
+    short: "Datos e inteligencia de negocio",
+    question: "¿Cómo decidimos con cifras en las que todos confían?",
+    problem:
+      "La información existe —en el ERP, en el CRM, en hojas de cálculo, en correos— pero no se puede consultar a tiempo ni dos áreas la calculan igual. El resultado es que la gerencia decide con el dato viejo o con el que presentó quien habló más fuerte.",
+    symptoms: [
+      "Cada área reporta números distintos para lo mismo",
+      "Consolidar un informe toma días de trabajo manual",
+      "Los indicadores existen, pero nadie confía en ellos",
+      "Quiere aplicar inteligencia artificial y primero necesita datos ordenados",
+    ],
+    work: [
+      "Inventariamos las fuentes y evaluamos la calidad de cada una",
+      "Acordamos con las áreas las definiciones: qué cuenta como venta, qué entra en costo",
+      "Integramos y modelamos una capa donde cada cifra tiene origen y regla de cálculo",
+      "Construimos los tableros que la dirección efectivamente usa para decidir",
+    ],
+    outcomes: [
+      "Una sola versión de la verdad, acordada entre áreas",
+      "Informes que se generan solos en vez de armarse a mano",
+      "La base técnica que cualquier proyecto de inteligencia artificial necesita",
+    ],
+    start:
+      "Empezamos por un dominio —ventas, producción, cartera— y un puñado de indicadores. El primer tablero útil valida que las definiciones quedaron bien.",
+    technologies: ["Integración de datos", "Modelado", "Tableros de gestión", "Analítica", "Calidad del dato"],
+    services: ["auren-data"],
+    glyph: "convergencia",
+  },
+  {
+    slug: "soluciones-digitales",
+    title: "Soluciones digitales a la medida",
+    short: "Soluciones digitales",
+    question: "¿Qué hacemos cuando ningún software del mercado encaja?",
+    problem:
+      "A veces la herramienta que su operación necesita no se vende. Entonces la empresa paga licencias por funciones que nadie usa o, peor, deforma su proceso para caber en un producto ajeno. Cuando el proceso es justamente su ventaja competitiva, eso cuesta más que construir.",
+    symptoms: [
+      "Evaluó herramientas del mercado y ninguna encaja",
+      "Paga licencias por puesto por funciones que nadie usa",
+      "Un portal, una app de campo o un sistema interno que no existe",
+      "Un sistema que sí existe, pero que nadie terminó de implementar",
+    ],
+    work: [
+      "Validamos primero si conviene comprar: si existe algo que resuelve el noventa por ciento, lo decimos",
+      "Definimos el alcance mínimo que ya sirve en producción",
+      "Diseñamos las pantallas con las personas que van a usarlas ocho horas al día",
+      "Construimos por incrementos, integramos con lo que ya tiene y lo llevamos a producción con su equipo",
+    ],
+    outcomes: [
+      "Una herramienta que encaja con cómo trabaja la empresa",
+      "Propiedad del código y libertad de proveedor",
+      "Costo operativo previsible, sin licencias por usuario",
+    ],
+    start:
+      "Una sesión para entender el proceso y revisar juntos el mercado. Si hay que construir, salimos con el alcance de la primera versión útil.",
+    technologies: ["Plataformas web", "Aplicaciones móviles y de campo", "Portales de cliente y proveedor", "Integración con ERP y CRM"],
+    services: ["auren-studio", "auren-transform"],
+    glyph: "marco",
+  },
+  {
+    slug: "sistemas-inteligentes",
+    title: "Sistemas inteligentes y tecnologías conectadas",
+    short: "Sistemas inteligentes",
+    question: "¿Cómo convertimos lo que pasa en planta, patio o sala en datos?",
+    problem:
+      "En la operación física hay información que nadie captura: el manómetro que alguien lee tres veces al día, la placa que el portero anota en un cuaderno, el display de la báscula que se copia a una planilla. Las cámaras y los equipos ya están ahí; lo que falta es procesar lo que ven.",
+    symptoms: [
+      "Lecturas de instrumentos que se anotan a mano",
+      "Inspección de calidad que depende del criterio de cada turno",
+      "Conteos, aforos y accesos sin registro confiable",
+      "Equipos antiguos sin salida digital que no se van a reemplazar",
+    ],
+    work: [
+      "Definimos primero qué decisión va a cambiar con ese dato",
+      "Evaluamos viabilidad con imágenes y condiciones reales de su operación",
+      "Construimos una prueba de concepto medida contra la inspección humana",
+      "Integramos el resultado con la operación: alertas, registros, tableros o paradas",
+    ],
+    outcomes: [
+      "Datos de operación que antes no existían, con hora y evidencia",
+      "Criterio constante entre turnos y personas",
+      "Retrofit sin cambiar equipos ni parar producción",
+    ],
+    start:
+      "Una evaluación de viabilidad con material que usted ya tiene toma días, no meses. Puede probar hoy mismo los demos de lectura por cámara en su navegador.",
+    technologies: ["Visión artificial", "Internet de las cosas", "Sistemas embebidos", "Monitoreo en tiempo real", "Lectura de instrumentos"],
+    services: ["auren-vision"],
+    glyph: "senal",
+  },
+];
+
+export const solutionBySlug = (slug: string) => solutions.find((s) => s.slug === slug);
 
 export type Phase = {
   index: string;
@@ -1193,9 +1461,34 @@ export const principles: readonly Principle[] = [
   },
 ];
 
+/**
+ * Contacto. No promete servicios gratuitos: promete una conversación y dice
+ * qué pasa después de escribir, que es lo que nadie cuenta.
+ */
 export const contact = {
-  title: "Empecemos por ver.",
-  lede: "Una conversación de diagnóstico, sin compromiso: entendemos su operación y le decimos con franqueza dónde hay oportunidad real.",
+  title: "Hablemos de su empresa.",
+  lede: "Cuéntenos qué está pasando en su operación. En una primera conversación entendemos su situación y le decimos con franqueza si hay caso, por dónde conviene empezar y qué tendría sentido medir.",
+  /** Qué pasa después de escribir. */
+  steps: [
+    {
+      title: "Nos escribe",
+      body: "Por el formulario, por WhatsApp o por correo. Dos líneas sobre el proceso o el área que le preocupa bastan.",
+    },
+    {
+      title: "Conversamos treinta minutos",
+      body: "Una llamada para entender su empresa, qué intentó antes y qué espera. Sin presentación de ventas: preguntas.",
+    },
+    {
+      title: "Le decimos qué haríamos",
+      body: "Si hay caso, proponemos un alcance concreto y acotado. Si el problema se resuelve sin nosotros o sin tecnología, también se lo decimos.",
+    },
+  ],
+  /** Compromisos que sí podemos hacer antes de conocer la empresa. */
+  promises: [
+    "Respondemos en un día hábil",
+    "Sin comisiones de proveedores de software",
+    "Presencial en el Eje Cafetero, remoto en el resto del país",
+  ],
 } as const;
 
 /**
@@ -1211,9 +1504,15 @@ export type Sector = {
   title: string;
   /** El dolor típico del sector, en su lenguaje. */
   body: string;
+  /** La pregunta con la que abrimos la conversación en ese sector. */
+  question: string;
   /** Procesos concretos donde entramos. */
   cases: readonly string[];
+  /** Oportunidades que suelen aparecer, para /sectores. */
+  opportunities: readonly string[];
   services: readonly string[];
+  /** Slugs de `demos` (src/content/demos.ts) que se pueden probar en ese sector. */
+  demos: readonly string[];
 };
 
 export const sectors: readonly Sector[] = [
@@ -1221,49 +1520,81 @@ export const sectors: readonly Sector[] = [
     id: "manufactura",
     title: "Manufactura y agroindustria",
     body: "Plantas donde el ERP se usa a medias, la programación real vive en una hoja de cálculo y el control de calidad depende del criterio de cada turno. El costo se esconde en la merma, el reproceso y las horas de alguien cuadrando cifras de noche.",
+    question: "¿Cuántas veces al día alguien copia a mano el número de una báscula, un contador o un manómetro?",
     cases: [
       "Control de producción y trazabilidad de lote",
       "Inspección de calidad por visión artificial",
       "Costo real por lote y por línea",
       "Mantenimiento y paradas no programadas",
     ],
+    opportunities: [
+      "Lectura automática de instrumentos sin cambiar el equipo",
+      "Una sola cifra de costo por lote que cuadre con contabilidad",
+      "Checklists de calidad y mantenimiento con foto y firma",
+      "Programación de planta fuera de la hoja de cálculo",
+    ],
     services: ["auren-insight", "auren-vision", "auren-data"],
+    demos: ["vision/siete-segmentos", "vision/medidor", "friccion"],
   },
   {
     id: "transporte",
     title: "Transporte y logística",
     body: "Operaciones con alta exigencia normativa sostenidas en papel: preoperacionales que nadie lee, vencimientos de SOAT y tecnomecánica que se descubren tarde y liquidaciones que se arman a mano viaje por viaje.",
+    question: "¿Sabría decir ahora mismo cuántos vehículos suyos están rodando con un documento vencido?",
     cases: [
       "Inspección preoperacional digital con evidencia",
       "Control documental de flota y alertas de vencimiento",
       "Cumplimiento del PESV con rastro auditable",
       "Liquidación de viajes y control de costos",
     ],
+    opportunities: [
+      "Bloqueo automático del vehículo cuando falla un ítem crítico",
+      "Semáforo de vencimientos ordenado por urgencia, sin filtrar",
+      "Lectura de placas en portería cruzada con los documentos de la flota",
+      "Indicadores del PESV montados sobre el preoperacional, sin volver a digitar",
+    ],
     services: ["auren-flow", "auren-studio", "auren-data"],
+    demos: ["flota", "preoperacional", "vision/placas"],
   },
   {
     id: "servicios",
     title: "Servicios, salud y comercio",
     body: "Empresas donde el margen se pierde en los traspasos: información que se pide dos veces, aprobaciones que se persiguen por chat y cartera que se descubre vencida cuando ya no hay con quién hablar.",
+    question: "¿Cuántas veces le pide la misma información al mismo cliente o paciente?",
     cases: [
       "Proceso comercial y CRM con datos limpios",
       "Agendamiento, facturación y cartera",
       "Portales de autogestión para clientes",
       "Postventa y trazabilidad de casos",
     ],
+    opportunities: [
+      "Recordatorios y confirmaciones que bajan el no-show",
+      "Vencimientos de insumos y calibraciones como alerta, no como inventario",
+      "Portales donde el cliente resuelve solo lo que hoy pasa por teléfono",
+      "Cartera visible antes de que se vuelva incobrable",
+    ],
     services: ["auren-flow", "auren-data", "auren-studio"],
+    demos: ["pqrsd", "vision/medidor", "friccion"],
   },
   {
     id: "publico",
     title: "Entidades públicas",
     body: "Donde la fricción no cuesta solo tiempo: un término vencido tiene consecuencia disciplinaria. El control suele estar en un Excel que una sola persona entiende y que nadie revisa los viernes.",
+    question: "¿Cuántos radicados suyos no tienen hoy un responsable con nombre?",
     cases: [
       "PQRSD con control de términos en días hábiles",
       "Ruteo por dependencia y alertas antes del vencimiento",
       "Tableros de cumplimiento para control interno",
       "Digitalización de expedientes y radicación",
     ],
+    opportunities: [
+      "Términos contados en días hábiles con festivos, no a ojo",
+      "«Sin responsable» como columna, no como conversación",
+      "Reporte ciudadano con foto, mapa y estado",
+      "Tableros de contratación y plan de desarrollo sobre datos abiertos",
+    ],
     services: ["auren-flow", "auren-insight", "auren-studio"],
+    demos: ["pqrsd", "friccion"],
   },
 ];
 

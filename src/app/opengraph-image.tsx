@@ -45,7 +45,7 @@ export default function Image() {
             {site.tagline}
           </div>
           <div style={{ marginTop: 24, fontSize: 30, color: "rgba(242,241,234,0.7)" }}>
-            {`${site.name} · Transformación empresarial`}
+            {`${site.name} · Transformación empresarial mediante tecnología`}
           </div>
         </div>
       </div>

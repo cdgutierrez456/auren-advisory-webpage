@@ -1,59 +1,65 @@
 import Link from "next/link";
-import { Arrow, Button, Headline, Section, SectionHead } from "@/components/ui";
-import { HairlineField } from "@/components/vertex-art";
+import { Arrow, Button, Cota, Headline, Section, SectionHead } from "@/components/ui";
 import { method, phases } from "@/content/site";
 import { RevealItem, RevealList } from "@/components/motion";
 
-/** Adelanto en la home. El desarrollo completo vive en /enfoque. */
+/**
+ * Cómo trabajamos: Ver · Entender · Transformar como tres estaciones de un
+ * mismo recorrido, con lo que produce cada una. Banda `inverse`: es la
+ * declaración de método de la firma. El desarrollo completo vive en /enfoque.
+ */
 export function Metodo() {
   return (
-    <Section tone="ink" className="relative isolate overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 text-accent/40 [mask-image:linear-gradient(120deg,black,transparent_55%)]"
-      >
-        <HairlineField className="h-full w-full" />
-      </div>
-
-      <SectionHead index="01" label={method.eyebrow} invert>
+    <Section id="metodo" tone="deep">
+      <SectionHead index="04" label={method.eyebrow} aside="Ver · Entender · Transformar">
         <Headline>{method.title}</Headline>
+        <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-fg/70">{method.lede}</p>
       </SectionHead>
 
-      <RevealList as="ol" className="relative grid gap-4 md:grid-cols-3">
-        {phases.map((phase) => (
+      <RevealList
+        as="ol"
+        className="grid gap-px overflow-hidden rounded-card border border-line bg-line md:grid-cols-3"
+      >
+        {phases.map((phase, k) => (
           <RevealItem as="li" key={phase.index}>
             <Link
               href={`/enfoque#${phase.title.toLowerCase()}`}
-              className="glass group flex h-full flex-col gap-8 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-10 md:pb-14"
+              className="group flex h-full flex-col gap-8 bg-surface-2 p-8 transition-colors duration-300 hover:bg-surface-3 md:p-10"
             >
-              <div className="flex items-baseline justify-between">
-                <span className="font-mono text-xs tracking-widest text-accent">{phase.index}</span>
-                <span className="h-0.5 w-0 bg-lime transition-all duration-700 ease-out-quint group-hover:w-12" />
+              <div className="flex items-center justify-between">
+                <Cota className="text-accent">
+                  {phase.index} / 03
+                </Cota>
+                {k < phases.length - 1 ? (
+                  <Arrow className="rotate-45 text-fg/40" />
+                ) : (
+                  <span aria-hidden className="h-2 w-2 rounded-pill bg-lime" />
+                )}
               </div>
 
               <div className="flex flex-col gap-4">
-                <h3 className="text-subhead">
-                  {phase.title}
-                </h3>
-                <p className="text-balance text-lg leading-snug text-fg/90">{phase.claim}</p>
-                <p className="text-pretty text-sm leading-relaxed text-fg/60">
-                  {phase.detail}
-                </p>
+                <h3 className="text-4xl tracking-tight text-fg md:text-5xl">{phase.title}</h3>
+                <p className="text-pretty text-lg leading-snug text-fg/90">{phase.claim}</p>
+                <p className="text-pretty text-sm leading-relaxed text-fg/60">{phase.detail}</p>
               </div>
 
-              <span className="mt-auto flex items-center gap-3 border-t border-line pt-7 text-sm text-fg/55 transition-colors group-hover:text-accent">
-                {phase.question}
-                <Arrow className="shrink-0" />
-              </span>
+              <div className="mt-auto flex flex-col gap-2 border-t border-line pt-6">
+                <Cota className="text-fg/45">Con qué termina</Cota>
+                <p className="text-pretty text-sm leading-relaxed text-fg/85">{phase.output}</p>
+              </div>
             </Link>
           </RevealItem>
         ))}
       </RevealList>
 
-      <div className="relative mt-12">
-        <Button href="/enfoque" variant="lime">
+      <div className="mt-10 flex flex-wrap items-center gap-6">
+        <Button href="/enfoque" variant="outline">
           Ver el método completo <Arrow />
         </Button>
+        <p className="max-w-md text-pretty text-sm leading-relaxed text-fg/60">
+          Si al terminar «Entender» el problema se resuelve cambiando un procedimiento, se cambia el
+          procedimiento. Ese también es un resultado.
+        </p>
       </div>
     </Section>
   );

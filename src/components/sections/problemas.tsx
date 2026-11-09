@@ -1,0 +1,48 @@
+import Link from "next/link";
+import { Arrow, Headline, Section, SectionHead } from "@/components/ui";
+import { problems, solutionBySlug } from "@/content/site";
+import { RevealItem, RevealList } from "@/components/motion";
+
+/**
+ * «¿Le suena?» — seis situaciones en la voz del cliente. Es la puerta de
+ * entrada por problema: cada una enlaza con la solución que la resuelve.
+ */
+export function Problemas() {
+  return (
+    <Section id="problemas" tone="paper">
+      <SectionHead index="02" label="¿Le suena?">
+        <Headline>Las situaciones con las que más nos buscan.</Headline>
+        <p className="mt-6 max-w-xl text-pretty leading-relaxed text-fg/65">
+          Si reconoce una, hay por dónde empezar. Cada frase enlaza con la solución que la
+          resuelve.
+        </p>
+      </SectionHead>
+
+      <RevealList as="ul" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {problems.map((p) => {
+          const sol = solutionBySlug(p.solution);
+          if (!sol) return null;
+          return (
+            <RevealItem as="li" key={p.quote}>
+              <Link
+                href={`/soluciones#${sol.slug}`}
+                className="card group flex h-full flex-col gap-7 rounded-card p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:p-8"
+              >
+                <p className="text-pretty text-xl leading-snug tracking-tight text-fg">
+                  «{p.quote}»
+                </p>
+                <div className="mt-auto flex flex-col gap-2.5 border-t border-line pt-5">
+                  <span className="cota flex items-center gap-2 text-fg/55 transition-colors group-hover:text-fg">
+                    <Arrow className="shrink-0" />
+                    {sol.short}
+                  </span>
+                  <span className="text-pretty text-sm leading-relaxed text-fg/70">{p.hint}</span>
+                </div>
+              </Link>
+            </RevealItem>
+          );
+        })}
+      </RevealList>
+    </Section>
+  );
+}

@@ -10,18 +10,20 @@ import { useEffect, useState } from "react";
  * <html> porque el CSS lee `:root[data-theme]` — no hay contexto de React ni
  * provider: una línea de dataset hace el mismo trabajo.
  *
- * El primer render es siempre el mismo en servidor y cliente (oscuro); el
+ * El primer render es siempre el mismo en servidor y cliente (claro); el
  * estado real se lee al montar. Sin eso, el HTML del servidor y el del
  * navegador no coincidirían.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [claro, setClaro] = useState(false);
+  const [claro, setClaro] = useState(true);
 
   useEffect(() => {
     const elegido = document.documentElement.dataset.theme;
+    // Claro es el tema de la casa: sin elección guardada, solo el sistema en
+    // oscuro lo cambia.
     setClaro(
       elegido === "light" ||
-        (!elegido && window.matchMedia("(prefers-color-scheme: light)").matches),
+        (!elegido && !window.matchMedia("(prefers-color-scheme: dark)").matches),
     );
   }, []);
 

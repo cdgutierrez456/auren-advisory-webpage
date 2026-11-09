@@ -1,17 +1,22 @@
-import { Capacidades } from "@/components/sections/capacidades";
-import { Contacto } from "@/components/sections/contacto";
+import { Confianza } from "@/components/sections/confianza";
 import { Hero } from "@/components/sections/hero";
-import { Manifiesto } from "@/components/sections/manifiesto";
 import { Metodo } from "@/components/sections/metodo";
-import { Nosotros } from "@/components/sections/nosotros";
 import { Preguntas } from "@/components/sections/preguntas";
-import { Productos } from "@/components/sections/productos";
+import { Problemas } from "@/components/sections/problemas";
+import { QueHacemos } from "@/components/sections/que-hacemos";
 import { Sectores } from "@/components/sections/sectores";
+import { Soluciones } from "@/components/sections/soluciones";
 import { Testimonios } from "@/components/sections/testimonios";
 import { CtaBand } from "@/components/ui";
 import { homeFaqs } from "@/content/site";
 import { faqPage, JsonLd } from "@/lib/schema";
 
+/**
+ * La home es un resumen con una secuencia: captar → qué hacemos → problemas
+ * que reconoce → soluciones → método → sectores → por qué creer → preguntas
+ * → conversación. Cada bloque enlaza a su página completa; el contenido no
+ * se duplica, se lee del mismo array en `site.ts`.
+ */
 export default function Home() {
   return (
     <>
@@ -20,21 +25,18 @@ export default function Home() {
           página: es exactamente lo que Google penaliza. */}
       <JsonLd data={faqPage(homeFaqs)} />
       <Hero />
-      <Manifiesto />
+      <QueHacemos />
+      <Problemas />
+      <Soluciones />
       <Metodo />
-      <Capacidades />
-      {/* Llamado a mitad de recorrido: quien ya entendió el método y las
-          capacidades no debería tener que llegar al pie para agendar. */}
-      <CtaBand
-        title="¿Sabe dónde se le va el tiempo hoy?"
-        lede="Nosotros tampoco, todavía. Por eso el primer paso es mirar la operación, no proponerle una herramienta. Una conversación de diagnóstico, sin compromiso."
-      />
-      <Productos />
       <Sectores />
+      <Confianza />
       <Testimonios />
-      <Nosotros />
       <Preguntas />
-      <Contacto />
+      <CtaBand
+        title="Empecemos por ver dónde puede funcionar mejor su empresa."
+        lede="Una primera conversación de treinta minutos. Si hay caso, le decimos por dónde empezar; si no lo hay, también."
+      />
     </>
   );
 }

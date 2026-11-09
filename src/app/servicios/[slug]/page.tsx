@@ -58,12 +58,14 @@ export default async function ServicioDetalle({ params }: Params) {
       />
 
       <PageHero
-        eyebrow={service.kind}
+        eyebrow={`${service.name} · ${service.kind}`}
         pad={false}
         title={
           <>
-            <span className="block">{service.name}</span>
-            <span className="mt-7 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-fg/75 md:text-2xl">
+            {/* La necesidad va primero y la marca después: nadie busca «Auren
+                Flow», busca «automatización de procesos». */}
+            <span className="block">{service.keyword}</span>
+            <span className="mt-6 block max-w-3xl text-balance text-lg leading-snug tracking-tight text-fg/75 md:text-xl">
               {service.headline}
             </span>
           </>
@@ -71,16 +73,16 @@ export default async function ServicioDetalle({ params }: Params) {
         lede={service.lede}
       >
         <dl className="mt-2 grid gap-3 sm:grid-cols-3">
-          <div className="glass flex flex-col gap-2 rounded-card px-6 py-5">
-            <dt className="label text-accent/80">Entrega</dt>
+          <div className="card flex flex-col gap-2 rounded-card px-6 py-5">
+            <dt className="cota text-fg/55">Entrega</dt>
             <dd className="text-sm text-fg/90">{service.deliverable}</dd>
           </div>
-          <div className="glass flex flex-col gap-2 rounded-card px-6 py-5">
-            <dt className="label text-accent/80">Duración de referencia</dt>
+          <div className="card flex flex-col gap-2 rounded-card px-6 py-5">
+            <dt className="cota text-fg/55">Duración de referencia</dt>
             <dd className="text-sm text-fg/90">{service.duration}</dd>
           </div>
-          <div className="glass flex flex-col gap-2 rounded-card px-6 py-5">
-            <dt className="label text-accent/80">Etapa</dt>
+          <div className="card flex flex-col gap-2 rounded-card px-6 py-5">
+            <dt className="cota text-fg/55">Etapa</dt>
             <dd className="text-sm text-fg/90">{service.kind}</dd>
           </div>
         </dl>
@@ -99,7 +101,7 @@ export default async function ServicioDetalle({ params }: Params) {
           </div>
 
           <div className="flex flex-col gap-7 self-start border-l border-lime pl-8">
-            <span className="label text-fg/55">Cuándo tiene sentido</span>
+            <span className="cota text-fg/55">Cuándo tiene sentido</span>
             <ul className="flex flex-col gap-4">
               {service.signals.map((s) => (
                 <li key={s} className="flex gap-3.5 text-pretty text-sm leading-relaxed text-fg/75">
@@ -117,13 +119,13 @@ export default async function ServicioDetalle({ params }: Params) {
         <SectionHead index="01" label="Cómo trabajamos">
           <Headline className="text-fg">{service.keyword}, paso a paso.</Headline>
         </SectionHead>
-        <Reveal as="ol" className="glass grid divide-y divide-line overflow-hidden rounded-card">
+        <Reveal as="ol" className="card grid divide-y divide-line overflow-hidden rounded-card">
           {service.steps.map((step, i) => (
             <li
               key={step.title}
               className="grid gap-4 px-7 py-8 md:grid-cols-[4rem_18rem_1fr] md:gap-10 md:px-10 md:py-10"
             >
-              <span className="font-mono text-xs text-fg/40">
+              <span className="cota text-fg/45">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="text-xl leading-snug tracking-tight text-balance text-fg">
@@ -142,8 +144,8 @@ export default async function ServicioDetalle({ params }: Params) {
             <SectionHead index="02" label="Qué incluye" invert tight />
             <ol className="grid gap-3">
               {service.includes.map((item, i) => (
-                <li key={item} className="glass flex gap-6 rounded-card px-6 py-5">
-                  <span className="font-mono text-xs text-accent">
+                <li key={item} className="card flex gap-6 rounded-card px-6 py-5">
+                  <span className="cota text-fg/55">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="text-pretty text-fg/90">{item}</span>
@@ -180,7 +182,7 @@ export default async function ServicioDetalle({ params }: Params) {
             <RevealItem
               as="article"
               key={ind.sector}
-              className="glass flex flex-col gap-4 rounded-card p-8 md:p-10"
+              className="card flex flex-col gap-4 rounded-card p-8 md:p-10"
             >
               <DrawRule className="h-0.5 w-8 bg-lime" />
               <h3 className="text-lg leading-snug text-balance text-fg">{ind.sector}</h3>
@@ -201,7 +203,7 @@ export default async function ServicioDetalle({ params }: Params) {
         </SectionHead>
         <RevealList as="ul" className="grid gap-4 sm:grid-cols-2">
           {service.measures.map((m) => (
-            <RevealItem as="li" key={m} className="glass flex gap-4 rounded-card p-7">
+            <RevealItem as="li" key={m} className="card flex gap-4 rounded-card p-7">
               <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-lime" />
               <span className="text-pretty text-sm leading-relaxed text-fg/75">{m}</span>
             </RevealItem>
@@ -228,17 +230,18 @@ export default async function ServicioDetalle({ params }: Params) {
         {next ? (
           <Link
             href={`/servicios/${next.slug}`}
-            className="glass group flex flex-col gap-8 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-12"
+            className="card group flex flex-col gap-8 rounded-card p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:p-12"
           >
             <div className="flex items-center justify-between gap-6">
-              <span className="label text-fg/40 transition-colors duration-500 group-hover:text-accent">
+              <span className="cota text-fg/55 transition-colors duration-300 group-hover:text-fg">
                 Paso siguiente
               </span>
               <Arrow className="text-fg/40 transition-transform duration-500 ease-out-quint group-hover:translate-x-1 group-hover:text-accent" />
             </div>
             <div className="flex flex-col gap-3">
-              <h3 className="wordmark text-xl uppercase text-fg">
-                {next.name}
+              <h3 className="flex flex-col gap-2">
+                <span className="text-xl tracking-tight text-fg">{next.keyword}</span>
+                <span className="cota text-fg/55">{next.name}</span>
               </h3>
               <p className="max-w-2xl text-pretty text-sm leading-relaxed text-fg/55 transition-colors duration-500 group-hover:text-fg/75">
                 {next.summary}
@@ -252,15 +255,15 @@ export default async function ServicioDetalle({ params }: Params) {
             <RevealItem as="li" key={s.slug}>
               <Link
                 href={`/servicios/${s.slug}`}
-                className="glass group flex h-full items-center gap-4 rounded-card p-6 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40"
+                className="card group flex h-full items-center gap-4 rounded-card p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40"
               >
                 <Mark
                   size={18}
                   className="shrink-0 opacity-45 transition-opacity duration-500 group-hover:opacity-100"
                 />
                 <span className="flex flex-col gap-1">
-                  <span className="wordmark text-xs uppercase text-fg">{s.name}</span>
-                  <span className="text-xs text-fg/55">{s.kind}</span>
+                  <span className="text-sm text-fg">{s.keyword}</span>
+                  <span className="cota text-fg/50">{s.name}</span>
                 </span>
               </Link>
             </RevealItem>
@@ -269,8 +272,8 @@ export default async function ServicioDetalle({ params }: Params) {
 
         {lecturas.length ? (
           <div className="mt-16 flex flex-col gap-6 border-t border-line pt-10">
-            <span className="label text-fg/40">Para leer antes de decidir</span>
-            <ul className="glass flex flex-col divide-y divide-line overflow-hidden rounded-card">
+            <span className="cota text-fg/55">Para leer antes de decidir</span>
+            <ul className="card flex flex-col divide-y divide-line overflow-hidden rounded-card">
               {lecturas.map((post) => (
                 <li key={post.slug}>
                   <Link
@@ -278,7 +281,7 @@ export default async function ServicioDetalle({ params }: Params) {
                     className="group flex items-baseline justify-between gap-6 px-6 py-5 transition-colors hover:bg-fg/5"
                   >
                     <span className="text-pretty text-fg">{post.title}</span>
-                    <span className="label flex shrink-0 items-center gap-3 text-fg/40 transition-colors group-hover:text-accent">
+                    <span className="cota flex shrink-0 items-center gap-3 text-fg/45 transition-colors group-hover:text-fg">
                       {post.minutes} min <Arrow />
                     </span>
                   </Link>
@@ -290,7 +293,7 @@ export default async function ServicioDetalle({ params }: Params) {
       </Section>
 
       <CtaBand
-        title={`Hablemos de si ${service.name} es lo que su empresa necesita.`}
+        title={`Hablemos de si ${service.keyword.toLowerCase()} es lo que su empresa necesita.`}
         lede="Una primera conversación sin compromiso. Si el problema que tiene se resuelve con otro servicio —o sin tecnología— también se lo vamos a decir."
       />
     </>

@@ -31,7 +31,7 @@ export default function Recursos() {
       />
 
       <Section tone="paper">
-        <ul className="glass grid divide-y divide-line overflow-hidden rounded-card">
+        <ul className="card grid divide-y divide-line overflow-hidden rounded-card">
           {postsByDate.map((post) => (
             <li key={post.slug}>
               <Link

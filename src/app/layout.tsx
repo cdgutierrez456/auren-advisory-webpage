@@ -29,13 +29,13 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL(`https://${site.domain}`),
   title: {
-    default: `${site.name} — Transformación empresarial y automatización`,
+    default: `${site.name} — Transformación empresarial mediante tecnología`,
     template: `%s — ${site.name}`,
   },
   description: site.description,
   alternates: { canonical: "/" },
   openGraph: {
-    title: `${site.name} — Transformación empresarial en Colombia`,
+    title: `${site.name} — Transformación empresarial mediante tecnología`,
     description: site.description,
     url: "/",
     siteName: site.name,

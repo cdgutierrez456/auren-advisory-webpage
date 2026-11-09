@@ -43,9 +43,9 @@ export default function Enfoque() {
             <RevealItem as="li" key={phase.index}>
               <a
                 href={`#${phase.title.toLowerCase()}`}
-                className="glass group flex flex-col gap-2 rounded-card px-6 py-5 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40"
+                className="card group flex flex-col gap-2 rounded-card px-6 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40"
               >
-                <span className="label text-fg/40">
+                <span className="cota text-fg/55">
                   {phase.index} — {phase.title}
                 </span>
                 <span className="text-sm text-fg/90">{phase.claim}</span>
@@ -74,12 +74,12 @@ export default function Enfoque() {
         <Section
           key={phase.index}
           id={phase.title.toLowerCase()}
-          tone={i % 2 === 0 ? "ink" : "deep"}
+          tone={i % 2 === 0 ? "paper" : "ivory"}
           className="scroll-mt-20"
         >
           <div className="grid gap-14 md:grid-cols-[1fr_1.35fr] md:gap-24">
             <div className="flex flex-col gap-6 self-start md:sticky md:top-32">
-              <span className="font-mono text-xs tracking-widest text-accent">{phase.index}</span>
+              <span className="cota text-fg/55">{phase.index} / 03</span>
               <h2 className="text-display leading-none font-normal">{phase.title}</h2>
               <p className="text-lede text-pretty text-fg/90">{phase.question}</p>
             </div>
@@ -94,12 +94,12 @@ export default function Enfoque() {
               </div>
 
               <div className="flex flex-col gap-6">
-                <span className="label text-fg/45">Qué hacemos</span>
+                <span className="cota text-fg/55">Qué hacemos</span>
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {phase.points.map((point) => (
                     <li
                       key={point}
-                      className="glass flex gap-3.5 rounded-lg px-5 py-4 text-sm text-fg/90"
+                      className="card flex gap-3.5 rounded-lg px-5 py-4 text-sm text-fg/90"
                     >
                       <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-lime" />
                       {point}
@@ -109,12 +109,12 @@ export default function Enfoque() {
               </div>
 
               <div className="flex flex-col gap-4 border-l-2 border-lime pl-7">
-                <span className="label text-accent">Con qué termina</span>
+                <span className="cota text-fg/55">Con qué termina</span>
                 <p className="text-pretty text-lg leading-snug">{phase.output}</p>
               </div>
 
               <div className="flex flex-col gap-5">
-                <span className="label text-fg/45">Servicios de esta fase</span>
+                <span className="cota text-fg/55">Servicios de esta fase</span>
                 <ul className="flex flex-wrap gap-2.5">
                   {phase.services.map((slug) => {
                     const service = serviceBySlug(slug);
@@ -123,7 +123,7 @@ export default function Enfoque() {
                       <li key={slug}>
                         <Link
                           href={`/servicios/${slug}`}
-                          className="label inline-flex items-center gap-2.5 rounded-pill border border-line-strong px-5 py-3 text-fg/75 transition-colors hover:border-lime hover:text-accent"
+                          className="inline-flex items-center gap-2 rounded-pill border border-line-strong px-4 py-2 text-xs text-fg/80 transition-colors hover:border-fg hover:text-fg"
                         >
                           {service.name} <Arrow />
                         </Link>
@@ -147,8 +147,8 @@ export default function Enfoque() {
 
         <RevealList as="ul" className="grid gap-4 md:grid-cols-3">
           {method.avoids.map((a, i) => (
-            <RevealItem as="li" key={a.title} className="glass flex flex-col gap-5 rounded-card p-8 md:p-10">
-              <span className="font-mono text-xs text-fg/40">
+            <RevealItem as="li" key={a.title} className="card flex flex-col gap-5 rounded-card p-8 md:p-10">
+              <span className="cota text-fg/45">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="text-balance text-xl leading-tight tracking-tight text-fg">

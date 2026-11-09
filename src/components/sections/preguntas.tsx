@@ -10,7 +10,7 @@ export function Preguntas() {
   return (
     <Section id="preguntas" tone="ivory">
       <SectionHead index="07" label="Preguntas frecuentes">
-        <Headline className="text-fg">Lo que nos preguntan antes de la primera reunión.</Headline>
+        <Headline>Lo que nos preguntan antes de la primera reunión.</Headline>
       </SectionHead>
       <FaqList faqs={homeFaqs} />
     </Section>

@@ -114,7 +114,7 @@ export default async function Articulo({ params }: Params) {
                 <li key={s.slug}>
                   <Link
                     href={`/servicios/${s.slug}`}
-                    className="glass group flex flex-col gap-3 rounded-card px-6 py-5 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40"
+                    className="card group flex flex-col gap-3 rounded-card px-6 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40"
                   >
                     <span className="flex items-center gap-3">
                       <Mark size={16} className="shrink-0 opacity-40" />
@@ -158,7 +158,7 @@ export default async function Articulo({ params }: Params) {
               <RevealItem as="li" key={r.slug}>
                 <Link
                   href={`/recursos/${r.slug}`}
-                  className="glass group flex h-full flex-col gap-4 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-10"
+                  className="card group flex h-full flex-col gap-4 rounded-card p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:p-10"
                 >
                   <span className="label text-fg/40">{r.minutes} min de lectura</span>
                   <h3 className="text-xl leading-snug text-balance tracking-tight text-fg">

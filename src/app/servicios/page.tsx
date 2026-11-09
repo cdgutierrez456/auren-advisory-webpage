@@ -26,18 +26,18 @@ export default function Servicios() {
       <Breadcrumbs trail={[{ name: "Servicios", path: "/servicios" }]} />
 
       <PageHero
-        eyebrow="Arquitectura de servicios"
+        eyebrow="Servicios · cómo lo entregamos"
         pad={false}
         title={
           <>
-            <span className="block">Un solo sistema. Ocho puertas de entrada.</span>
+            <span className="block">Ocho servicios. Un solo método.</span>
             <span className="mt-7 block max-w-3xl text-balance text-xl leading-snug tracking-tight text-fg/75 md:text-2xl">
               Diagnóstico de procesos, automatización, datos, visión artificial y software a
               la medida para empresas en Colombia.
             </span>
           </>
         }
-        lede="Cada servicio resuelve una etapa distinta del mismo recorrido. Puede empezar por donde su empresa esté hoy: no hace falta contratar todo el camino para obtener valor."
+        lede="Los servicios son la forma en que entregamos cada solución: cada uno resuelve una etapa del mismo recorrido, con alcance, entregable y duración de referencia. Si prefiere empezar por la necesidad, vea las soluciones."
       />
 
       {/* Ubicar cada servicio dentro del método: contexto antes del catálogo */}
@@ -47,9 +47,9 @@ export default function Servicios() {
             <RevealItem as="li" key={phase.index}>
               <Link
                 href={`/enfoque#${phase.title.toLowerCase()}`}
-                className="glass group flex h-full flex-col gap-2 rounded-card px-6 py-5 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40"
+                className="card group flex h-full flex-col gap-2 rounded-card px-6 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40"
               >
-                <span className="label text-fg/40">
+                <span className="cota text-fg/55">
                   {phase.index} — {phase.title}
                 </span>
                 <p className="text-sm text-fg/75">{phase.claim}</p>
@@ -65,38 +65,38 @@ export default function Servicios() {
             <RevealItem as="li" key={s.slug}>
               <Link
                 href={`/servicios/${s.slug}`}
-                className="glass group flex h-full flex-col gap-7 rounded-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40 md:p-11"
+                className="card group flex h-full flex-col gap-7 rounded-card p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:p-11"
               >
                 <div className="flex items-start justify-between gap-6">
                   <Mark
                     size={26}
                     className="opacity-45 transition-opacity duration-500 group-hover:opacity-100"
                   />
-                  <span className="label text-fg/40">{s.kind}</span>
+                  <span className="cota text-fg/45">{s.kind}</span>
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <h2 className="flex flex-col gap-2">
-                    <span className="wordmark text-base uppercase text-fg">{s.name}</span>
-                    <span className="text-pretty text-lg leading-snug tracking-tight text-fg/90">
+                  <h2 className="flex flex-col gap-2.5">
+                    <span className="text-pretty text-xl leading-snug tracking-tight text-balance text-fg">
                       {s.keyword}
                     </span>
+                    <span className="cota text-fg/55">{s.name}</span>
                   </h2>
                   <p className="text-pretty text-sm leading-relaxed text-fg/55">{s.summary}</p>
                 </div>
 
                 <dl className="mt-auto grid grid-cols-2 gap-6 border-t border-line pt-6">
                   <div className="flex flex-col gap-1.5">
-                    <dt className="label text-fg/40">Entrega</dt>
+                    <dt className="cota text-fg/45">Entrega</dt>
                     <dd className="text-xs text-fg/75">{s.deliverable}</dd>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <dt className="label text-fg/40">Referencia</dt>
+                    <dt className="cota text-fg/45">Referencia</dt>
                     <dd className="text-xs text-fg/75">{s.duration}</dd>
                   </div>
                 </dl>
 
-                <span className="label flex items-center gap-3 text-fg transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100">
+                <span className="cota flex items-center gap-3 text-fg/55 transition-colors group-hover:text-fg">
                   Ver servicio <Arrow />
                 </span>
               </Link>
@@ -144,7 +144,7 @@ export default function Servicios() {
               slug: "auren-data",
             },
           ].map((caso) => (
-            <RevealItem key={caso.slug} className="glass flex flex-col gap-4 rounded-card p-8 md:p-11">
+            <RevealItem key={caso.slug} className="card flex flex-col gap-4 rounded-card p-8 md:p-11">
               <dt className="text-xl leading-snug text-balance tracking-tight text-fg">
                 {caso.situacion}
               </dt>
@@ -154,7 +154,7 @@ export default function Servicios() {
                 </p>
                 <Link
                   href={`/servicios/${caso.slug}`}
-                  className="label group inline-flex items-center gap-3 text-fg/55 transition-colors hover:text-fg"
+                  className="cota group inline-flex items-center gap-3 text-fg/55 transition-colors hover:text-fg"
                 >
                   {serviceBySlug(caso.slug)?.name}
                   <Arrow className="transition-transform duration-500 ease-out-quint group-hover:translate-x-0.5" />

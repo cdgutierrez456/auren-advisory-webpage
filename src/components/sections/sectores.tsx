@@ -1,66 +1,49 @@
 import Link from "next/link";
-import { Arrow, Headline, Section, SectionHead } from "@/components/ui";
-import { sectors, serviceBySlug } from "@/content/site";
-import { DrawRule, RevealItem, RevealList } from "@/components/motion";
+import { Arrow, Button, Headline, Section, SectionHead } from "@/components/ui";
+import { sectors } from "@/content/site";
+import { RevealItem, RevealList } from "@/components/motion";
 
 /**
- * Sectores. Un gerente de transporte no se reconoce en «automatización de
- * procesos»; se reconoce en «preoperacional en papel». Esta sección traduce
- * los servicios al vocabulario de cada industria y enlaza a la página que
- * corresponde.
+ * Sectores, en resumen. Un gerente de transporte no se reconoce en
+ * «automatización de procesos»; se reconoce en «preoperacional en papel».
+ * El desarrollo (oportunidades y demos) vive en /sectores.
  */
 export function Sectores() {
   return (
-    <Section id="sectores" tone="ivory">
-      <SectionHead index="04" label="Sectores">
-        <Headline className="text-fg">Dónde trabajamos, y con qué se encuentra uno ahí.</Headline>
-        <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-fg/55">
-          El método es el mismo en todos, pero la fricción no. Estos son los cuatro
-          entornos donde más hemos visto repetirse los mismos costos escondidos.
+    <Section id="sectores" tone="paper">
+      <SectionHead index="05" label="Sectores">
+        <Headline>Dónde trabajamos, y con qué se encuentra uno ahí.</Headline>
+        <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-fg/65">
+          El método es el mismo en todos; la fricción no. Cuatro entornos donde más hemos visto
+          repetirse los mismos costos escondidos.
         </p>
       </SectionHead>
 
-      <RevealList className="grid gap-4 md:grid-cols-2">
+      <RevealList as="ul" className="grid gap-4 md:grid-cols-2">
         {sectors.map((sector) => (
-          <RevealItem
-            as="article"
-            key={sector.id}
-            className="glass flex flex-col gap-7 rounded-card p-8 md:p-11"
-          >
-            <div className="flex flex-col gap-4">
-              <DrawRule className="h-0.5 w-8 bg-lime" />
-              <h3 className="text-2xl tracking-tight text-balance text-fg">{sector.title}</h3>
-              <p className="text-pretty text-sm leading-relaxed text-fg/55">{sector.body}</p>
-            </div>
-
-            <ul className="flex flex-col gap-3 border-t border-line pt-6">
-              {sector.cases.map((c) => (
-                <li key={c} className="flex gap-3.5 text-pretty text-sm leading-relaxed text-fg/75">
-                  <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-line-strong" />
-                  {c}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-auto flex flex-wrap gap-x-6 gap-y-3 pt-2">
-              {sector.services.map((slug) => {
-                const service = serviceBySlug(slug);
-                if (!service) return null;
-                return (
-                  <Link
-                    key={slug}
-                    href={`/servicios/${slug}`}
-                    className="label group inline-flex items-center gap-2.5 text-fg/55 transition-colors hover:text-fg"
-                  >
-                    {service.name}
-                    <Arrow className="transition-transform duration-500 ease-out-quint group-hover:translate-x-0.5" />
-                  </Link>
-                );
-              })}
-            </div>
+          <RevealItem as="li" key={sector.id}>
+            <Link
+              href={`/sectores#${sector.id}`}
+              className="card group flex h-full flex-col gap-6 rounded-card p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40 md:p-9"
+            >
+              <div className="flex items-start justify-between gap-6">
+                <h3 className="text-subhead text-balance text-fg">{sector.title}</h3>
+                <Arrow className="mt-2 shrink-0 text-fg/40 transition-colors group-hover:text-fg" />
+              </div>
+              <p className="text-pretty text-sm leading-relaxed text-fg/70">{sector.body}</p>
+              <p className="mt-auto border-t border-line pt-5 font-serif text-xl italic leading-snug text-fg/85">
+                {sector.question}
+              </p>
+            </Link>
           </RevealItem>
         ))}
       </RevealList>
+
+      <div className="mt-10">
+        <Button href="/sectores" variant="outline">
+          Ver sectores y aplicaciones <Arrow />
+        </Button>
+      </div>
     </Section>
   );
 }

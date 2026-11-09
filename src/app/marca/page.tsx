@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { Logo, Mark, Wordmark } from "@/components/logo";
-import { Section, SectionHead } from "@/components/ui";
+import { SolutionGlyph, TransformDiagram } from "@/components/diagrams";
+import { Button, Cota, Section, SectionHead } from "@/components/ui";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = pageMetadata(
@@ -11,10 +12,10 @@ export const metadata: Metadata = pageMetadata(
 );
 
 const palette = [
-  { name: "Auren Deep", hex: "#12343B", role: "Base institucional" },
-  { name: "Auren Lime", hex: "#C8F169", role: "Acento — máx. 10%" },
-  { name: "Auren Black", hex: "#111414", role: "Fondo y texto" },
-  { name: "Auren Ivory", hex: "#F2F1EA", role: "Espacio y respiro" },
+  { name: "Auren Ivory", hex: "#F2F1EA", role: "Superficie de lectura" },
+  { name: "Auren Deep", hex: "#12343B", role: "Superficie de declaración" },
+  { name: "Auren Black", hex: "#111414", role: "Texto y tinta" },
+  { name: "Auren Lime", hex: "#C8F169", role: "Acento — máx. 10%, nunca texto sobre marfil" },
 ];
 
 /** Exploraciones del símbolo documentadas en el proceso de diseño. */
@@ -72,7 +73,7 @@ export default function Marca() {
       {/* 01 — LOGO PRINCIPAL */}
       <Section tone="ivory">
         <SectionHead index="01" label="Logo principal" />
-        <div className="glass flex justify-center rounded-card px-8 py-24 md:py-32">
+        <div className="card flex justify-center rounded-card px-8 py-24 md:py-32">
           <Logo size={132} tone="tema" />
         </div>
         <div className="mt-8 grid gap-8 text-sm leading-relaxed text-fg/75 md:grid-cols-3">
@@ -116,7 +117,7 @@ export default function Marca() {
           <Frame label="Sobre lima" className="rounded-card bg-lime text-ink" invert>
             <Mark size={56} tone="lime-bg" />
           </Frame>
-          <Frame label="Favicon 48/32/16" className="glass rounded-card">
+          <Frame label="Favicon 48/32/16" className="card rounded-card">
             <div className="flex items-end gap-3.5">
               {[48, 32, 16].map((s) => (
                 <span
@@ -139,7 +140,7 @@ export default function Marca() {
           {explorations.map((e) => (
             <div
               key={e.name}
-              className="glass flex flex-col items-center gap-9 rounded-card px-10 py-12 text-center"
+              className="card flex flex-col items-center gap-9 rounded-card px-10 py-12 text-center"
             >
               <span className="flex items-center justify-center rounded-lg bg-ivory p-6">
                 <svg width="104" height="104" viewBox="0 0 100 100" fill="none" aria-hidden>
@@ -159,7 +160,7 @@ export default function Marca() {
       <Section tone="paper">
         <SectionHead index="04" label="Paleta y tipografía" />
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="glass flex flex-col gap-9 rounded-card p-10 text-fg md:p-12">
+          <div className="card flex flex-col gap-9 rounded-card p-10 text-fg md:p-12">
             <span className="label text-accent">Paleta</span>
             <ul>
               {palette.map((c) => (
@@ -178,12 +179,14 @@ export default function Marca() {
               ))}
             </ul>
             <p className="text-sm leading-relaxed text-pretty text-fg/55">
-              El lima ocupa como máximo el 10% de cualquier composición. Sobre marfil nunca se
-              usa en texto: solo en forma, regla o trazo del símbolo.
+              El marfil es la superficie de lectura y Auren Deep la de declaración: hero,
+              método y cierre. El lima ocupa como máximo el 10% de cualquier composición y
+              sobre marfil nunca se usa en texto: solo en forma, regla, trazo del símbolo o
+              el nodo final de un diagrama.
             </p>
           </div>
 
-          <div className="glass flex flex-col gap-10 rounded-card p-10 md:p-12">
+          <div className="card flex flex-col gap-10 rounded-card p-10 md:p-12">
             <span className="label text-fg/55">Tipografía</span>
             <div className="flex flex-col gap-3 border-b border-line pb-8">
               <span className="label text-fg/40">Sans — Geist</span>
@@ -200,19 +203,97 @@ export default function Marca() {
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <span className="label text-fg/40">Etiquetas de sistema</span>
-              <p className="label text-fg">Ver. Entender. Transformar.</p>
+              <span className="label text-fg/40">Cotas — Geist Mono</span>
+              <p>
+                <Cota className="text-fg">01 — Ver · Entender · Transformar</Cota>
+              </p>
               <p className="text-sm text-fg/55">
-                11&nbsp;px, tracking .34em, mayúsculas. Índices, secciones y metadatos.
+                11&nbsp;px mono con tick, como en un plano acotado. Índices de capítulo,
+                metadatos y números de paso. Es la voz técnica del sistema.
               </p>
             </div>
           </div>
         </div>
       </Section>
 
-      {/* 05 — TARJETA */}
+      {/* 05 — SISTEMA «PLANO» */}
+      <Section tone="paper">
+        <SectionHead index="05" label="Sistema «Plano»" aside="Cada recurso gráfico explica algo">
+          <h2 className="text-headline text-balance font-normal text-fg">
+            Ver. Entender. Transformar. como un plano de obra.
+          </h2>
+          <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-fg/65">
+            La operación se lee como un ingeniero lee un plano: entera, con sus causas y con la
+            solución medida. De ahí salen los recursos del sitio: diagramas de línea, cotas en
+            mono, tarjetas planas con filo de 1 px y una sola superficie de declaración.
+          </p>
+        </SectionHead>
+
+        <div className="inverse rounded-card p-8 md:p-12">
+          <Cota className="text-accent">Diagrama de transformación</Cota>
+          <TransformDiagram className="mt-8 w-full max-w-3xl text-fg/85" />
+          <p className="mt-6 max-w-xl text-pretty text-sm leading-relaxed text-fg/65">
+            La operación como es, el vértice y el flujo rediseñado. Trazo de 1,25 px en
+            marfil; el lima marca únicamente el carril que se mide. Se dibuja solo al cargar,
+            sin JavaScript.
+          </p>
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div className="card flex flex-col gap-8 rounded-card p-8 md:p-10">
+            <Cota className="text-fg/55">Glifos de solución</Cota>
+            <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+              {(["lente", "cadena", "convergencia", "marco", "senal"] as const).map((g) => (
+                <li key={g} className="flex flex-col items-start gap-3">
+                  <SolutionGlyph kind={g} className="w-full text-fg/85" />
+                  <span className="cota text-fg/45">{g}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-pretty text-sm leading-relaxed text-fg/55">
+              Una idea por solución, no un icono: una lente sobre un proceso, una cadena que
+              se acorta, líneas que convergen, un marco a la medida, una señal leída. Nada de
+              cerebros, circuitos ni robots.
+            </p>
+          </div>
+
+          <div className="card flex flex-col gap-8 rounded-card p-8 md:p-10">
+            <Cota className="text-fg/55">Superficies y botones</Cota>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="card flex flex-col gap-2 rounded-card p-5">
+                <Cota className="text-fg/45">card</Cota>
+                <p className="text-sm text-fg/75">Plana, filo de 1 px, radio 1 rem. La única tarjeta.</p>
+              </div>
+              <div className="inverse flex flex-col gap-2 rounded-card p-5">
+                <Cota className="text-accent">inverse</Cota>
+                <p className="text-sm text-fg/75">Auren Deep en los dos temas. Hero, método y cierre.</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button href="/contacto" variant="solid">
+                Solid
+              </Button>
+              <Button href="/contacto" variant="outline">
+                Outline
+              </Button>
+              <span className="inverse rounded-card p-3">
+                <Button href="/contacto" variant="lime">
+                  Lime
+                </Button>
+              </span>
+            </div>
+            <p className="text-pretty text-sm leading-relaxed text-fg/55">
+              <em className="not-italic text-fg/75">solid</em> invierte la superficie;{" "}
+              <em className="not-italic text-fg/75">lime</em> va una vez por pantalla y sobre
+              Deep; <em className="not-italic text-fg/75">outline</em> es la acción secundaria.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      {/* 06 — TARJETA */}
       <Section tone="ivory">
-        <SectionHead index="05" label="Aplicaciones" />
+        <SectionHead index="06" label="Aplicaciones" />
         {/* Las dos caras de la tarjeta de visita.
 
             Son un ESPECIMEN IMPRESO A ESCALA, no interfaz: 300px representan
@@ -220,7 +301,7 @@ export default function Marca() {
             escala del sitio —a 16px no cabría ni el eslogan— sino de la escala
             de la pieza, declarada UNA vez en `--tarjeta` y derivada en `em`.
             Es la misma excepción que la paleta literal de esta página. */}
-        <div className="glass flex flex-wrap gap-6 rounded-card p-10 md:p-14">
+        <div className="card flex flex-wrap gap-6 rounded-card p-10 md:p-14">
           <div
             className="flex h-[172px] w-full max-w-[300px] flex-col justify-between rounded-lg bg-deep p-6 text-[length:var(--tarjeta)]"
             style={{ "--tarjeta": "10px" } as React.CSSProperties}

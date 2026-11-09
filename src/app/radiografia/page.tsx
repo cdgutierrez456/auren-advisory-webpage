@@ -26,7 +26,7 @@ export default function Radiografia() {
           {radiografia.promises.map((p) => (
             <div
               key={p.k}
-              className="glass flex flex-col gap-3 rounded-card px-6 py-5 transition-all duration-500 hover:-translate-y-1 hover:border-lime/40"
+              className="card flex flex-col gap-3 rounded-card px-6 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-fg/40"
             >
               <dt className="label text-accent/80">{p.k}</dt>
               <dd className="text-xl tracking-tight text-fg">{p.v}</dd>
