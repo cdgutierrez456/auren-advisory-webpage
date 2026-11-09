@@ -25,14 +25,17 @@ export function MethodStage({ phases, className = "" }: { phases: readonly Phase
       className={`[perspective:1600px] ${className}`}
       onMouseLeave={() => setActive(null)}
     >
-      <ol className="grid gap-4 md:grid-cols-3 md:gap-5 [transform-style:preserve-3d]">
+      {/* El <ol> es un plano en z=0 dentro del contexto 3D: si recibiera eventos,
+          se los robaría a los paneles que están detrás (translateZ negativo).
+          Por eso no captura el puntero; los <li> sí. */}
+      <ol className="pointer-events-none grid gap-4 md:grid-cols-3 md:gap-5 [transform-style:preserve-3d]">
         {phases.map((phase, k) => {
           const on = active === k;
           const dim = active !== null && !on;
           return (
             <li
               key={phase.index}
-              className="relative md:[transform-style:preserve-3d]"
+              className="pointer-events-auto relative"
               style={{
                 transform: on
                   ? "rotateY(0deg) translateZ(60px) scale(1.03)"
